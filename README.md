@@ -48,7 +48,9 @@ The app addresses the chaos of tracking multiple applications, providing a singl
 
 ### Prerequisites
 - Node.js version 22.14.0 (use [nvm](https://github.com/nvm-sh/nvm) to manage versions: `nvm use` after installing).
-- A Supabase account and project (free tier available at [supabase.com](https://supabase.com)). This provides the database and authentication backend.
+- A Supabase setup:
+  - non local: account and project (free tier available at [supabase.com](https://supabase.com)). This provides the database and authentication backend.
+  - local: [Supabase CLI](https://supabase.com/docs/guides/cli) for local development. (`sudo npx supabase start -x vector`)
 
 ### Setup
 1. Clone the repository:
