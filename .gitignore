@@ -2,3 +2,7 @@ node_modules
 .idea
 .astro
 .vscode
+
+# environment variables
+.env
+.env.production
