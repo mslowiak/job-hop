@@ -108,6 +108,4 @@ This endpoint retrieves a paginated list of all job applications, sorted by crea
 
 6. **Database Setup**: Ensure the `applications` table is accessible via Supabase. No RLS per-user policies are required at this stage.
 
-7. **Testing and Logging**: Add console logging for errors (structured JSON). Unit test service with mocked Supabase (e.g., @supabase/supabase-js testing utils). Integration test endpoint with authenticated requests. Verify pagination, filtering, and empty states.
-
-8. **Documentation Update**: Update API docs in `.ai/api-plan.md` if changes made. Ensure types.ts aligns (no changes needed). Deploy and monitor Supabase query performance.
+7. **Documentation Update**: Update API docs in `.ai/api-plan.md` if changes made. Ensure types.ts aligns (no changes needed). Deploy and monitor Supabase query performance.
