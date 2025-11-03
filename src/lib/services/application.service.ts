@@ -3,6 +3,8 @@ import type {
   ApplicationDto,
   ApplicationStatus,
   ApplicationListResponseDto,
+  CreateApplicationCommand,
+  ApplicationResponse,
 } from "../../types";
 
 export interface GetApplicationsFilters {
@@ -93,6 +95,63 @@ export class ApplicationService {
       console.error("ApplicationService.getApplications error:", {
         error,
         filters,
+        timestamp: new Date(),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Creates a new job application entry in the database
+   * @param command - The create application command with user_id
+   * @returns Promise containing the created application response
+   */
+  async createApplication(
+    command: CreateApplicationCommand,
+  ): Promise<ApplicationResponse> {
+    try {
+      // Prepare data for insertion
+      const insertData = {
+        user_id: command.user_id,
+        company_name: command.company_name,
+        position_name: command.position_name,
+        application_date: command.application_date,
+        link: command.link,
+        notes: command.notes,
+        status: command.status,
+      };
+
+      // Insert into applications table and return the created record
+      const { data, error } = await supabaseClient
+        .from("applications")
+        .insert(insertData)
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error(`Failed to create application: ${error.message}`);
+      }
+
+      if (!data) {
+        throw new Error("No data returned after application creation");
+      }
+
+      // Return the application response (map to ensure correct typing)
+      return {
+        id: data.id,
+        company_name: data.company_name,
+        position_name: data.position_name,
+        application_date: data.application_date,
+        link: data.link,
+        notes: data.notes,
+        status: data.status,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+      };
+    } catch (error) {
+      console.error("ApplicationService.createApplication error:", {
+        error,
+        command: { ...command, user_id: "[REDACTED]" }, // Don't log user_id for security
         timestamp: new Date(),
       });
       throw error;

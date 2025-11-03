@@ -2,7 +2,13 @@ import { z } from "zod";
 import type { APIRoute } from "astro";
 import { ApplicationService } from "../../lib/services/application.service";
 import { DEFAULT_USER_ID } from "../../db/supabase.client";
-import type { ApiErrorResponse } from "../../types";
+import {
+  type ApiErrorResponse,
+  CreateApplicationRequestSchema,
+  type CreateApplicationCommand,
+} from "../../types";
+
+export const prerender = false;
 
 // Zod schema for query parameter validation
 const applicationsQuerySchema = z.object({
@@ -55,6 +61,68 @@ export const GET: APIRoute = async (context) => {
     });
   } catch (error) {
     console.error("API /applications GET error:", {
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date(),
+    });
+
+    return createErrorResponse(500, "Internal server error.");
+  }
+};
+
+export const POST: APIRoute = async ({ request }) => {
+  try {
+    // Parse and validate request body using Zod schema
+    const body = await request.json();
+
+    const validationResult = CreateApplicationRequestSchema.safeParse(body);
+
+    if (!validationResult.success) {
+      // Extract validation errors and format for safe response
+      const errors = validationResult.error.errors.map((err) => ({
+        field: err.path.join("."),
+        message: err.message,
+        code: err.code,
+      }));
+
+      console.error("Validation errors:", {
+        errors,
+        timestamp: new Date(),
+      });
+
+      return createErrorResponse(
+        400,
+        "Validation failed. Please check your input data.",
+      );
+    }
+
+    const validatedData = validationResult.data;
+
+    // Create command with hardcoded DEFAULT_USER_ID for MVP
+    // Ensure application_date is a string for CreateApplicationCommand
+    const command: CreateApplicationCommand = {
+      user_id: DEFAULT_USER_ID,
+      company_name: validatedData.company_name,
+      position_name: validatedData.position_name,
+      application_date:
+        typeof validatedData.application_date === "string"
+          ? validatedData.application_date
+          : validatedData.application_date.toISOString(),
+      status: validatedData.status ?? "planned",
+      link: validatedData.link ?? null,
+      notes: validatedData.notes ?? null,
+    };
+
+    // Call service layer
+    const applicationService = new ApplicationService();
+    const result = await applicationService.createApplication(command);
+
+    // Return successful response with 201 Created
+    return new Response(JSON.stringify(result), {
+      status: 201,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("API /applications POST error:", {
       error: error instanceof Error ? error.message : String(error),
       timestamp: new Date(),
     });
