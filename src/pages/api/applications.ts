@@ -60,8 +60,12 @@ export const GET: APIRoute = async (context) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
+    const requestUrl = new URL(context.request.url);
     console.error("API /applications GET error:", {
+      method: "GET",
+      endpoint: "/api/applications",
       error: error instanceof Error ? error.message : String(error),
+      queryParams: Object.fromEntries(requestUrl.searchParams),
       timestamp: new Date(),
     });
 
@@ -84,7 +88,9 @@ export const POST: APIRoute = async ({ request }) => {
         code: err.code,
       }));
 
-      console.error("Validation errors:", {
+      console.error("POST /api/applications validation errors:", {
+        method: "POST",
+        endpoint: "/api/applications",
         errors,
         timestamp: new Date(),
       });
@@ -123,7 +129,10 @@ export const POST: APIRoute = async ({ request }) => {
     });
   } catch (error) {
     console.error("API /applications POST error:", {
+      method: "POST",
+      endpoint: "/api/applications",
       error: error instanceof Error ? error.message : String(error),
+      user_id: "[REDACTED]", // Redact for security
       timestamp: new Date(),
     });
 

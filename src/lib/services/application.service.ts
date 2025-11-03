@@ -5,6 +5,8 @@ import type {
   ApplicationListResponseDto,
   CreateApplicationCommand,
   ApplicationResponse,
+  DeleteApplicationCommand,
+  NotFoundError,
 } from "../../types";
 
 export interface GetApplicationsFilters {
@@ -152,6 +154,49 @@ export class ApplicationService {
       console.error("ApplicationService.createApplication error:", {
         error,
         command: { ...command, user_id: "[REDACTED]" }, // Don't log user_id for security
+        timestamp: new Date(),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Deletes a job application entry from the database
+   * @param command - The delete application command with id and user_id for ownership verification
+   * @returns Promise that resolves when deletion is complete
+   * @throws NotFoundError if application doesn't exist or doesn't belong to the user
+   */
+  async deleteApplication(command: DeleteApplicationCommand): Promise<void> {
+    try {
+      // Execute delete query with ownership verification (dual filtering)
+      const { data, error } = await supabaseClient
+        .from("applications")
+        .delete()
+        .eq("id", command.id)
+        .eq("user_id", command.user_id)
+        .select();
+
+      // Handle Supabase errors early with guard clause
+      if (error) {
+        throw new Error(`Failed to delete application: ${error.message}`);
+      }
+
+      // Check if any rows were affected (application exists and belongs to user)
+      if (!data || data.length === 0) {
+        throw new NotFoundError("Application not found");
+      }
+
+      // Deletion successful - no return value needed for void operation
+    } catch (error) {
+      // Re-throw NotFoundError as-is for proper HTTP status mapping
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+
+      // Log other errors with context
+      console.error("ApplicationService.deleteApplication error:", {
+        error,
+        command: { id: command.id, user_id: "[REDACTED]" }, // Don't log user_id for security
         timestamp: new Date(),
       });
       throw error;
