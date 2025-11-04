@@ -208,3 +208,10 @@ export const statusLabels: Record<ApplicationStatus, string> = {
   rejected: "Odrzucone",
   offer: "Oferta pracy",
 };
+
+// Stats view model for grid items
+export interface StatsItem {
+  status: ApplicationStatus;
+  label: string; // Polish display name from statusLabels
+  count: number;
+}

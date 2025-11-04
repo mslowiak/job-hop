@@ -1,0 +1,14 @@
+---
+// eslint-disable-next-line prettier/prettier
+import MainLayout from "../layouts/MainLayout.astro";
+import { StatsView } from "../components/StatsView";
+
+// For MVP, no authentication guard - direct access
+// Future: Add auth check here and redirect to /login if not authenticated
+---
+
+<MainLayout title="JobHop - Statistics">
+  <div class="max-w-7xl mx-auto px-4 py-6">
+    <StatsView client:load />
+  </div>
+</MainLayout>

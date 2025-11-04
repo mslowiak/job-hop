@@ -7,6 +7,7 @@ import type {
   ApplicationResponse,
   DeleteApplicationCommand,
   UpdateApplicationCommand,
+  ApplicationStatsDto,
   NotFoundError,
 } from "../../types";
 
@@ -330,6 +331,59 @@ export class ApplicationService {
       console.error("ApplicationService.deleteApplication error:", {
         error,
         command: { id: command.id, user_id: "[REDACTED]" }, // Don't log user_id for security
+        timestamp: new Date(),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves application statistics grouped by status for a specific user
+   * @param userId - The user ID to get statistics for
+   * @returns Promise containing statistics object with status counts and total
+   */
+  async getApplicationStats(userId: string): Promise<ApplicationStatsDto> {
+    try {
+      // Query to count applications by status for the user
+      const { data: statusCounts, error: statusError } = await supabaseClient
+        .from("applications")
+        .select("status")
+        .eq("user_id", userId);
+
+      if (statusError) {
+        throw new Error(
+          `Failed to fetch application statistics: ${statusError.message}`,
+        );
+      }
+
+      // Count applications by status
+      const stats: Record<ApplicationStatus, number> = {
+        planned: 0,
+        sent: 0,
+        in_progress: 0,
+        interview: 0,
+        rejected: 0,
+        offer: 0,
+      };
+
+      // Count each status occurrence
+      (statusCounts || []).forEach((app) => {
+        if (stats.hasOwnProperty(app.status)) {
+          stats[app.status]++;
+        }
+      });
+
+      // Calculate total
+      const total = Object.values(stats).reduce((sum, count) => sum + count, 0);
+
+      return {
+        stats,
+        total,
+      };
+    } catch (error) {
+      console.error("ApplicationService.getApplicationStats error:", {
+        error,
+        userId: "[REDACTED]",
         timestamp: new Date(),
       });
       throw error;
