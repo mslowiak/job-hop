@@ -28,13 +28,13 @@ const { title = "JobHop - Dashboard" } = Astro.props;
         </div>
 
         <nav class="flex items-center space-x-6">
-          <a href="/dashboard" class="text-blue-600 font-medium hover:text-blue-800 transition-colors">
+          <a href="/dashboard" class={Astro.url.pathname === "/dashboard" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
             Dashboard
           </a>
-          <a href="/stats" class="text-gray-600 hover:text-gray-900 transition-colors">
+          <a href="/stats" class={Astro.url.pathname === "/stats" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
             Statystyki
           </a>
-          <a href="/profile" class="text-gray-600 hover:text-gray-900 transition-colors">
+          <a href="/profile" class={Astro.url.pathname === "/profile" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
             Profile
           </a>
         </nav>
