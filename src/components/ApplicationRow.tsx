@@ -1,63 +1,48 @@
-import React from "react";
+import React, { memo } from "react";
 import { TableRow, TableCell } from "./ui/table";
+import { StatusDropdown } from "./StatusDropdown";
 import { CompanyCell } from "./CompanyCell";
 import { PositionCell } from "./PositionCell";
-import { StatusDropdown } from "./StatusDropdown";
-import type { ApplicationDto, ApplicationStatus } from "../types";
-import type { StatusOption } from "../types/view.types";
+import type { ApplicationStatus } from "../types";
+import type { ApplicationViewModel } from "../types";
 
 interface ApplicationRowProps {
-  app: ApplicationDto;
-  onStatusChange: (status: ApplicationStatus) => void;
-  onRowClick: (id: string) => void;
-  options: StatusOption[];
+  application: ApplicationViewModel;
+  onClick: (id: string) => void;
+  onStatusChange: (id: string, status: ApplicationStatus) => void;
 }
 
 /**
  * Single table row component for displaying an application
  * Clickable row for navigation to details, with status dropdown for quick updates
+ * Memoized to prevent unnecessary re-renders
  */
-export const ApplicationRow: React.FC<ApplicationRowProps> = ({
-  app,
+const ApplicationRow: React.FC<ApplicationRowProps> = ({
+  application,
+  onClick,
   onStatusChange,
-  onRowClick,
-  options,
 }) => {
-  const handleRowClick = () => {
-    onRowClick(app.id);
-  };
-
-  const handleStatusChange = (newStatus: ApplicationStatus) => {
-    onStatusChange(newStatus);
-  };
-
   return (
     <TableRow
-      className="hover:bg-gray-50 cursor-pointer transition-colors"
-      onClick={handleRowClick}
+      className="cursor-pointer hover:bg-muted/50"
+      onClick={() => onClick(application.id)}
       role="row"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          handleRowClick();
-        }
-      }}
-      aria-label={`Application for ${app.position_name} at ${app.company_name}`}
     >
-      <TableCell className="py-4">
-        <CompanyCell companyName={app.company_name} />
+      <TableCell>
+        <CompanyCell companyName={application.company_name} />
       </TableCell>
-      <TableCell className="py-4">
-        <PositionCell positionName={app.position_name} />
+      <TableCell>
+        <PositionCell positionName={application.position_name} />
       </TableCell>
-      <TableCell className="py-4">
+      <TableCell onClick={(e) => e.stopPropagation()}>
         <StatusDropdown
-          currentStatus={app.status}
-          onSelect={handleStatusChange}
-          options={options}
+          value={application.status}
+          onChange={(s) => onStatusChange(application.id, s)}
+          applicationId={application.id}
         />
       </TableCell>
     </TableRow>
   );
 };
+
+export default memo(ApplicationRow);

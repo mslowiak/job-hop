@@ -1,14 +1,13 @@
 import React from "react";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "./ui/table";
-import { ApplicationRow } from "./ApplicationRow";
-import type { ApplicationDto, ApplicationStatus } from "../types";
-import type { StatusOption } from "../types/view.types";
+import ApplicationRow from "./ApplicationRow";
+import type { ApplicationStatus } from "../types";
+import type { ApplicationViewModel } from "../types";
 
 interface ApplicationTableProps {
-  applications: ApplicationDto[];
+  applications: ApplicationViewModel[];
   onStatusChange: (id: string, status: ApplicationStatus) => void;
   onRowClick: (id: string) => void;
-  statusOptions: StatusOption[];
 }
 
 /**
@@ -19,32 +18,24 @@ export const ApplicationTable: React.FC<ApplicationTableProps> = ({
   applications,
   onStatusChange,
   onRowClick,
-  statusOptions,
 }) => {
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
-      <Table>
+    <div className="overflow-x-auto">
+      <Table role="table" aria-label="Applications list">
         <TableHeader>
-          <TableRow className="bg-gray-50">
-            <TableHead className="py-3 px-4 text-left font-semibold text-gray-900">
-              Firma
-            </TableHead>
-            <TableHead className="py-3 px-4 text-left font-semibold text-gray-900">
-              Stanowisko
-            </TableHead>
-            <TableHead className="py-3 px-4 text-left font-semibold text-gray-900">
-              Status
-            </TableHead>
+          <TableRow>
+            <TableHead>Firma</TableHead>
+            <TableHead>Stanowisko</TableHead>
+            <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {applications.map((app) => (
+          {applications.map((application) => (
             <ApplicationRow
-              key={app.id}
-              app={app}
-              onStatusChange={(status) => onStatusChange(app.id, status)}
-              onRowClick={onRowClick}
-              options={statusOptions}
+              key={application.id}
+              application={application}
+              onClick={onRowClick}
+              onStatusChange={(id, status) => onStatusChange(id, status)}
             />
           ))}
         </TableBody>

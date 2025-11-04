@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusFilter } from "./StatusFilter";
 import { ApplicationList } from "./ApplicationList";
 import { AddApplicationButton } from "./AddApplicationButton";
@@ -7,14 +7,12 @@ import { useStatusOptions } from "../hooks/useStatusOptions";
 import type { ApplicationStatus } from "../types";
 
 export const DashboardView: React.FC = () => {
-  const { data, refetch, updateStatus } = useApplications();
+  const [filter, setFilter] = useState<ApplicationStatus | "all">("all");
+  const { data, refetch, updateStatus } = useApplications(filter);
   const statusOptions = useStatusOptions();
 
-  const handleFilterChange = (filter: ApplicationStatus | "all") => {
-    // For now, just refetch - in real implementation would pass filter to API
-    // TODO: Use filter parameter to query API with status filter
-    console.log("Filter change requested:", filter);
-    refetch();
+  const handleFilterChange = (newFilter: ApplicationStatus | "all") => {
+    setFilter(newFilter);
   };
 
   const handleStatusChange = async (id: string, status: ApplicationStatus) => {
@@ -32,17 +30,17 @@ export const DashboardView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <main role="main" aria-label="Dashboard" className="space-y-6">
       {/* Header with Add Button and Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Moje aplikacje</h1>
+          <h1 id="dashboard-title" className="text-2xl font-bold text-gray-900">Moje aplikacje</h1>
           <p className="text-gray-600">Zarządzaj swoimi aplikacjami o pracę</p>
         </div>
 
         <div className="flex items-center gap-4">
           <StatusFilter
-            filter={data.currentFilter}
+            filter={filter}
             onFilterChange={handleFilterChange}
             options={statusOptions}
           />
@@ -55,11 +53,13 @@ export const DashboardView: React.FC = () => {
         applications={data.applications}
         loading={data.loading}
         error={data.error}
+        currentFilter={filter}
         onStatusChange={handleStatusChange}
         onRowClick={handleRowClick}
         onAddClick={handleAddClick}
         statusOptions={statusOptions}
+        refetch={refetch}
       />
-    </div>
+    </main>
   );
 };

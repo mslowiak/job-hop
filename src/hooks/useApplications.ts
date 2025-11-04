@@ -1,21 +1,24 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { toast } from "sonner";
 import type {
   ApplicationDto,
   ApplicationStatus,
   ApplicationListResponseDto,
-  isValidApplicationStatus,
+  ApplicationViewModel,
 } from "../types";
+import { statusLabels, isValidApplicationStatus } from "../types";
 import type { FilteredApplicationsViewModel } from "../types/view.types";
 
 /**
  * Hook for managing application data fetching, filtering, and status updates
  * Provides optimistic UI updates and proper error handling
  */
-export const useApplications = () => {
+export const useApplications = (filter: ApplicationStatus | "all" = "all") => {
   const [applications, setApplications] = useState<ApplicationDto[]>([]);
   const [currentFilter, setCurrentFilter] = useState<ApplicationStatus | "all">(
-    "all",
+    filter,
   );
+  const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 20 });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,15 +26,15 @@ export const useApplications = () => {
    * Fetches applications from the API with optional status filtering
    */
   const fetchApplications = useCallback(
-    async (filter: ApplicationStatus | "all" = "all") => {
+    async (filterParam: ApplicationStatus | "all" = "all") => {
       setLoading(true);
       setError(null);
 
       try {
         // Build query parameters
         const params = new URLSearchParams();
-        if (filter !== "all") {
-          params.append("status", filter);
+        if (filterParam !== "all") {
+          params.append("status", filterParam);
         }
         params.append("page", "1");
         params.append("limit", "20");
@@ -53,7 +56,8 @@ export const useApplications = () => {
         const data: ApplicationListResponseDto = await response.json();
 
         setApplications(data.applications);
-        setCurrentFilter(filter);
+        setPagination(data.pagination);
+        setCurrentFilter(filterParam);
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to load applications";
@@ -103,17 +107,20 @@ export const useApplications = () => {
       );
 
       try {
-        // TODO: Implement PATCH /api/applications/{id} when available
-        // For now, just simulate a successful update after a brief delay
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        // Call PATCH API to update status
+        const response = await fetch(`/api/applications/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus }),
+        });
 
-        // In a real implementation, this would be:
-        // const response = await fetch(`/api/applications/${id}`, {
-        //   method: 'PATCH',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ status: newStatus }),
-        // });
-        // if (!response.ok) throw new Error('Failed to update status');
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to update status');
+        }
+
+        // Show success toast
+        toast.success('Status zaktualizowany pomyślnie');
       } catch (err) {
         // Revert optimistic update on error
         setApplications((prev) =>
@@ -126,26 +133,37 @@ export const useApplications = () => {
           err instanceof Error ? err.message : "Failed to update status";
         setError(errorMessage);
         console.error("useApplications updateStatus error:", err);
+
+        // Show error toast
+        toast.error(`Błąd aktualizacji statusu: ${errorMessage}`);
       }
     },
     [applications],
   );
 
-  // Initial fetch on mount
+  // Fetch when filter changes
   useEffect(() => {
-    fetchApplications();
-  }, [fetchApplications]);
+    fetchApplications(filter);
+  }, [fetchApplications, filter]);
+
+  // Transform ApplicationDto[] to ApplicationViewModel[]
+  const applicationsViewModel: ApplicationViewModel[] = useMemo(() =>
+    applications.map(app => ({
+      ...app,
+      formattedDate: new Intl.DateTimeFormat('pl-PL', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      }).format(new Date(app.application_date)),
+      statusLabel: statusLabels[app.status],
+    })), [applications]);
 
   // Prepare view model data
   const data: FilteredApplicationsViewModel = {
-    applications,
-    filteredApplications: applications, // For now, no client-side filtering beyond API
+    applications: applicationsViewModel,
+    filteredApplications: applicationsViewModel,
     currentFilter,
-    pagination: {
-      total: applications.length, // Simplified - would come from API in real implementation
-      page: 1,
-      limit: 20,
-    },
+    pagination,
     loading,
     error: error || undefined,
   };
