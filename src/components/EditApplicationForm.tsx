@@ -89,10 +89,14 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Company Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="edit_company_name"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Firma *
         </label>
         <input
+          id="edit_company_name"
           type="text"
           value={formData.company_name || ""}
           onChange={(e) => handleInputChange("company_name", e.target.value)}
@@ -111,10 +115,14 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
 
       {/* Position Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="edit_position_name"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Stanowisko *
         </label>
         <input
+          id="edit_position_name"
           type="text"
           value={formData.position_name || ""}
           onChange={(e) => handleInputChange("position_name", e.target.value)}
@@ -133,10 +141,14 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
 
       {/* Application Date */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="edit_application_date"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Data aplikacji *
         </label>
         <input
+          id="edit_application_date"
           type="date"
           value={
             formData.application_date
@@ -161,10 +173,14 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
 
       {/* Status */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="edit_status"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Status
         </label>
         <select
+          id="edit_status"
           value={formData.status || application.status}
           onChange={(e) => handleInputChange("status", e.target.value)}
           disabled={disabled || isSubmitting}
@@ -188,10 +204,14 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
 
       {/* Link */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="edit_link"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Link
         </label>
         <input
+          id="edit_link"
           type="url"
           value={formData.link || ""}
           onChange={(e) => handleInputChange("link", e.target.value)}
@@ -210,10 +230,14 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
 
       {/* Notes */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="edit_notes"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Notatki
         </label>
         <textarea
+          id="edit_notes"
           value={formData.notes || ""}
           onChange={(e) => handleInputChange("notes", e.target.value)}
           disabled={disabled || isSubmitting}

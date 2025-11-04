@@ -87,10 +87,14 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Company Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="company_name"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Firma *
         </label>
         <input
+          id="company_name"
           type="text"
           value={formData.company_name || ""}
           onChange={(e) => handleInputChange("company_name", e.target.value)}
@@ -110,10 +114,14 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
 
       {/* Position Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="position_name"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Stanowisko *
         </label>
         <input
+          id="position_name"
           type="text"
           value={formData.position_name || ""}
           onChange={(e) => handleInputChange("position_name", e.target.value)}
@@ -133,10 +141,14 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
 
       {/* Application Date */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="application_date"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Data aplikacji *
         </label>
         <input
+          id="application_date"
           type="date"
           value={
             formData.application_date
@@ -161,10 +173,14 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
 
       {/* Status */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="status"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Status aplikacji
         </label>
         <select
+          id="status"
           value={formData.status || "planned"}
           onChange={(e) => handleInputChange("status", e.target.value)}
           disabled={disabled || isSubmitting}
@@ -188,10 +204,14 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
 
       {/* Link */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="link"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Link do oferty
         </label>
         <input
+          id="link"
           type="url"
           value={formData.link || ""}
           onChange={(e) => handleInputChange("link", e.target.value)}
@@ -210,10 +230,14 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
 
       {/* Notes */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="notes"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Notatki
         </label>
         <textarea
+          id="notes"
           value={formData.notes || ""}
           onChange={(e) => handleInputChange("notes", e.target.value)}
           disabled={disabled || isSubmitting}

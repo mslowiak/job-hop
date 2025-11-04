@@ -3,14 +3,10 @@ import type { ApplicationViewModel } from "../types";
 
 interface ApplicationFieldsProps {
   application: ApplicationViewModel;
-  isEditing: boolean;
-  onChange: (field: string, value: any) => void;
 }
 
 export const ApplicationFields: React.FC<ApplicationFieldsProps> = ({
   application,
-  isEditing,
-  onChange,
 }) => {
   return (
     <dl className="grid grid-cols-1 md:grid-cols-2 gap-6">

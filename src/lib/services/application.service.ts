@@ -234,7 +234,7 @@ export class ApplicationService {
   ): Promise<ApplicationResponse> {
     try {
       // Build update data - only include non-undefined fields
-      const updateData: Record<string, any> = {};
+      const updateData: Record<string, string | null | undefined> = {};
       if (updates.company_name !== undefined)
         updateData.company_name = updates.company_name;
       if (updates.position_name !== undefined)

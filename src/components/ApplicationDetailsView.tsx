@@ -225,13 +225,7 @@ export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({
               disabled={saving}
             />
           ) : (
-            <ApplicationFields
-              application={viewModel}
-              isEditing={false}
-              onChange={() => {
-                // No-op for view mode
-              }}
-            />
+            <ApplicationFields application={viewModel} />
           )}
         </div>
       </div>
