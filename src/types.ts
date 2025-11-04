@@ -125,10 +125,10 @@ export type UpdateApplicationCommand = Partial<
 
 // Delete application command - for DELETE /api/applications/{id}
 // Internal model for service layer with hardcoded user_id for ownership verification
-export type DeleteApplicationCommand = {
+export interface DeleteApplicationCommand {
   id: string; // UUID of the application to delete
   user_id: string; // Hardcoded DEFAULT_USER_ID for development (ownership verification)
-};
+}
 
 // Zod schema for delete application command validation
 export const DeleteApplicationCommandSchema = z.object({
@@ -147,7 +147,7 @@ export interface ApiErrorResponse {
 
 // Custom error class for not found scenarios
 export class NotFoundError extends Error {
-  constructor(message: string = "Resource not found") {
+  constructor(message = "Resource not found") {
     super(message);
     this.name = "NotFoundError";
   }

@@ -3,6 +3,7 @@
 [![Astro](https://img.shields.io/badge/Astro-5-blue)](https://astro.build/) [![React](https://img.shields.io/badge/React-19-green)](https://react.dev/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/) [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-purple)](https://tailwindcss.com/)
 
 ## Table of Contents
+
 - [Project Description](#project-description)
 - [Tech Stack](#tech-stack)
 - [Getting Started Locally](#getting-started-locally)
@@ -16,6 +17,7 @@
 JobHop is a web application designed to help active job seekers centralize, manage, and track the status of their job applications. The MVP (Minimum Viable Product) aims to replace fragmented methods like spreadsheets, notebooks, and browser tabs with a simple, transparent tool. Users can manually submit applications, monitor their status on a dashboard, and analyze basic recruitment statistics.
 
 ### Key Features
+
 - **Authentication & Account Management**: Email/password signup and login with JWT tokens, account settings (change password, delete account), and secure logout.
 - **Job Applications Management (CRUD)**: Add, view, edit, and delete applications with fields like Company Name, Position, Application Date (required), Job Link, Notes, and Status (predefined options: Planned to Send, Sent, In Progress, Interview, Rejected, Offer; default: Sent).
 - **Dashboard**: Main view showing a sortable list of applications (newest first) with quick status updates via dropdown, filtering by status, and an empty state for new users with a call-to-action to add the first application.
@@ -28,6 +30,7 @@ The app addresses the chaos of tracking multiple applications, providing a singl
 ## Tech Stack
 
 ### Frontend
+
 - **Astro 5**: For building fast, content-focused websites with minimal JavaScript.
 - **React 19**: For interactive components where dynamic behavior is needed.
 - **TypeScript 5**: For static type checking and improved developer experience.
@@ -35,24 +38,29 @@ The app addresses the chaos of tracking multiple applications, providing a singl
 - **Shadcn/ui**: Accessible React UI components built on Tailwind and Radix UI.
 
 ### Backend
+
 - **Supabase**: Open-source Backend-as-a-Service providing PostgreSQL database, authentication, and SDKs. Self-hostable with built-in user auth.
 
 ### AI Integration
+
 - **Openrouter.ai**: Gateway to various AI models (e.g., OpenAI, Anthropic, Google) with API key management and cost limits. (Used for future enhancements beyond MVP.)
 
 ### CI/CD & Hosting
+
 - **GitHub Actions**: For automated CI/CD pipelines.
 - **DigitalOcean**: Hosting via Docker containers.
 
 ## Getting Started Locally
 
 ### Prerequisites
+
 - Node.js version 22.14.0 (use [nvm](https://github.com/nvm-sh/nvm) to manage versions: `nvm use` after installing).
 - A Supabase setup:
   - non local: account and project (free tier available at [supabase.com](https://supabase.com)). This provides the database and authentication backend.
   - local: [Supabase CLI](https://supabase.com/docs/guides/cli) for local development. (`sudo npx supabase start -x vector`)
 
 ### Setup
+
 1. Clone the repository:
    ```
    git clone https://github.com/mslowiak/job-hop.git
@@ -99,6 +107,7 @@ Linting and formatting are enforced via Husky pre-commit hooks.
 ## Project Scope
 
 ### MVP Features
+
 - User authentication and account management (signup, login, logout, password change, account deletion).
 - Full CRUD for job applications with required validations and predefined statuses.
 - Dashboard with listing, sorting, filtering, quick status updates, and empty state.
@@ -107,6 +116,7 @@ Linting and formatting are enforced via Husky pre-commit hooks.
 - Basic error handling and user-friendly messages.
 
 ### Out of Scope for MVP
+
 - Automatic imports from emails or job portals (e.g., LinkedIn, Pracuj.pl).
 - Calendar integrations (e.g., Google Calendar for interview scheduling).
 - Reminders and notifications (e.g., follow-ups).
