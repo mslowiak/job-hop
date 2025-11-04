@@ -1,0 +1,12 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import { ApplicationDetailsView } from "../../components/ApplicationDetailsView";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+---
+
+<MainLayout title={`Application Details - JobHop`}>
+  <ApplicationDetailsView client:load id={id} />
+</MainLayout>

@@ -1,0 +1,10 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import { AddApplicationView } from "../../components/AddApplicationView";
+
+export const prerender = false;
+---
+
+<MainLayout title="Dodaj nową aplikację - JobHop">
+  <AddApplicationView client:load />
+</MainLayout>

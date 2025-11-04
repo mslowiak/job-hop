@@ -22,17 +22,13 @@ export const DashboardView: React.FC = () => {
   };
 
   const handleRowClick = (id: string) => {
-    // Navigate to application details - for now just log
-    console.log("Navigate to application details:", id);
-    // In a real implementation:
-    // window.location.href = `/applications/${id}`;
+    // Navigate to application details page
+    window.location.href = `/applications/${id}`;
   };
 
   const handleAddClick = () => {
-    // Navigate to add application form - for now just log
-    console.log("Navigate to add application form");
-    // In a real implementation:
-    // window.location.href = '/applications/new';
+    // Navigate to add application form
+    window.location.href = "/applications/new";
   };
 
   return (

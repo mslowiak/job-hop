@@ -27,7 +27,7 @@ export const CreateApplicationRequestSchema = z.object({
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .transform((val) => new Date(val)),
-  link: z.string().url().nullable().optional(),
+  link: z.union([z.string().url(), z.literal("")]).optional(),
   notes: z.string().max(10000).nullable().optional(),
   status: z
     .enum(["planned", "sent", "in_progress", "interview", "rejected", "offer"])
@@ -78,6 +78,12 @@ export type ApplicationDto = Pick<
   | "created_at"
   | "updated_at"
 >;
+
+// Application view model - extends ApplicationDto with formatted display fields
+export interface ApplicationViewModel extends ApplicationDto {
+  formattedDate: string; // e.g., 'November 4, 2025'
+  statusLabel: string; // Polish display name, e.g., 'Wysłane' for 'sent'
+}
 
 // Paginated applications list response Dto
 export interface ApplicationListResponseDto {
@@ -136,6 +142,21 @@ export const DeleteApplicationCommandSchema = z.object({
   user_id: z.string().uuid("Invalid user ID format"),
 });
 
+// Zod schema for update application request validation (partial updates)
+export const UpdateApplicationRequestSchema = z.object({
+  company_name: z.string().min(1).max(255).optional(),
+  position_name: z.string().min(1).max(255).optional(),
+  application_date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  link: z.union([z.string().url(), z.string().length(0), z.null()]).optional(),
+  notes: z.string().max(1000).optional(),
+  status: z
+    .enum(["planned", "sent", "in_progress", "interview", "rejected", "offer"])
+    .optional(),
+});
+
 // =============================================================================
 // API Error Response Types
 // =============================================================================
@@ -177,3 +198,13 @@ export type RequiredApplicationFields = Pick<
   CreateApplicationCommand,
   "company_name" | "position_name" | "application_date"
 >;
+
+// Status label mapping for Polish display names
+export const statusLabels: Record<ApplicationStatus, string> = {
+  planned: "Zaplanowane do wysłania",
+  sent: "Wysłane",
+  in_progress: "W trakcie",
+  interview: "Rozmowa kwalifikacyjna",
+  rejected: "Odrzucone",
+  offer: "Oferta pracy",
+};

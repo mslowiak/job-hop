@@ -6,6 +6,7 @@ import type {
   CreateApplicationCommand,
   ApplicationResponse,
   DeleteApplicationCommand,
+  UpdateApplicationCommand,
   NotFoundError,
 } from "../../types";
 
@@ -154,6 +155,138 @@ export class ApplicationService {
       console.error("ApplicationService.createApplication error:", {
         error,
         command: { ...command, user_id: "[REDACTED]" }, // Don't log user_id for security
+        timestamp: new Date(),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves a single application by ID with ownership verification
+   * @param id - The application ID to retrieve
+   * @param userId - The user ID for ownership verification
+   * @returns Promise containing the application response
+   * @throws NotFoundError if application doesn't exist or doesn't belong to the user
+   */
+  async getApplicationById(
+    id: string,
+    userId: string,
+  ): Promise<ApplicationResponse> {
+    try {
+      // Fetch application with ownership verification
+      const { data, error } = await supabaseClient
+        .from("applications")
+        .select("*")
+        .eq("id", id)
+        .eq("user_id", userId)
+        .single();
+
+      if (error) {
+        if (error.code === "PGRST116") {
+          throw new NotFoundError("Application not found");
+        }
+        throw new Error(`Failed to fetch application: ${error.message}`);
+      }
+
+      if (!data) {
+        throw new NotFoundError("Application not found");
+      }
+
+      // Return the application response
+      return {
+        id: data.id,
+        company_name: data.company_name,
+        position_name: data.position_name,
+        application_date: data.application_date,
+        link: data.link,
+        notes: data.notes,
+        status: data.status,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+
+      console.error("ApplicationService.getApplicationById error:", {
+        error,
+        id,
+        userId: "[REDACTED]",
+        timestamp: new Date(),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Updates an existing job application entry in the database
+   * @param id - The application ID to update
+   * @param userId - The user ID for ownership verification
+   * @param updates - Partial update data
+   * @returns Promise containing the updated application response
+   * @throws NotFoundError if application doesn't exist or doesn't belong to the user
+   */
+  async updateApplication(
+    id: string,
+    userId: string,
+    updates: UpdateApplicationCommand,
+  ): Promise<ApplicationResponse> {
+    try {
+      // Build update data - only include non-undefined fields
+      const updateData: Record<string, any> = {};
+      if (updates.company_name !== undefined)
+        updateData.company_name = updates.company_name;
+      if (updates.position_name !== undefined)
+        updateData.position_name = updates.position_name;
+      if (updates.application_date !== undefined)
+        updateData.application_date = updates.application_date;
+      if (updates.link !== undefined) updateData.link = updates.link;
+      if (updates.notes !== undefined) updateData.notes = updates.notes;
+      if (updates.status !== undefined) updateData.status = updates.status;
+
+      // Update the application with ownership verification
+      const { data, error } = await supabaseClient
+        .from("applications")
+        .update(updateData)
+        .eq("id", id)
+        .eq("user_id", userId)
+        .select()
+        .single();
+
+      if (error) {
+        if (error.code === "PGRST116") {
+          throw new NotFoundError("Application not found");
+        }
+        throw new Error(`Failed to update application: ${error.message}`);
+      }
+
+      if (!data) {
+        throw new NotFoundError("Application not found");
+      }
+
+      // Return the updated application response
+      return {
+        id: data.id,
+        company_name: data.company_name,
+        position_name: data.position_name,
+        application_date: data.application_date,
+        link: data.link,
+        notes: data.notes,
+        status: data.status,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+
+      console.error("ApplicationService.updateApplication error:", {
+        error,
+        id,
+        userId: "[REDACTED]",
+        updates,
         timestamp: new Date(),
       });
       throw error;

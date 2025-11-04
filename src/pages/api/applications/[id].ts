@@ -5,6 +5,7 @@ import {
   type ApiErrorResponse,
   DeleteApplicationCommandSchema,
   type DeleteApplicationCommand,
+  UpdateApplicationRequestSchema,
   NotFoundError,
 } from "../../../types";
 
@@ -20,6 +21,120 @@ function createErrorResponse(status: number, message: string): Response {
     headers: { "Content-Type": "application/json" },
   });
 }
+
+export const GET: APIRoute = async (context) => {
+  try {
+    // Extract id from dynamic route parameters
+    const { id } = context.params;
+
+    if (!id) {
+      return createErrorResponse(400, "Application ID is required");
+    }
+
+    // Call service layer to get application by ID
+    const applicationService = new ApplicationService();
+    const application = await applicationService.getApplicationById(
+      id,
+      DEFAULT_USER_ID,
+    );
+
+    // Return the application data
+    return new Response(JSON.stringify(application), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    // Handle specific error types
+    if (error instanceof NotFoundError) {
+      return createErrorResponse(404, "Application not found");
+    }
+
+    // Log unexpected errors with context
+    console.error("API /api/applications/[id] GET error:", {
+      method: "GET",
+      endpoint: "/api/applications/{id}",
+      error: error instanceof Error ? error.message : String(error),
+      params: context.params,
+      timestamp: new Date(),
+    });
+
+    return createErrorResponse(500, "Internal server error");
+  }
+};
+
+export const PATCH: APIRoute = async (context) => {
+  try {
+    // Extract id from dynamic route parameters
+    const { id } = context.params;
+
+    if (!id) {
+      return createErrorResponse(400, "Application ID is required");
+    }
+
+    // Parse request body
+    let requestBody;
+    try {
+      requestBody = await context.request.json();
+    } catch (error) {
+      return createErrorResponse(400, "Invalid JSON in request body");
+    }
+
+    // Validate request body using Zod schema
+    const validationResult =
+      UpdateApplicationRequestSchema.safeParse(requestBody);
+
+    if (!validationResult.success) {
+      // Extract and log validation errors
+      const errors = validationResult.error.errors.map((err) => ({
+        field: err.path.join("."),
+        message: err.message,
+        code: err.code,
+      }));
+
+      console.error("PATCH /api/applications/[id] validation errors:", {
+        method: "PATCH",
+        endpoint: "/api/applications/{id}",
+        errors,
+        params: { id },
+        timestamp: new Date(),
+      });
+
+      return createErrorResponse(400, "Invalid request data");
+    }
+
+    const validatedData = validationResult.data;
+
+    // Call service layer to update application
+    const applicationService = new ApplicationService();
+    const updatedApplication = await applicationService.updateApplication(
+      id,
+      DEFAULT_USER_ID,
+      validatedData,
+    );
+
+    // Return the updated application data
+    return new Response(JSON.stringify(updatedApplication), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    // Handle specific error types
+    if (error instanceof NotFoundError) {
+      return createErrorResponse(404, "Application not found");
+    }
+
+    // Log unexpected errors with context
+    console.error("API /api/applications/[id] PATCH error:", {
+      method: "PATCH",
+      endpoint: "/api/applications/{id}",
+      error: error instanceof Error ? error.message : String(error),
+      params: context.params,
+      timestamp: new Date(),
+    });
+
+    return createErrorResponse(500, "Internal server error");
+  }
+};
 
 export const DELETE: APIRoute = async (context) => {
   try {
