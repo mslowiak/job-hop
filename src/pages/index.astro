@@ -4,6 +4,12 @@
 // eslint-disable-next-line prettier/prettier
 import MainLayout from "../layouts/MainLayout.astro";
 import { Button } from "../components/ui/button";
+
+const { user } = Astro.locals;
+
+if (user) {
+  return Astro.redirect("/dashboard");
+}
 ---
 
 <MainLayout title="JobHop - Zarządzaj aplikacjami o pracę">
@@ -20,12 +26,12 @@ import { Button } from "../components/ui/button";
         </p>
         <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
           <div class="rounded-md shadow">
-            <a href="/register" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
+            <a href="/auth/register" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
               Rozpocznij za darmo
             </a>
           </div>
           <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-            <a href="/login" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-500 hover:bg-blue-400 md:py-4 md:text-lg md:px-10">
+            <a href="/auth/login" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-500 hover:bg-blue-400 md:py-4 md:text-lg md:px-10">
               Zaloguj się
             </a>
           </div>
@@ -98,12 +104,12 @@ import { Button } from "../components/ui/button";
       </h2>
       <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
         <div class="inline-flex rounded-md shadow">
-          <a href="/register" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+          <a href="/auth/register" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
             Rozpocznij za darmo
           </a>
         </div>
         <div class="ml-3 inline-flex rounded-md shadow">
-          <a href="/login" class="inline-flex items-center justify-center px-5 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+          <a href="/auth/login" class="inline-flex items-center justify-center px-5 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
             Zaloguj się
           </a>
         </div>
