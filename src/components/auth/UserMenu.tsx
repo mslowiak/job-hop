@@ -39,11 +39,6 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem asChild>
-          <a href="/account" className="w-full">
-            Ustawienia Konta
-          </a>
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={handleLogout} className="w-full">
           Wyloguj
         </DropdownMenuItem>
