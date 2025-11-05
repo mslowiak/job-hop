@@ -83,33 +83,6 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
   - 3. W przypadku podania błędnego e-maila lub hasła, wyświetlany jest stosowny komunikat o błędzie.
   - 4. Użytkownik nie może uzyskać dostępu do stron wymagających logowania bez aktywnej sesji.
 
-- ID: US-003
-- Tytuł: Wylogowanie z aplikacji
-- Opis: Jako zalogowany użytkownik, chcę móc się wylogować, aby bezpiecznie zakończyć sesję.
-- Kryteria akceptacji:
-  - 1. W menu profilu użytkownika znajduje się opcja "Wyloguj".
-  - 2. Kliknięcie "Wyloguj" kończy sesję użytkownika.
-  - 3. Po wylogowaniu użytkownik jest przekierowany na stronę logowania.
-  - 4. Po wylogowaniu nie ma możliwości powrotu do poprzedniej strony (wymagającej logowania) za pomocą przycisku "wstecz" w przeglądarce.
-
-- ID: US-004
-- Tytuł: Zmiana hasła
-- Opis: Jako zalogowany użytkownik, chcę mieć możliwość zmiany hasła w ustawieniach konta, aby zabezpieczyć swoje konto.
-- Kryteria akceptacji:
-  - 1. Na stronie "Ustawienia Konta" znajduje się formularz zmiany hasła z polami: "Stare hasło", "Nowe hasło", "Potwierdź nowe hasło".
-  - 2. System weryfikuje poprawność starego hasła przed dokonaniem zmiany.
-  - 3. Walidacja sprawdza, czy nowe hasła w obu polach są identyczne i spełniają wymogi bezpieczeństwa.
-  - 4. Po pomyślnej zmianie hasła użytkownik otrzymuje komunikat potwierdzający.
-
-- ID: US-005
-- Tytuł: Usuwanie konta
-- Opis: Jako zalogowany użytkownik, chcę mieć możliwość trwałego usunięcia mojego konta i wszystkich danych, gdy nie potrzebuję już aplikacji.
-- Kryteria akceptacji:
-  - 1. Na stronie "Ustawienia Konta" znajduje się opcja "Usuń konto".
-  - 2. Kliknięcie opcji usuwania konta wyświetla modal z prośbą o potwierdzenie operacji poprzez podanie hasła.
-  - 3. Po poprawnym podaniu hasła i potwierdzeniu, konto użytkownika oraz wszystkie powiązane z nim aplikacje są trwale usuwane z bazy danych.
-  - 4. Po usunięciu konta użytkownik jest wylogowywany i przekierowywany na stronę główną lub stronę logowania.
-
 ### Zarządzanie Aplikacjami
 
 - ID: US-006
