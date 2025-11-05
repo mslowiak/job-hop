@@ -6,6 +6,13 @@ import MainLayout from "../layouts/MainLayout.astro";
 import { Button } from "../components/ui/button";
 
 const { user } = Astro.locals;
+const url = new URL(Astro.request.url);
+const code = url.searchParams.get('code');
+
+// Handle password reset redirect from Supabase
+if (code) {
+  return Astro.redirect(`/auth/reset-password?code=${code}`);
+}
 
 if (user) {
   return Astro.redirect("/dashboard");
