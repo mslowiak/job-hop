@@ -2,17 +2,16 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import type { AuthMode, AuthFormData } from "../../types";
 import { LoginSchema, RegisterSchema } from "../../types";
+import { toast } from "sonner";
 
 interface AuthFormProps {
   mode: AuthMode;
-  onSubmit: (data: AuthFormData) => Promise<void>;
   loading?: boolean;
   error?: string | null;
 }
 
 export const AuthForm: React.FC<AuthFormProps> = ({
   mode,
-  onSubmit,
   loading = false,
   error = null,
 }) => {
@@ -61,28 +60,57 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
+  const handleAuth = async () => {
     setIsSubmitting(true);
     try {
-      await onSubmit(formData as AuthFormData);
+      const body = { email: formData.email, password: formData.password };
+      const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register";
+ 
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+ 
+      if (!res.ok) {
+        const { error } = await res.json();
+        let message = "Coś poszło nie tak. Spróbuj ponownie.";
+        if (error.includes("Invalid login") || error.includes("Invalid credentials")) {
+          message = "Nieprawidłowy email lub hasło";
+        } else if (error.includes("User already registered")) {
+          message = "Email jest już zarejestrowany";
+        } else if (error.includes("Password should be at least")) {
+          message = "Hasło musi mieć co najmniej 6 znaków";
+        } else if (error.includes("Email not confirmed")) {
+          message = "Email nie został potwierdzony";
+        }
+        toast.error(message);
+        return;
+      }
+ 
+      const { user } = await res.json();
+      toast.success(mode === "login" ? "Zalogowano pomyślnie!" : "Konto utworzone pomyślnie!");
+ 
+      // Redirect
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get("redirect") || "/dashboard";
+      window.location.href = redirect;
     } catch (error) {
-      console.error("Form submission failed:", error);
-      // Error handling is done by the parent component
+      toast.error("Błąd połączenia. Spróbuj ponownie.");
     } finally {
       setIsSubmitting(false);
     }
   };
-
+ 
   const isLoading = loading || isSubmitting;
-
+ 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      if (validateForm()) {
+        handleAuth();
+      }
+    }} className="space-y-6">
       {/* Email Field */}
       <div>
         <label
@@ -197,15 +225,15 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             <p className="text-sm text-gray-600">
               Nie masz konta?{" "}
               <a
-                href="/register"
-                className="text-blue-600 hover:text-blue-500 font-medium"
+                href="/auth/register"
+                className="text-blue-600 hover:text-blue-500 font-medium underline"
               >
                 Zarejestruj się
               </a>
             </p>
             <p className="text-sm text-gray-600">
               <a
-                href="/forgot-password"
+                href="/auth/forgot-password"
                 className="text-blue-600 hover:text-blue-500 font-medium"
               >
                 Zapomniałeś hasła?
@@ -216,7 +244,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           <p className="text-sm text-gray-600">
             Masz już konto?{" "}
             <a
-              href="/login"
+              href="/auth/login"
               className="text-blue-600 hover:text-blue-500 font-medium"
             >
               Zaloguj się

@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { Toaster } from "../components/ui/sonner";
+import { UserMenu } from "../components/auth/UserMenu";
 
 interface Props {
   // eslint-disable-next-line prettier/prettier
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const { title = "JobHop - Dashboard" } = Astro.props;
+const { user } = Astro.locals;
 ---
 
 <!doctype html>
@@ -28,25 +30,26 @@ const { title = "JobHop - Dashboard" } = Astro.props;
         </div>
 
         <nav class="flex items-center space-x-6">
-          <!-- Guest navigation (non-auth mode) -->
-          <!-- TODO: Replace with auth-aware navigation once auth state is implemented -->
-          <a href="/login" class={Astro.url.pathname === "/login" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
-            Zaloguj się
-          </a>
-          <a href="/register" class={Astro.url.pathname === "/register" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
-            Zarejestruj się
-          </a>
-
-          <!-- Future: Authenticated navigation (auth mode) -->
-          <!--
-          <a href="/dashboard" class={Astro.url.pathname === "/dashboard" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
-            Dashboard
-          </a>
-          <a href="/stats" class={Astro.url.pathname === "/stats" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
-            Statystyki
-          </a>
-          <UserMenu client:load />
-          -->
+          {user ? (
+            <>
+              <a href="/dashboard" class={Astro.url.pathname === "/dashboard" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
+                Pulpit
+              </a>
+              <a href="/stats" class={Astro.url.pathname === "/stats" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
+                Statystyki
+              </a>
+              <UserMenu user={user} client:load />
+            </>
+          ) : (
+            <>
+              <a href="/auth/login" class={Astro.url.pathname === "/auth/login" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
+                Zaloguj się
+              </a>
+              <a href="/auth/register" class={Astro.url.pathname === "/auth/register" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
+                Zarejestruj się
+              </a>
+            </>
+          )}
         </nav>
       </nav>
     </header>

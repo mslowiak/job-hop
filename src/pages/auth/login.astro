@@ -1,26 +1,25 @@
 ---
-// eslint-disable-next-line prettier/prettier
-import MainLayout from "../layouts/MainLayout.astro";
-import { AuthForm } from "../components/auth/AuthForm";
-import { FeedbackToaster } from "../components/ui/FeedbackMessage";
+import MainLayout from "../../layouts/MainLayout.astro";
+import { AuthForm } from "../../components/auth/AuthForm";
+import { FeedbackToaster } from "../../components/ui/FeedbackMessage";
 
 export const prerender = false; // Enable SSR for auth pages
 ---
 
-<MainLayout title="JobHop - Rejestracja">
+<MainLayout title="JobHop - Logowanie">
   <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
       <div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Utwórz konto
+          Zaloguj się do konta
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
-          Dołącz do JobHop i zacznij zarządzać swoimi aplikacjami o pracę
+          Zarządzaj swoimi aplikacjami o pracę w JobHop
         </p>
       </div>
 
       <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
-        <AuthForm mode="register" client:load />
+        <AuthForm mode="login" client:load />
       </div>
     </div>
   </div>
