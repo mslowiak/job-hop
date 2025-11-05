@@ -86,7 +86,7 @@ The app addresses the chaos of tracking multiple applications, providing a singl
    ```
    npm run dev
    ```
-   The app will be available at `http://localhost:4321`.
+   The app will be available at `http://localhost:3000`.
 
 For production builds, refer to the [Astro documentation](https://docs.astro.build/en/guides/deploy/).
 
