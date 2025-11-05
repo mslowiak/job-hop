@@ -38,3 +38,5 @@ export interface ApplicationRowViewModel {
   onRowClick: (id: string) => void;
 }
 
+
+

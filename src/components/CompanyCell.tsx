@@ -15,3 +15,5 @@ export const CompanyCell: React.FC<CompanyCellProps> = ({ companyName }) => {
     </div>
   );
 };
+
+
