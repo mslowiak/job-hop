@@ -28,15 +28,25 @@ const { title = "JobHop - Dashboard" } = Astro.props;
         </div>
 
         <nav class="flex items-center space-x-6">
+          <!-- Guest navigation (non-auth mode) -->
+          <!-- TODO: Replace with auth-aware navigation once auth state is implemented -->
+          <a href="/login" class={Astro.url.pathname === "/login" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
+            Zaloguj się
+          </a>
+          <a href="/register" class={Astro.url.pathname === "/register" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
+            Zarejestruj się
+          </a>
+
+          <!-- Future: Authenticated navigation (auth mode) -->
+          <!--
           <a href="/dashboard" class={Astro.url.pathname === "/dashboard" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
             Dashboard
           </a>
           <a href="/stats" class={Astro.url.pathname === "/stats" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
             Statystyki
           </a>
-          <a href="/profile" class={Astro.url.pathname === "/profile" ? "text-blue-600 font-medium" : "text-gray-600 hover:text-gray-900"} transition-colors>
-            Profile
-          </a>
+          <UserMenu client:load />
+          -->
         </nav>
       </nav>
     </header>
