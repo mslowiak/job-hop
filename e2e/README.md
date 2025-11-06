@@ -109,12 +109,12 @@ TEST_USER_EMAIL=test@example.com
 TEST_USER_PASSWORD=testpassword123
 
 # Optional: Override base URL for testing
-TEST_BASE_URL=http://localhost:4321
+TEST_BASE_URL=http://localhost:3000
 ```
 
 ### Playwright Config (`playwright.config.ts`)
 - Configured for Chromium browser only
-- Uses `http://localhost:4321` as base URL (configurable via `TEST_BASE_URL`)
+- Uses `http://localhost:3000` as base URL (configurable via `TEST_BASE_URL`)
 - Includes web server configuration for automatic startup
 - Loads environment variables from `.env.test` using dotenv
 

@@ -8,7 +8,7 @@ import { BasePage } from './BasePage';
 export class DashboardPage extends BasePage {
   // Page elements selectors
   private readonly dashboardMain = '[data-testid="dashboard-main"]';
-  private readonly addApplicationButton = '[data-testid="add-application-btn"]';
+  private readonly addApplicationButton = '[data-testid="dashboard-main"] [data-testid="add-application-btn"]';
   private readonly applicationsTable = '[data-testid="applications-table"]';
 
   constructor(page: Page) {
@@ -24,19 +24,36 @@ export class DashboardPage extends BasePage {
   }
 
   /**
-   * Check if dashboard is loaded
+   * Check if dashboard is loaded (main element exists)
    */
   async isDashboardLoaded(): Promise<boolean> {
     return await this.isElementVisible('dashboard-main');
   }
 
   /**
+   * Check if dashboard is fully loaded (applications area is visible)
+   */
+  async isDashboardFullyLoaded(): Promise<boolean> {
+    return await this.isElementVisible('applications-table') ||
+           await this.isElementVisible('applications-empty-state');
+  }
+
+  /**
    * Click the "Dodaj aplikację" button to navigate to add application form
    */
   async clickAddApplication(): Promise<void> {
-    await this.page.click(this.addApplicationButton);
-    // Wait for navigation to add application page
-    await this.page.waitForURL('**/applications/new');
+    // Use first() to avoid strict mode violation with duplicate test IDs
+    await this.page.locator(this.addApplicationButton).first().click();
+
+    // Wait a bit for navigation to start
+    await this.page.waitForTimeout(1000);
+
+    // Check current URL to see if navigation happened
+    const currentUrl = this.page.url();
+    console.log('Current URL after button click:', currentUrl);
+
+    // Wait for the add application form to appear
+    await this.page.waitForSelector('[data-testid="add-application-form-title"]', { timeout: 5000 });
   }
 
   /**
@@ -97,9 +114,13 @@ export class DashboardPage extends BasePage {
   }
 
   /**
-   * Wait for applications table to load
+   * Wait for applications area to load (either table or empty state)
    */
-  async waitForApplicationsTable(): Promise<void> {
-    await this.waitForElement('applications-table');
+  async waitForApplicationsArea(): Promise<void> {
+    // Wait for either the applications table or empty state to appear
+    await Promise.race([
+      this.page.waitForSelector('[data-testid="applications-table"]'),
+      this.page.waitForSelector('[data-testid="applications-empty-state"]')
+    ]);
   }
 }

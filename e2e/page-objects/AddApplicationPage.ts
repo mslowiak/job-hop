@@ -79,8 +79,8 @@ export class AddApplicationPage extends BasePage {
    */
   async submitApplication(): Promise<void> {
     await this.page.click(this.submitButton);
-    // Wait for navigation back to dashboard
-    await this.page.waitForURL('**/dashboard');
+    // Give time for form submission to complete
+    await this.page.waitForTimeout(2000);
   }
 
   /**

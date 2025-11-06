@@ -29,6 +29,10 @@ export const DashboardView: React.FC = () => {
     window.location.href = "/applications/new";
   };
 
+  const handleAddButtonClick = () => {
+    handleAddClick();
+  };
+
   return (
     <main role="main" aria-label="Dashboard" className="space-y-6" data-testid="dashboard-main">
       {/* Header with Add Button and Filter */}
@@ -44,7 +48,7 @@ export const DashboardView: React.FC = () => {
             onFilterChange={handleFilterChange}
             options={statusOptions}
           />
-          <AddApplicationButton onClick={handleAddClick} />
+          <AddApplicationButton onClick={handleAddButtonClick} />
         </div>
       </div>
 

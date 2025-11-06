@@ -22,6 +22,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAddClick, isFiltered =
       className="flex flex-col items-center justify-center py-12 px-4 text-center"
       aria-live="polite"
       role="status"
+      data-testid="applications-empty-state"
     >
       <div className="mb-6">
         <svg
