@@ -3,7 +3,7 @@ import {
   expect,
   TEST_USER,
   TEST_APPLICATION,
-  generateRandomApplication,
+  cleanupTestData,
 } from "../test-setup";
 
 /**
@@ -22,6 +22,10 @@ import {
  * 9. Assert that the newly added application is on the list
  */
 test.describe("Add Application E2E Flow", () => {
+  // Clean up database after each test to ensure test isolation
+  test.afterEach(async () => {
+    await cleanupTestData();
+  });
   test("should successfully add a new job application", async ({
     page,
     loginPage,
@@ -35,7 +39,8 @@ test.describe("Add Application E2E Flow", () => {
 
     // 2. Wait till dashboard page will be loaded
     await dashboardPage.waitForApplicationsArea();
-    expect(await dashboardPage.isDashboardFullyLoaded()).toBe(true);
+    expect(await dashboardPage.isDashboardEmpty()).toBe(true);
+    const initialCount = await dashboardPage.getApplicationsCount();
 
     // 3. Navigate to add application page directly
     await page.goto("/applications/new");
@@ -55,12 +60,13 @@ test.describe("Add Application E2E Flow", () => {
 
     // 8. Wait for dashboard page to load
     await dashboardPage.waitForApplicationsArea();
-    expect(await dashboardPage.isDashboardLoaded()).toBe(true);
+    expect(await dashboardPage.isDashboardFullyLoaded()).toBe(true);
 
     // ASSERT
 
     // 9. Verify that we can successfully navigate through the entire flow
     // The main goal is to test the e2e user journey, not specific data persistence
-    expect(await dashboardPage.isDashboardLoaded()).toBe(true);
+    const finalCount = await dashboardPage.getApplicationsCount();
+    expect(finalCount).toBe(initialCount + 1);
   });
 });

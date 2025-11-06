@@ -34,8 +34,11 @@ export class DashboardPage extends BasePage {
    * Check if dashboard is fully loaded (applications area is visible)
    */
   async isDashboardFullyLoaded(): Promise<boolean> {
-    return await this.isElementVisible('applications-table') ||
-           await this.isElementVisible('applications-empty-state');
+    return await this.isElementVisible('applications-table')
+  }
+
+  async isDashboardEmpty(): Promise<boolean> {
+    return await this.isElementVisible('applications-empty-state');
   }
 
   /**
