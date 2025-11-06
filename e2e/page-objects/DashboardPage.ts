@@ -1,0 +1,105 @@
+import { Page } from '@playwright/test';
+import { BasePage } from './BasePage';
+
+/**
+ * Dashboard page object model class
+ * Handles dashboard interactions and application management
+ */
+export class DashboardPage extends BasePage {
+  // Page elements selectors
+  private readonly dashboardMain = '[data-testid="dashboard-main"]';
+  private readonly addApplicationButton = '[data-testid="add-application-btn"]';
+  private readonly applicationsTable = '[data-testid="applications-table"]';
+
+  constructor(page: Page) {
+    super(page);
+  }
+
+  /**
+   * Navigate to the dashboard page
+   */
+  async navigateToDashboard(): Promise<void> {
+    await this.navigateTo('/dashboard');
+    await this.waitForLoad();
+  }
+
+  /**
+   * Check if dashboard is loaded
+   */
+  async isDashboardLoaded(): Promise<boolean> {
+    return await this.isElementVisible('dashboard-main');
+  }
+
+  /**
+   * Click the "Dodaj aplikację" button to navigate to add application form
+   */
+  async clickAddApplication(): Promise<void> {
+    await this.page.click(this.addApplicationButton);
+    // Wait for navigation to add application page
+    await this.page.waitForURL('**/applications/new');
+  }
+
+  /**
+   * Check if applications table is visible
+   */
+  async isApplicationsTableVisible(): Promise<boolean> {
+    return await this.isElementVisible('applications-table');
+  }
+
+  /**
+   * Get the count of applications in the table
+   */
+  async getApplicationsCount(): Promise<number> {
+    const rows = await this.page.locator('[data-testid^="application-row-"]').count();
+    return rows;
+  }
+
+  /**
+   * Check if a specific application exists by company and position
+   */
+  async hasApplication(companyName: string, positionName: string): Promise<boolean> {
+    const rows = await this.page.locator('[data-testid^="application-row-"]').all();
+
+    for (const row of rows) {
+      const companyCell = row.locator('td').nth(0);
+      const positionCell = row.locator('td').nth(1);
+
+      const companyText = await companyCell.textContent();
+      const positionText = await positionCell.textContent();
+
+      if (companyText?.includes(companyName) && positionText?.includes(positionName)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Get application row by company and position
+   */
+  async getApplicationRow(companyName: string, positionName: string): Promise<any> {
+    const rows = await this.page.locator('[data-testid^="application-row-"]').all();
+
+    for (const row of rows) {
+      const companyCell = row.locator('td').nth(0);
+      const positionCell = row.locator('td').nth(1);
+
+      const companyText = await companyCell.textContent();
+      const positionText = await positionCell.textContent();
+
+      if (companyText?.includes(companyName) && positionText?.includes(positionName)) {
+        return row;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Wait for applications table to load
+   */
+  async waitForApplicationsTable(): Promise<void> {
+    await this.waitForElement('applications-table');
+  }
+}

@@ -10,7 +10,13 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "dev:e2e": "astro dev --mode test",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@astrojs/node": "^9.4.3",
@@ -43,6 +49,7 @@
     "@eslint/js": "9.23.0",
     "@typescript-eslint/eslint-plugin": "8.28.0",
     "@typescript-eslint/parser": "8.28.0",
+    "dotenv": "^16.4.5",
     "eslint": "9.23.0",
     "eslint-config-prettier": "10.1.1",
     "eslint-import-resolver-typescript": "4.2.5",
