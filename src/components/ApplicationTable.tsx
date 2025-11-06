@@ -20,7 +20,7 @@ export const ApplicationTable: React.FC<ApplicationTableProps> = ({
   onRowClick,
 }) => {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto" data-testid="applications-table">
       <Table role="table" aria-label="Applications list">
         <TableHeader>
           <TableRow>

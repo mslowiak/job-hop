@@ -32,6 +32,7 @@ export const AddApplicationButton: React.FC<AddApplicationButtonProps> = ({
       onClick={handleClick}
       className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
       aria-label="Add new application"
+      data-testid="add-application-btn"
     >
       <Plus className="h-4 w-4" />
       Dodaj aplikację

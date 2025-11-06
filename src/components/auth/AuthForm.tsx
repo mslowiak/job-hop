@@ -132,6 +132,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           }`}
           placeholder="twoj.email@example.com"
           required
+          data-testid="login-email-input"
         />
         {errors.email && (
           <p className="mt-1 text-sm text-red-600">{errors.email}</p>
@@ -159,6 +160,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           }`}
           placeholder="Minimum 8 znaków"
           required
+          data-testid="login-password-input"
         />
         {errors.password && (
           <p className="mt-1 text-sm text-red-600">{errors.password}</p>
@@ -207,6 +209,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           type="submit"
           disabled={isLoading}
           className="w-full"
+          data-testid="login-submit-btn"
         >
           {isLoading
             ? mode === "login"

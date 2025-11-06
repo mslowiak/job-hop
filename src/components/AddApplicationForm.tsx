@@ -106,6 +106,7 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
           }`}
           placeholder="np. Google, Microsoft, Apple"
           required
+          data-testid="application-company-input"
         />
         {errors.company_name && (
           <p className="mt-1 text-sm text-red-600">{errors.company_name}</p>
@@ -133,6 +134,7 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
           }`}
           placeholder="np. Frontend Developer, Product Manager"
           required
+          data-testid="application-position-input"
         />
         {errors.position_name && (
           <p className="mt-1 text-sm text-red-600">{errors.position_name}</p>
@@ -165,6 +167,7 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
               : "border-gray-300"
           }`}
           required
+          data-testid="application-date-input"
         />
         {errors.application_date && (
           <p className="mt-1 text-sm text-red-600">{errors.application_date}</p>
@@ -189,6 +192,7 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
               ? "border-red-500 focus:ring-red-500"
               : "border-gray-300"
           }`}
+          data-testid="application-status-select"
         >
           <option value="planned">Zaplanowane do wysłania</option>
           <option value="sent">Wysłane</option>
@@ -222,6 +226,7 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
               ? "border-red-500 focus:ring-red-500"
               : "border-gray-300"
           }`}
+          data-testid="application-link-input"
         />
         {errors.link && (
           <p className="mt-1 text-sm text-red-600">{errors.link}</p>
@@ -248,6 +253,7 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
               : "border-gray-300"
           }`}
           placeholder="Dodaj dodatkowe informacje, wymagania, uwagi..."
+          data-testid="application-notes-textarea"
         />
         {errors.notes && (
           <p className="mt-1 text-sm text-red-600">{errors.notes}</p>
@@ -269,6 +275,7 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
           type="submit"
           disabled={disabled || isSubmitting}
           className="w-full sm:w-auto"
+          data-testid="application-submit-btn"
         >
           {isSubmitting ? "Dodawanie aplikacji..." : "Dodaj aplikację"}
         </Button>

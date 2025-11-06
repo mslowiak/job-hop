@@ -27,6 +27,7 @@ const ApplicationRow: React.FC<ApplicationRowProps> = ({
       className="cursor-pointer hover:bg-muted/50"
       onClick={() => onClick(application.id)}
       role="row"
+      data-testid={`application-row-${application.id}`}
     >
       <TableCell>
         <CompanyCell companyName={application.company_name} />
