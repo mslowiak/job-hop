@@ -11,15 +11,14 @@ import {
  * Demonstrates the complete user journey using Page Object Model
  *
  * Test Scenario:
- * 1. Open page
- * 2. Click "Zaloguj się". Log in using a test user credentials
- * 3. Wait till dashboard page will be loaded
- * 4. Click on "Dodaj aplikację" button
- * 5. Wait till form "Dodaj nową aplikację" will load
- * 6. Fill the form with test data
- * 7. Click "Dodaj aplikację" button
- * 8. Wait for dashboard page to load
- * 9. Assert that the newly added application is on the list
+ * 1. Login using test user credentials
+ * 2. Wait till dashboard page is loaded
+ * 3. Navigate to add application page
+ * 4. Wait till form "Dodaj nową aplikację" loads
+ * 5. Fill the form with test data
+ * 6. Submit form (auto-redirects to dashboard)
+ * 7. Wait for dashboard to load after redirect
+ * 8. Assert that the newly added application is on the list
  */
 test.describe("Add Application E2E Flow", () => {
   // Clean up database after each test to ensure test isolation
@@ -52,19 +51,16 @@ test.describe("Add Application E2E Flow", () => {
     // 5. Fill the form with test data
     await addApplicationPage.fillApplicationForm(TEST_APPLICATION);
 
-    // 6. Click "Dodaj aplikację" button
+    // 6. Submit form - this will automatically navigate to dashboard
     await addApplicationPage.submitApplication();
 
-    // 7. Navigate back to dashboard explicitly
-    await page.goto("/dashboard");
-
-    // 8. Wait for dashboard page to load
+    // 7. Wait for dashboard to fully load after automatic redirect
     await dashboardPage.waitForApplicationsArea();
     expect(await dashboardPage.isDashboardFullyLoaded()).toBe(true);
 
     // ASSERT
 
-    // 9. Verify that we can successfully navigate through the entire flow
+    // 8. Verify that we can successfully navigate through the entire flow
     // The main goal is to test the e2e user journey, not specific data persistence
     const finalCount = await dashboardPage.getApplicationsCount();
     expect(finalCount).toBe(initialCount + 1);

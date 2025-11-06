@@ -1,5 +1,4 @@
-import { Page } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { BasePage } from "./BasePage";
 
 /**
  * Add Application page object model class
@@ -17,15 +16,11 @@ export class AddApplicationPage extends BasePage {
   private readonly notesTextarea = '[data-testid="application-notes-textarea"]';
   private readonly submitButton = '[data-testid="application-submit-btn"]';
 
-  constructor(page: Page) {
-    super(page);
-  }
-
   /**
    * Navigate to the add application page
    */
   async navigateToAddApplication(): Promise<void> {
-    await this.navigateTo('/applications/new');
+    await this.navigateTo("/applications/new");
     await this.waitForLoad();
   }
 
@@ -33,14 +28,14 @@ export class AddApplicationPage extends BasePage {
    * Check if add application form is loaded
    */
   async isFormLoaded(): Promise<boolean> {
-    return await this.isElementVisible('add-application-view');
+    return await this.isElementVisible("add-application-view");
   }
 
   /**
    * Check if form title is visible
    */
   async isFormTitleVisible(): Promise<boolean> {
-    return await this.isElementVisible('add-application-form-title');
+    return await this.isElementVisible("add-application-form-title");
   }
 
   /**
@@ -54,22 +49,32 @@ export class AddApplicationPage extends BasePage {
     link?: string;
     notes?: string;
   }): Promise<void> {
+    // Wait for required fields to be visible and fill them
+    await this.page.waitForSelector(this.companyInput, { state: "visible" });
+    await this.page.fill(this.companyInput, "");
     await this.page.fill(this.companyInput, data.company);
+
+    await this.page.waitForSelector(this.positionInput, { state: "visible" });
+    await this.page.fill(this.positionInput, "");
     await this.page.fill(this.positionInput, data.position);
 
     if (data.date) {
+      await this.page.waitForSelector(this.dateInput, { state: "visible" });
       await this.page.fill(this.dateInput, data.date);
     }
 
     if (data.status) {
+      await this.page.waitForSelector(this.statusSelect, { state: "visible" });
       await this.page.selectOption(this.statusSelect, data.status);
     }
 
     if (data.link) {
+      await this.page.waitForSelector(this.linkInput, { state: "visible" });
       await this.page.fill(this.linkInput, data.link);
     }
 
     if (data.notes) {
+      await this.page.waitForSelector(this.notesTextarea, { state: "visible" });
       await this.page.fill(this.notesTextarea, data.notes);
     }
   }
@@ -78,9 +83,11 @@ export class AddApplicationPage extends BasePage {
    * Submit the application form
    */
   async submitApplication(): Promise<void> {
-    await this.page.click(this.submitButton);
-    // Give time for form submission to complete
-    await this.page.waitForTimeout(2000);
+    // Wait for navigation after form submission
+    await Promise.all([
+      this.page.waitForURL("**/dashboard", { timeout: 10000 }),
+      this.page.click(this.submitButton),
+    ]);
   }
 
   /**
@@ -102,7 +109,9 @@ export class AddApplicationPage extends BasePage {
    * Get form validation errors
    */
   async getFormErrors(): Promise<string[]> {
-    const errorElements = await this.page.locator('.text-red-600').allTextContents();
+    const errorElements = await this.page
+      .locator(".text-red-600")
+      .allTextContents();
     return errorElements;
   }
 
@@ -110,7 +119,9 @@ export class AddApplicationPage extends BasePage {
    * Check if submit button is enabled
    */
   async isSubmitButtonEnabled(): Promise<boolean> {
-    const isDisabled = await this.page.locator(this.submitButton).getAttribute('disabled');
+    const isDisabled = await this.page
+      .locator(this.submitButton)
+      .getAttribute("disabled");
     return isDisabled === null;
   }
 
@@ -118,10 +129,10 @@ export class AddApplicationPage extends BasePage {
    * Clear all form fields
    */
   async clearForm(): Promise<void> {
-    await this.page.fill(this.companyInput, '');
-    await this.page.fill(this.positionInput, '');
-    await this.page.fill(this.linkInput, '');
-    await this.page.fill(this.notesTextarea, '');
+    await this.page.fill(this.companyInput, "");
+    await this.page.fill(this.positionInput, "");
+    await this.page.fill(this.linkInput, "");
+    await this.page.fill(this.notesTextarea, "");
   }
 
   /**

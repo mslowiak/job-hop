@@ -120,10 +120,34 @@ export class DashboardPage extends BasePage {
    * Wait for applications area to load (either table or empty state)
    */
   async waitForApplicationsArea(): Promise<void> {
-    // Wait for either the applications table or empty state to appear
+    // First wait for dashboard main to be visible
+    await this.page.waitForSelector(this.dashboardMain, { state: "visible" });
+
+    // Wait for loading spinner to disappear (if it appears)
+    // Use a short timeout since loading might be very fast
+    try {
+      await this.page.waitForSelector(".animate-spin", {
+        state: "attached",
+        timeout: 1000,
+      });
+      // If spinner appeared, wait for it to disappear
+      await this.page.waitForSelector(".animate-spin", {
+        state: "detached",
+        timeout: 10000,
+      });
+    } catch {
+      // Spinner might not appear at all if data loads very quickly
+      // This is fine, continue
+    }
+
+    // Finally, wait for either the applications table or empty state to appear
     await Promise.race([
-      this.page.waitForSelector('[data-testid="applications-table"]'),
-      this.page.waitForSelector('[data-testid="applications-empty-state"]')
+      this.page.waitForSelector('[data-testid="applications-table"]', {
+        state: "visible",
+      }),
+      this.page.waitForSelector('[data-testid="applications-empty-state"]', {
+        state: "visible",
+      }),
     ]);
   }
 }
