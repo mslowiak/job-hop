@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro";
 import { ApplicationService } from "../../../lib/services/application.service";
-import { DEFAULT_USER_ID } from "../../../db/supabase.client";
 import {
   type ApiErrorResponse,
   DeleteApplicationCommandSchema,
@@ -31,11 +30,17 @@ export const GET: APIRoute = async (context) => {
       return createErrorResponse(400, "Application ID is required");
     }
 
+    // Get authenticated user from middleware
+    const user = context.locals.user;
+    if (!user) {
+      return createErrorResponse(401, "Authentication required.");
+    }
+
     // Call service layer to get application by ID
-    const applicationService = new ApplicationService();
+    const applicationService = new ApplicationService(context.locals.supabase);
     const application = await applicationService.getApplicationById(
       id,
-      DEFAULT_USER_ID,
+      user.id,
     );
 
     // Return the application data
@@ -104,11 +109,17 @@ export const PATCH: APIRoute = async (context) => {
 
     const validatedData = validationResult.data;
 
+    // Get authenticated user from middleware
+    const user = context.locals.user;
+    if (!user) {
+      return createErrorResponse(401, "Authentication required.");
+    }
+
     // Call service layer to update application
-    const applicationService = new ApplicationService();
+    const applicationService = new ApplicationService(context.locals.supabase);
     const updatedApplication = await applicationService.updateApplication(
       id,
-      DEFAULT_USER_ID,
+      user.id,
       validatedData,
     );
 
@@ -145,10 +156,16 @@ export const DELETE: APIRoute = async (context) => {
       return createErrorResponse(400, "Application ID is required");
     }
 
+    // Get authenticated user from middleware
+    const user = context.locals.user;
+    if (!user) {
+      return createErrorResponse(401, "Authentication required.");
+    }
+
     // Validate id as UUID using Zod schema
     const validationResult = DeleteApplicationCommandSchema.safeParse({
       id,
-      user_id: DEFAULT_USER_ID, // Use hardcoded user ID for development
+      user_id: user.id,
     });
 
     if (!validationResult.success) {
@@ -179,7 +196,7 @@ export const DELETE: APIRoute = async (context) => {
     };
 
     // Call service layer
-    const applicationService = new ApplicationService();
+    const applicationService = new ApplicationService(context.locals.supabase);
     await applicationService.deleteApplication(command);
 
     // Return 204 No Content on successful deletion

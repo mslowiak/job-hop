@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { APIRoute } from "astro";
 import { ApplicationService } from "../../lib/services/application.service";
-import { DEFAULT_USER_ID } from "../../db/supabase.client";
+import { createSupabaseServerInstance } from "../../db/supabase.client";
 import {
   type ApiErrorResponse,
   CreateApplicationRequestSchema,
@@ -30,10 +30,10 @@ function createErrorResponse(status: number, message: string): Response {
   });
 }
 
-export const GET: APIRoute = async (context) => {
+export const GET: APIRoute = async ({ request, cookies }) => {
   try {
     // Extract and validate query parameters
-    const url = new URL(context.request.url);
+    const url = new URL(request.url);
     const queryParams = Object.fromEntries(url.searchParams);
 
     const validationResult = applicationsQuerySchema.safeParse(queryParams);
@@ -44,14 +44,37 @@ export const GET: APIRoute = async (context) => {
 
     const validatedParams = validationResult.data;
 
-    // Use hardcoded user ID for now (authentication will be added later)
+    // Create authenticated Supabase client for this request
+    const supabase = createSupabaseServerInstance({
+      cookies,
+      headers: request.headers,
+    });
+
+    // Ensure session is loaded properly for RLS
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+    if (sessionError || !sessionData.session) {
+      return createErrorResponse(401, "Invalid session.");
+    }
+
+    // Get authenticated user
+    const { data: authUser, error: authError } = await supabase.auth.getUser();
+    if (authError || !authUser.user) {
+      return createErrorResponse(401, "Authentication required.");
+    }
+
+    const user = {
+      id: authUser.user.id,
+      email: authUser.user.email,
+    };
+
     const filters = {
       ...validatedParams,
-      userId: DEFAULT_USER_ID,
+      userId: user.id,
     };
 
     // Call service layer
-    const applicationService = new ApplicationService();
+    const applicationService = new ApplicationService(supabase);
     const result = await applicationService.getApplications(filters);
 
     // Return successful response
@@ -60,7 +83,7 @@ export const GET: APIRoute = async (context) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    const requestUrl = new URL(context.request.url);
+    const requestUrl = new URL(request.url);
     console.error("API /applications GET error:", {
       method: "GET",
       endpoint: "/api/applications",
@@ -73,7 +96,8 @@ export const GET: APIRoute = async (context) => {
   }
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, cookies }) => {
+
   try {
     // Parse and validate request body using Zod schema
     const body = await request.json();
@@ -103,10 +127,34 @@ export const POST: APIRoute = async ({ request }) => {
 
     const validatedData = validationResult.data;
 
-    // Create command with hardcoded DEFAULT_USER_ID for MVP
+    // Create authenticated Supabase client for this request
+    const supabase = createSupabaseServerInstance({
+      cookies,
+      headers: request.headers,
+    });
+
+    // Ensure session is loaded properly for RLS
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+    if (sessionError || !sessionData.session) {
+      return createErrorResponse(401, "Invalid session.");
+    }
+
+    // Get authenticated user
+    const { data: authUser, error: authError } = await supabase.auth.getUser();
+    if (authError || !authUser.user) {
+      return createErrorResponse(401, "Authentication required.");
+    }
+
+    const user = {
+      id: authUser.user.id,
+      email: authUser.user.email,
+    };
+
+    // Create command with authenticated user ID
     // Ensure application_date is a string for CreateApplicationCommand
     const command: CreateApplicationCommand = {
-      user_id: DEFAULT_USER_ID,
+      user_id: user.id,
       company_name: validatedData.company_name,
       position_name: validatedData.position_name,
       application_date:
@@ -119,7 +167,7 @@ export const POST: APIRoute = async ({ request }) => {
     };
 
     // Call service layer
-    const applicationService = new ApplicationService();
+    const applicationService = new ApplicationService(supabase);
     const result = await applicationService.createApplication(command);
 
     // Return successful response with 201 Created
@@ -132,7 +180,7 @@ export const POST: APIRoute = async ({ request }) => {
       method: "POST",
       endpoint: "/api/applications",
       error: error instanceof Error ? error.message : String(error),
-      user_id: "[REDACTED]", // Redact for security
+      user_id: "[REDACTED]",
       timestamp: new Date(),
     });
 

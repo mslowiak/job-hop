@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro";
 import { ApplicationService } from "../../../lib/services/application.service";
-import { DEFAULT_USER_ID } from "../../../db/supabase.client";
 import type { ApiErrorResponse } from "../../../types";
 
 export const prerender = false;
@@ -16,14 +15,17 @@ function createErrorResponse(status: number, message: string): Response {
   });
 }
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async (context) => {
   try {
-    // Use hardcoded user ID for MVP (authentication will be added later)
-    const userId = DEFAULT_USER_ID;
+    // Get authenticated user from middleware
+    const user = context.locals.user;
+    if (!user) {
+      return createErrorResponse(401, "Authentication required.");
+    }
 
     // Call service layer to get application statistics
-    const applicationService = new ApplicationService();
-    const stats = await applicationService.getApplicationStats(userId);
+    const applicationService = new ApplicationService(context.locals.supabase);
+    const stats = await applicationService.getApplicationStats(user.id);
 
     // Return the statistics data
     return new Response(JSON.stringify(stats), {

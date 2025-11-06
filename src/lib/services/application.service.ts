@@ -1,4 +1,5 @@
 import { supabaseClient } from "../../db/supabase.client";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
   ApplicationDto,
   ApplicationStatus,
@@ -8,8 +9,8 @@ import type {
   DeleteApplicationCommand,
   UpdateApplicationCommand,
   ApplicationStatsDto,
-  NotFoundError,
 } from "../../types";
+import { NotFoundError } from "../../types";
 
 export interface GetApplicationsFilters {
   userId: string;
@@ -19,21 +20,27 @@ export interface GetApplicationsFilters {
 }
 
 export class ApplicationService {
+  private supabase: SupabaseClient;
+
+  constructor(supabase?: SupabaseClient) {
+    this.supabase = supabase || supabaseClient;
+  }
+
   /**
    * Retrieves a paginated list of applications with optional status filtering
    * @param filters - Filter criteria including user ID, optional status, page number, and limit
    * @returns Promise containing applications array and pagination metadata
    */
   async getApplications(
-    filters: GetApplicationsFilters,
+      filters: GetApplicationsFilters,
   ): Promise<ApplicationListResponseDto> {
     try {
       // Build the base query with user filtering
-      let query = supabaseClient
-        .from("applications")
-        .select("*")
-        .eq("user_id", filters.userId)
-        .order("created_at", { ascending: false });
+      let query = this.supabase
+          .from("applications")
+          .select("*")
+          .eq("user_id", filters.userId)
+          .order("created_at", { ascending: false });
 
       // Apply status filter if provided
       if (filters.status) {
@@ -50,15 +57,15 @@ export class ApplicationService {
 
       if (applicationsError) {
         throw new Error(
-          `Failed to fetch applications: ${applicationsError.message}`,
+            `Failed to fetch applications: ${applicationsError.message}`,
         );
       }
 
       // Get total count for pagination
-      let countQuery = supabaseClient
-        .from("applications")
-        .select("count", { count: "exact", head: true })
-        .eq("user_id", filters.userId);
+      let countQuery = this.supabase
+          .from("applications")
+          .select("count", { count: "exact", head: true })
+          .eq("user_id", filters.userId);
 
       if (filters.status) {
         countQuery = countQuery.eq("status", filters.status);
@@ -68,23 +75,23 @@ export class ApplicationService {
 
       if (countError) {
         throw new Error(
-          `Failed to get applications count: ${countError.message}`,
+            `Failed to get applications count: ${countError.message}`,
         );
       }
 
       // Map database entities to DTOs (excluding user_id for security)
       const applicationsDto: ApplicationDto[] = (applications || []).map(
-        (app) => ({
-          id: app.id,
-          company_name: app.company_name,
-          position_name: app.position_name,
-          application_date: app.application_date,
-          link: app.link,
-          notes: app.notes,
-          status: app.status,
-          created_at: app.created_at,
-          updated_at: app.updated_at,
-        }),
+          (app) => ({
+            id: app.id,
+            company_name: app.company_name,
+            position_name: app.position_name,
+            application_date: app.application_date,
+            link: app.link,
+            notes: app.notes,
+            status: app.status,
+            created_at: app.created_at,
+            updated_at: app.updated_at,
+          }),
       );
 
       return {
@@ -111,7 +118,7 @@ export class ApplicationService {
    * @returns Promise containing the created application response
    */
   async createApplication(
-    command: CreateApplicationCommand,
+      command: CreateApplicationCommand,
   ): Promise<ApplicationResponse> {
     try {
       // Prepare data for insertion
@@ -126,11 +133,11 @@ export class ApplicationService {
       };
 
       // Insert into applications table and return the created record
-      const { data, error } = await supabaseClient
-        .from("applications")
-        .insert(insertData)
-        .select()
-        .single();
+      const { data, error } = await this.supabase
+          .from("applications")
+          .insert(insertData)
+          .select()
+          .single();
 
       if (error) {
         throw new Error(`Failed to create application: ${error.message}`);
@@ -170,17 +177,17 @@ export class ApplicationService {
    * @throws NotFoundError if application doesn't exist or doesn't belong to the user
    */
   async getApplicationById(
-    id: string,
-    userId: string,
+      id: string,
+      userId: string,
   ): Promise<ApplicationResponse> {
     try {
       // Fetch application with ownership verification
-      const { data, error } = await supabaseClient
-        .from("applications")
-        .select("*")
-        .eq("id", id)
-        .eq("user_id", userId)
-        .single();
+      const { data, error } = await this.supabase
+          .from("applications")
+          .select("*")
+          .eq("id", id)
+          .eq("user_id", userId)
+          .single();
 
       if (error) {
         if (error.code === "PGRST116") {
@@ -229,9 +236,9 @@ export class ApplicationService {
    * @throws NotFoundError if application doesn't exist or doesn't belong to the user
    */
   async updateApplication(
-    id: string,
-    userId: string,
-    updates: UpdateApplicationCommand,
+      id: string,
+      userId: string,
+      updates: UpdateApplicationCommand,
   ): Promise<ApplicationResponse> {
     try {
       // Build update data - only include non-undefined fields
@@ -247,13 +254,13 @@ export class ApplicationService {
       if (updates.status !== undefined) updateData.status = updates.status;
 
       // Update the application with ownership verification
-      const { data, error } = await supabaseClient
-        .from("applications")
-        .update(updateData)
-        .eq("id", id)
-        .eq("user_id", userId)
-        .select()
-        .single();
+      const { data, error } = await this.supabase
+          .from("applications")
+          .update(updateData)
+          .eq("id", id)
+          .eq("user_id", userId)
+          .select()
+          .single();
 
       if (error) {
         if (error.code === "PGRST116") {
@@ -303,12 +310,12 @@ export class ApplicationService {
   async deleteApplication(command: DeleteApplicationCommand): Promise<void> {
     try {
       // Execute delete query with ownership verification (dual filtering)
-      const { data, error } = await supabaseClient
-        .from("applications")
-        .delete()
-        .eq("id", command.id)
-        .eq("user_id", command.user_id)
-        .select();
+      const { data, error } = await this.supabase
+          .from("applications")
+          .delete()
+          .eq("id", command.id)
+          .eq("user_id", command.user_id)
+          .select();
 
       // Handle Supabase errors early with guard clause
       if (error) {
@@ -345,14 +352,14 @@ export class ApplicationService {
   async getApplicationStats(userId: string): Promise<ApplicationStatsDto> {
     try {
       // Query to count applications by status for the user
-      const { data: statusCounts, error: statusError } = await supabaseClient
-        .from("applications")
-        .select("status")
-        .eq("user_id", userId);
+      const { data: statusCounts, error: statusError } = await this.supabase
+          .from("applications")
+          .select("status")
+          .eq("user_id", userId);
 
       if (statusError) {
         throw new Error(
-          `Failed to fetch application statistics: ${statusError.message}`,
+            `Failed to fetch application statistics: ${statusError.message}`,
         );
       }
 
@@ -368,8 +375,8 @@ export class ApplicationService {
 
       // Count each status occurrence
       (statusCounts || []).forEach((app) => {
-        if (stats.hasOwnProperty(app.status)) {
-          stats[app.status]++;
+        if (app.status in stats) {
+          stats[app.status as ApplicationStatus]++;
         }
       });
 

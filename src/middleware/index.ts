@@ -32,14 +32,15 @@ export const onRequest = defineMiddleware(
     }
 
     // IMPORTANT: Always get user session first before any other operations
+    // Use getSession() instead of getUser() to avoid race conditions with cookie setting
     const {
-      data: { user },
-    } = await supabase.auth.getUser();
+      data: { session },
+    } = await supabase.auth.getSession();
 
-    if (user) {
+    if (session?.user) {
       locals.user = {
-        email: user.email,
-        id: user.id,
+        email: session.user.email,
+        id: session.user.id,
       };
     } else {
       // Redirect to login for protected routes
