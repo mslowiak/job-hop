@@ -16,7 +16,7 @@ export const useApplications = (filter: ApplicationStatus | "all" = "all") => {
     page: 1,
     limit: 20,
   });
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   /**
