@@ -34,77 +34,73 @@ export class ApplicationService {
   async getApplications(
     filters: GetApplicationsFilters,
   ): Promise<ApplicationListResponseDto> {
-    try {
-      // Build the base query with user filtering
-      let query = this.supabase
-        .from("applications")
-        .select("*")
-        .eq("user_id", filters.userId)
-        .order("created_at", { ascending: false });
+    // Build the base query with user filtering
+    let query = this.supabase
+      .from("applications")
+      .select("*")
+      .eq("user_id", filters.userId)
+      .order("created_at", { ascending: false });
 
-      // Apply status filter if provided
-      if (filters.status) {
-        query = query.eq("status", filters.status);
-      }
-
-      // Apply pagination
-      const from = (filters.page - 1) * filters.limit;
-      const to = from + filters.limit - 1;
-      query = query.range(from, to);
-
-      // Execute the main query
-      const { data: applications, error: applicationsError } = await query;
-
-      if (applicationsError) {
-        throw new Error(
-          `Failed to fetch applications: ${applicationsError.message}`,
-        );
-      }
-
-      // Get total count for pagination
-      let countQuery = this.supabase
-        .from("applications")
-        .select("count", { count: "exact", head: true })
-        .eq("user_id", filters.userId);
-
-      if (filters.status) {
-        countQuery = countQuery.eq("status", filters.status);
-      }
-
-      const { count, error: countError } = await countQuery;
-
-      if (countError) {
-        throw new Error(
-          `Failed to get applications count: ${countError.message}`,
-        );
-      }
-
-      // Map database entities to DTOs (excluding user_id for security)
-      const applicationsDto: ApplicationDto[] = (applications || []).map(
-        (app) => ({
-          id: app.id,
-          company_name: app.company_name,
-          position_name: app.position_name,
-          application_date: app.application_date,
-          link: app.link,
-          notes: app.notes,
-          status: app.status,
-          created_at: app.created_at,
-          updated_at: app.updated_at,
-        }),
-      );
-
-      return {
-        applications: applicationsDto,
-        pagination: {
-          total: count || 0,
-          page: filters.page,
-          limit: filters.limit,
-        },
-      };
-    } catch (error) {
-      throw error;
+    // Apply status filter if provided
+    if (filters.status) {
+      query = query.eq("status", filters.status);
     }
+
+    // Apply pagination
+    const from = (filters.page - 1) * filters.limit;
+    const to = from + filters.limit - 1;
+    query = query.range(from, to);
+
+    // Execute the main query
+    const { data: applications, error: applicationsError } = await query;
+
+    if (applicationsError) {
+      throw new Error(
+        `Failed to fetch applications: ${applicationsError.message}`,
+      );
+    }
+
+    // Get total count for pagination
+    let countQuery = this.supabase
+      .from("applications")
+      .select("count", { count: "exact", head: true })
+      .eq("user_id", filters.userId);
+
+    if (filters.status) {
+      countQuery = countQuery.eq("status", filters.status);
+    }
+
+    const { count, error: countError } = await countQuery;
+
+    if (countError) {
+      throw new Error(
+        `Failed to get applications count: ${countError.message}`,
+      );
+    }
+
+    // Map database entities to DTOs (excluding user_id for security)
+    const applicationsDto: ApplicationDto[] = (applications || []).map(
+      (app) => ({
+        id: app.id,
+        company_name: app.company_name,
+        position_name: app.position_name,
+        application_date: app.application_date,
+        link: app.link,
+        notes: app.notes,
+        status: app.status,
+        created_at: app.created_at,
+        updated_at: app.updated_at,
+      }),
+    );
+
+    return {
+      applications: applicationsDto,
+      pagination: {
+        total: count || 0,
+        page: filters.page,
+        limit: filters.limit,
+      },
+    };
   }
 
   /**
@@ -115,48 +111,44 @@ export class ApplicationService {
   async createApplication(
     command: CreateApplicationCommand,
   ): Promise<ApplicationResponse> {
-    try {
-      // Prepare data for insertion
-      const insertData = {
-        user_id: command.user_id,
-        company_name: command.company_name,
-        position_name: command.position_name,
-        application_date: command.application_date,
-        link: command.link,
-        notes: command.notes,
-        status: command.status,
-      };
+    // Prepare data for insertion
+    const insertData = {
+      user_id: command.user_id,
+      company_name: command.company_name,
+      position_name: command.position_name,
+      application_date: command.application_date,
+      link: command.link,
+      notes: command.notes,
+      status: command.status,
+    };
 
-      // Insert into applications table and return the created record
-      const { data, error } = await this.supabase
-        .from("applications")
-        .insert(insertData)
-        .select()
-        .single();
+    // Insert into applications table and return the created record
+    const { data, error } = await this.supabase
+      .from("applications")
+      .insert(insertData)
+      .select()
+      .single();
 
-      if (error) {
-        throw new Error(`Failed to create application: ${error.message}`);
-      }
-
-      if (!data) {
-        throw new Error("No data returned after application creation");
-      }
-
-      // Return the application response (map to ensure correct typing)
-      return {
-        id: data.id,
-        company_name: data.company_name,
-        position_name: data.position_name,
-        application_date: data.application_date,
-        link: data.link,
-        notes: data.notes,
-        status: data.status,
-        created_at: data.created_at,
-        updated_at: data.updated_at,
-      };
-    } catch (error) {
-      throw error;
+    if (error) {
+      throw new Error(`Failed to create application: ${error.message}`);
     }
+
+    if (!data) {
+      throw new Error("No data returned after application creation");
+    }
+
+    // Return the application response (map to ensure correct typing)
+    return {
+      id: data.id,
+      company_name: data.company_name,
+      position_name: data.position_name,
+      application_date: data.application_date,
+      link: data.link,
+      notes: data.notes,
+      status: data.status,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
+    };
   }
 
   /**
@@ -321,45 +313,41 @@ export class ApplicationService {
    * @returns Promise containing statistics object with status counts and total
    */
   async getApplicationStats(userId: string): Promise<ApplicationStatsDto> {
-    try {
-      // Query to count applications by status for the user
-      const { data: statusCounts, error: statusError } = await this.supabase
-        .from("applications")
-        .select("status")
-        .eq("user_id", userId);
+    // Query to count applications by status for the user
+    const { data: statusCounts, error: statusError } = await this.supabase
+      .from("applications")
+      .select("status")
+      .eq("user_id", userId);
 
-      if (statusError) {
-        throw new Error(
-          `Failed to fetch application statistics: ${statusError.message}`,
-        );
-      }
-
-      // Count applications by status
-      const stats: Record<ApplicationStatus, number> = {
-        planned: 0,
-        sent: 0,
-        in_progress: 0,
-        interview: 0,
-        rejected: 0,
-        offer: 0,
-      };
-
-      // Count each status occurrence
-      (statusCounts || []).forEach((app) => {
-        if (app.status in stats) {
-          stats[app.status as ApplicationStatus]++;
-        }
-      });
-
-      // Calculate total
-      const total = Object.values(stats).reduce((sum, count) => sum + count, 0);
-
-      return {
-        stats,
-        total,
-      };
-    } catch (error) {
-      throw error;
+    if (statusError) {
+      throw new Error(
+        `Failed to fetch application statistics: ${statusError.message}`,
+      );
     }
+
+    // Count applications by status
+    const stats: Record<ApplicationStatus, number> = {
+      planned: 0,
+      sent: 0,
+      in_progress: 0,
+      interview: 0,
+      rejected: 0,
+      offer: 0,
+    };
+
+    // Count each status occurrence
+    (statusCounts || []).forEach((app) => {
+      if (app.status in stats) {
+        stats[app.status as ApplicationStatus]++;
+      }
+    });
+
+    // Calculate total
+    const total = Object.values(stats).reduce((sum, count) => sum + count, 0);
+
+    return {
+      stats,
+      total,
+    };
   }
 }
