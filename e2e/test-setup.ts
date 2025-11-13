@@ -192,13 +192,11 @@ export async function cleanupTestData() {
     });
 
     if (!signInResponse.ok) {
-      console.warn("Failed to sign in for cleanup, skipping database cleanup");
       return;
     }
 
     const cookies = signInResponse.headers.get("set-cookie");
     if (!cookies) {
-      console.warn("No cookies received, skipping database cleanup");
       return;
     }
 
@@ -215,7 +213,6 @@ export async function cleanupTestData() {
     );
 
     if (!getApplicationsResponse.ok) {
-      console.warn("Failed to get applications for cleanup");
       return;
     }
 
@@ -234,20 +231,11 @@ export async function cleanupTestData() {
             },
           },
         );
-        console.log(`Cleaned up application: ${application.id}`);
       } catch (deleteError) {
-        console.warn(
-          `Failed to delete application ${application.id}:`,
-          deleteError,
-        );
+        // Failed to delete application
       }
     }
-
-    console.log(
-      `Database cleanup completed. Removed ${applications.applications?.length || 0} applications.`,
-    );
   } catch (error) {
-    console.warn("Database cleanup failed:", error);
     // Don't throw error to avoid failing tests due to cleanup issues
   }
 }

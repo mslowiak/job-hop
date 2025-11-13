@@ -47,10 +47,6 @@ export class DashboardPage extends BasePage {
     // Wait a bit for navigation to start
     await this.page.waitForTimeout(1000);
 
-    // Check current URL to see if navigation happened
-    const currentUrl = this.page.url();
-    console.log("Current URL after button click:", currentUrl);
-
     // Wait for the add application form to appear
     await this.page.waitForSelector(
       '[data-testid="add-application-form-title"]',

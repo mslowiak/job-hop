@@ -66,7 +66,6 @@ export const useApplications = (filter: ApplicationStatus | "all" = "all") => {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to load applications";
         setError(errorMessage);
-        console.error("useApplications fetch error:", err);
       } finally {
         setLoading(false);
       }
@@ -136,7 +135,6 @@ export const useApplications = (filter: ApplicationStatus | "all" = "all") => {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to update status";
         setError(errorMessage);
-        console.error("useApplications updateStatus error:", err);
 
         // Show error toast
         toast.error(`Błąd aktualizacji statusu: ${errorMessage}`);

@@ -103,11 +103,6 @@ export class ApplicationService {
         },
       };
     } catch (error) {
-      console.error("ApplicationService.getApplications error:", {
-        error,
-        filters,
-        timestamp: new Date(),
-      });
       throw error;
     }
   }
@@ -160,11 +155,6 @@ export class ApplicationService {
         updated_at: data.updated_at,
       };
     } catch (error) {
-      console.error("ApplicationService.createApplication error:", {
-        error,
-        command: { ...command, user_id: "[REDACTED]" }, // Don't log user_id for security
-        timestamp: new Date(),
-      });
       throw error;
     }
   }
@@ -217,12 +207,6 @@ export class ApplicationService {
         throw error;
       }
 
-      console.error("ApplicationService.getApplicationById error:", {
-        error,
-        id,
-        userId: "[REDACTED]",
-        timestamp: new Date(),
-      });
       throw error;
     }
   }
@@ -290,13 +274,6 @@ export class ApplicationService {
         throw error;
       }
 
-      console.error("ApplicationService.updateApplication error:", {
-        error,
-        id,
-        userId: "[REDACTED]",
-        updates,
-        timestamp: new Date(),
-      });
       throw error;
     }
   }
@@ -334,12 +311,6 @@ export class ApplicationService {
         throw error;
       }
 
-      // Log other errors with context
-      console.error("ApplicationService.deleteApplication error:", {
-        error,
-        command: { id: command.id, user_id: "[REDACTED]" }, // Don't log user_id for security
-        timestamp: new Date(),
-      });
       throw error;
     }
   }
@@ -388,11 +359,6 @@ export class ApplicationService {
         total,
       };
     } catch (error) {
-      console.error("ApplicationService.getApplicationStats error:", {
-        error,
-        userId: "[REDACTED]",
-        timestamp: new Date(),
-      });
       throw error;
     }
   }
