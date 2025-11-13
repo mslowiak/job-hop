@@ -3,7 +3,7 @@ import { ApplicationTable } from "./ApplicationTable";
 import { EmptyState } from "./EmptyState";
 import { Loader2 } from "lucide-react";
 import type { ApplicationStatus } from "../types";
-import type { ApplicationViewModel, StatusOption } from "../types";
+import type { ApplicationViewModel } from "../types";
 
 interface ApplicationListProps {
   applications: ApplicationViewModel[];
@@ -13,7 +13,6 @@ interface ApplicationListProps {
   onStatusChange: (id: string, status: ApplicationStatus) => void;
   onRowClick: (id: string) => void;
   onAddClick: () => void;
-  statusOptions: StatusOption[];
   refetch: () => void;
 }
 
@@ -29,7 +28,6 @@ export const ApplicationList: React.FC<ApplicationListProps> = ({
   onStatusChange,
   onRowClick,
   onAddClick,
-  statusOptions,
   refetch,
 }) => {
   // Show loading spinner

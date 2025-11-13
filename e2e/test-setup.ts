@@ -231,11 +231,11 @@ export async function cleanupTestData() {
             },
           },
         );
-      } catch (deleteError) {
+      } catch {
         // Failed to delete application
       }
     }
-  } catch (error) {
+  } catch {
     // Don't throw error to avoid failing tests due to cleanup issues
   }
 }

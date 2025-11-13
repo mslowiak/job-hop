@@ -72,7 +72,7 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
     setIsSubmitting(true);
     try {
       await onSubmit(formData);
-    } catch (error) {
+    } catch {
       // Error handling is done by the parent component
     } finally {
       setIsSubmitting(false);
