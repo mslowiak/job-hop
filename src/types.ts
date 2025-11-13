@@ -2,12 +2,7 @@
 // These types are derived from database entities and designed to match API specifications
 
 import { z } from "zod";
-import type {
-  Tables,
-  TablesInsert,
-  TablesUpdate,
-  Enums,
-} from "./db/database.types";
+import type { Tables, TablesInsert, TablesUpdate, Enums } from "./db/database.types";
 
 // Base application entity type from database
 export type ApplicationEntity = Tables<"applications">;
@@ -29,16 +24,11 @@ export const CreateApplicationRequestSchema = z.object({
     .transform((val) => new Date(val)),
   link: z.union([z.string().url(), z.literal("")]).optional(),
   notes: z.string().max(10000).nullable().optional(),
-  status: z
-    .enum(["planned", "sent", "in_progress", "interview", "rejected", "offer"])
-    .default("sent")
-    .optional(),
+  status: z.enum(["planned", "sent", "in_progress", "interview", "rejected", "offer"]).default("sent").optional(),
 });
 
 // TypeScript type inferred from Zod schema
-export type CreateApplicationRequest = z.infer<
-  typeof CreateApplicationRequestSchema
->;
+export type CreateApplicationRequest = z.infer<typeof CreateApplicationRequestSchema>;
 
 // DTO for output, based on DB schema (ApplicationResponse)
 export type ApplicationResponse = Pick<
@@ -105,12 +95,7 @@ export interface ApplicationStatsDto {
 // Internal model for service layer with hardcoded user_id
 export type CreateApplicationCommand = Pick<
   TablesInsert<"applications">,
-  | "company_name"
-  | "position_name"
-  | "application_date"
-  | "link"
-  | "notes"
-  | "status"
+  "company_name" | "position_name" | "application_date" | "link" | "notes" | "status"
 > & {
   user_id: string;
 };
@@ -120,12 +105,7 @@ export type CreateApplicationCommand = Pick<
 export type UpdateApplicationCommand = Partial<
   Pick<
     TablesUpdate<"applications">,
-    | "company_name"
-    | "position_name"
-    | "application_date"
-    | "link"
-    | "notes"
-    | "status"
+    "company_name" | "position_name" | "application_date" | "link" | "notes" | "status"
   >
 >;
 
@@ -152,9 +132,7 @@ export const UpdateApplicationRequestSchema = z.object({
     .optional(),
   link: z.union([z.string().url(), z.string().length(0), z.null()]).optional(),
   notes: z.string().max(1000).optional(),
-  status: z
-    .enum(["planned", "sent", "in_progress", "interview", "rejected", "offer"])
-    .optional(),
+  status: z.enum(["planned", "sent", "in_progress", "interview", "rejected", "offer"]).optional(),
 });
 
 // =============================================================================
@@ -179,17 +157,8 @@ export class NotFoundError extends Error {
 // =============================================================================
 
 // Type guard for application status validation
-export const isValidApplicationStatus = (
-  status: string,
-): status is ApplicationStatus => {
-  const validStatuses: ApplicationStatus[] = [
-    "planned",
-    "sent",
-    "in_progress",
-    "interview",
-    "rejected",
-    "offer",
-  ];
+export const isValidApplicationStatus = (status: string): status is ApplicationStatus => {
+  const validStatuses: ApplicationStatus[] = ["planned", "sent", "in_progress", "interview", "rejected", "offer"];
   return validStatuses.includes(status as ApplicationStatus);
 };
 

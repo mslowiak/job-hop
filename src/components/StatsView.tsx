@@ -40,9 +40,7 @@ export const StatsView: React.FC = () => {
     return (
       <div className="max-w-2xl mx-auto p-6">
         <div className="border border-red-200 bg-red-50 p-6 rounded-lg text-center">
-          <h2 className="text-xl font-semibold text-red-800 mb-4">
-            Błąd ładowania statystyk
-          </h2>
+          <h2 className="text-xl font-semibold text-red-800 mb-4">Błąd ładowania statystyk</h2>
           <p className="text-red-700 mb-6">{error}</p>
           <RefreshButton onRefresh={refetch} />
         </div>
@@ -54,12 +52,8 @@ export const StatsView: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Statystyki aplikacji
-        </h1>
-        <p className="text-gray-600">
-          Przeglądaj swoje aplikacje pogrupowane według statusu
-        </p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Statystyki aplikacji</h1>
+        <p className="text-gray-600">Przeglądaj swoje aplikacje pogrupowane według statusu</p>
       </div>
 
       <div className="space-y-8">

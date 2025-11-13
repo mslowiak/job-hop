@@ -20,7 +20,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         }),
         {
           status: 400,
-        },
+        }
       );
     }
 
@@ -32,8 +32,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
 
     // Exchange the code for a session
-    const { data: sessionData, error: sessionError } =
-      await supabase.auth.exchangeCodeForSession(code);
+    const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
 
     if (sessionError || !sessionData.session) {
       return new Response(
@@ -42,7 +41,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         }),
         {
           status: 400,
-        },
+        }
       );
     }
 
@@ -63,7 +62,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       }),
       {
         status: 200,
-      },
+      }
     );
   } catch {
     return new Response(JSON.stringify({ error: "Wystąpił błąd serwera" }), {

@@ -27,19 +27,13 @@ export const useApplicationStats = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`,
-        );
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
       const statsData: ApplicationStatsDto = await response.json();
 
       // Basic validation
-      if (
-        !statsData.stats ||
-        typeof statsData.stats !== "object" ||
-        typeof statsData.total !== "number"
-      ) {
+      if (!statsData.stats || typeof statsData.stats !== "object" || typeof statsData.total !== "number") {
         throw new Error("Invalid data format received from API");
       }
 
@@ -54,20 +48,14 @@ export const useApplicationStats = () => {
       ];
 
       for (const status of requiredStatuses) {
-        if (
-          !(status in statsData.stats) ||
-          typeof statsData.stats[status] !== "number"
-        ) {
-          throw new Error(
-            `Invalid stats format: missing or invalid count for ${status}`,
-          );
+        if (!(status in statsData.stats) || typeof statsData.stats[status] !== "number") {
+          throw new Error(`Invalid stats format: missing or invalid count for ${status}`);
         }
       }
 
       setData(statsData);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to load statistics";
+      const errorMessage = err instanceof Error ? err.message : "Failed to load statistics";
       setError(errorMessage);
     } finally {
       setLoading(false);

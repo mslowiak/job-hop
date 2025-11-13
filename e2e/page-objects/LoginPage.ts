@@ -55,9 +55,7 @@ export class LoginPage extends BasePage {
    * Get login form validation errors if any
    */
   async getFormErrors(): Promise<string[]> {
-    const errorElements = await this.page
-      .locator(".text-red-600")
-      .allTextContents();
+    const errorElements = await this.page.locator(".text-red-600").allTextContents();
     return errorElements;
   }
 }

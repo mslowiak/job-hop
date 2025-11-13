@@ -7,9 +7,7 @@ const compilerOptions = tsconfig.compilerOptions || {};
 const pathsToAlias = {};
 for (const [key, value] of Object.entries(compilerOptions.paths || {})) {
   const keyWithoutAsterisk = key.replace(/\/\*$/, "");
-  pathsToAlias[keyWithoutAsterisk] = value.map((p: string) =>
-    p.replace(/\/\*$/, ""),
-  );
+  pathsToAlias[keyWithoutAsterisk] = value.map((p: string) => p.replace(/\/\*$/, ""));
 }
 
 export default defineConfig({

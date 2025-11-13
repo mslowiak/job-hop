@@ -19,7 +19,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         }),
         {
           status: 400,
-        },
+        }
       );
     }
 
@@ -41,12 +41,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     return new Response(
       JSON.stringify({
-        message:
-          "Link do resetowania hasła został wysłany na podany adres email",
+        message: "Link do resetowania hasła został wysłany na podany adres email",
       }),
       {
         status: 200,
-      },
+      }
     );
   } catch {
     return new Response(JSON.stringify({ error: "Wystąpił błąd serwera" }), {

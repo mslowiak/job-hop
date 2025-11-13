@@ -16,7 +16,7 @@ export const useStatusOptions = (): StatusOption[] => {
       { value: "rejected", label: "Odrzucone" },
       { value: "offer", label: "Oferta" },
     ],
-    [],
+    []
   );
 };
 

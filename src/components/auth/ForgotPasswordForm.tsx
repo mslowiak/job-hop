@@ -65,12 +65,7 @@ export const ForgotPasswordForm: React.FC = () => {
     return (
       <div className="text-center">
         <div className="mb-4">
-          <svg
-            className="mx-auto h-12 w-12 text-green-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+          <svg className="mx-auto h-12 w-12 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -79,16 +74,11 @@ export const ForgotPasswordForm: React.FC = () => {
             />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
-          Email został wysłany!
-        </h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Email został wysłany!</h3>
         <p className="text-sm text-gray-600 mb-6">
           Sprawdź swoją skrzynkę email i kliknij w link, aby zresetować hasło.
         </p>
-        <a
-          href="/auth/login"
-          className="text-blue-600 hover:text-blue-500 font-medium"
-        >
+        <a href="/auth/login" className="text-blue-600 hover:text-blue-500 font-medium">
           ← Powrót do logowania
         </a>
       </div>
@@ -99,10 +89,7 @@ export const ForgotPasswordForm: React.FC = () => {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Email Field */}
       <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
           Email *
         </label>
         <input
@@ -112,16 +99,12 @@ export const ForgotPasswordForm: React.FC = () => {
           onChange={(e) => setEmail(e.target.value)}
           disabled={isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.email
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           placeholder="twoj.email@example.com"
           required
         />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-        )}
+        {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
       </div>
 
       {/* Submit Button */}
@@ -133,10 +116,7 @@ export const ForgotPasswordForm: React.FC = () => {
 
       {/* Links */}
       <div className="text-center">
-        <a
-          href="/auth/login"
-          className="text-sm text-blue-600 hover:text-blue-500 font-medium"
-        >
+        <a href="/auth/login" className="text-sm text-blue-600 hover:text-blue-500 font-medium">
           ← Powrót do logowania
         </a>
       </div>

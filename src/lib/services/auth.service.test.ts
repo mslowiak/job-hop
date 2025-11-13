@@ -8,9 +8,7 @@ global.fetch = vi.fn();
 describe("auth.service", () => {
   const mockSuccessResponse = () => ({
     ok: true,
-    json: vi
-      .fn()
-      .mockResolvedValue({ user: { id: 1, email: "test@example.com" } }),
+    json: vi.fn().mockResolvedValue({ user: { id: 1, email: "test@example.com" } }),
   });
 
   const mockErrorResponse = (error: string) => ({
@@ -38,45 +36,33 @@ describe("auth.service", () => {
             email: "test@example.com",
             password: "password123",
           }),
-        }),
+        })
       );
       expect(result).toEqual({ user: { id: 1, email: "test@example.com" } });
     });
 
     it("should throw error for invalid credentials", async () => {
-      vi.mocked(fetch).mockResolvedValue(
-        mockErrorResponse("Invalid credentials"),
-      );
+      vi.mocked(fetch).mockResolvedValue(mockErrorResponse("Invalid credentials"));
 
       const data = { email: "test@example.com", password: "wrong" };
 
-      await expect(loginUser(data)).rejects.toThrow(
-        "Nieprawidłowy email lub hasło",
-      );
+      await expect(loginUser(data)).rejects.toThrow("Nieprawidłowy email lub hasło");
     });
 
     it("should throw error for user already registered", async () => {
-      vi.mocked(fetch).mockResolvedValue(
-        mockErrorResponse("User already registered"),
-      );
+      vi.mocked(fetch).mockResolvedValue(mockErrorResponse("User already registered"));
 
       const data = { email: "test@example.com", password: "password123" };
 
-      await expect(loginUser(data)).rejects.toThrow(
-        "Email jest już zarejestrowany",
-      );
+      await expect(loginUser(data)).rejects.toThrow("Email jest już zarejestrowany");
     });
 
     it("should throw generic error for unknown issues", async () => {
-      vi.mocked(fetch).mockResolvedValue(
-        mockErrorResponse("Unknown server error"),
-      );
+      vi.mocked(fetch).mockResolvedValue(mockErrorResponse("Unknown server error"));
 
       const data = { email: "test@example.com", password: "password123" };
 
-      await expect(loginUser(data)).rejects.toThrow(
-        "Coś poszło nie tak. Spróbuj ponownie.",
-      );
+      await expect(loginUser(data)).rejects.toThrow("Coś poszło nie tak. Spróbuj ponownie.");
     });
   });
 
@@ -100,15 +86,13 @@ describe("auth.service", () => {
             email: "new@example.com",
             password: "password123",
           }),
-        }),
+        })
       );
       expect(result).toEqual({ user: { id: 1, email: "test@example.com" } });
     });
 
     it("should throw error for password too short", async () => {
-      vi.mocked(fetch).mockResolvedValue(
-        mockErrorResponse("Password should be at least 8 characters"),
-      );
+      vi.mocked(fetch).mockResolvedValue(mockErrorResponse("Password should be at least 8 characters"));
 
       const data: AuthFormData = {
         email: "new@example.com",
@@ -116,15 +100,11 @@ describe("auth.service", () => {
         confirmPassword: "short",
       };
 
-      await expect(registerUser(data)).rejects.toThrow(
-        "Hasło musi mieć co najmniej 6 znaków",
-      );
+      await expect(registerUser(data)).rejects.toThrow("Hasło musi mieć co najmniej 6 znaków");
     });
 
     it("should throw error for email not confirmed", async () => {
-      vi.mocked(fetch).mockResolvedValue(
-        mockErrorResponse("Email not confirmed"),
-      );
+      vi.mocked(fetch).mockResolvedValue(mockErrorResponse("Email not confirmed"));
 
       const data: AuthFormData = {
         email: "new@example.com",
@@ -132,9 +112,7 @@ describe("auth.service", () => {
         confirmPassword: "password123",
       };
 
-      await expect(registerUser(data)).rejects.toThrow(
-        "Email nie został potwierdzony",
-      );
+      await expect(registerUser(data)).rejects.toThrow("Email nie został potwierdzony");
     });
   });
 });

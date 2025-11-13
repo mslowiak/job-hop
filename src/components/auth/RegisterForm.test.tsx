@@ -36,9 +36,7 @@ describe("RegisterForm", () => {
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/hasło/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/potwierdź hasło/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /zarejestruj się/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /zarejestruj się/i })).toBeInTheDocument();
   });
 
   it("should show validation errors for empty fields on submit", async () => {
@@ -72,9 +70,7 @@ describe("RegisterForm", () => {
   });
 
   it("should call registerUser on successful submit and show success toast", async () => {
-    const mockRegister = vi
-      .mocked(registerUser)
-      .mockResolvedValue({ user: { id: 1 } });
+    const mockRegister = vi.mocked(registerUser).mockResolvedValue({ user: { id: 1 } });
     mockToastSuccess.mockReturnValue();
 
     render(<RegisterForm />);
@@ -97,16 +93,12 @@ describe("RegisterForm", () => {
         password: "password123",
         confirmPassword: "password123",
       });
-      expect(mockToastSuccess).toHaveBeenCalledWith(
-        "Konto utworzone pomyślnie!",
-      );
+      expect(mockToastSuccess).toHaveBeenCalledWith("Konto utworzone pomyślnie!");
     });
   });
 
   it("should show error toast on registration failure", async () => {
-    vi.mocked(registerUser).mockRejectedValue(
-      new Error("Email jest już zarejestrowany"),
-    );
+    vi.mocked(registerUser).mockRejectedValue(new Error("Email jest już zarejestrowany"));
     mockToastError.mockReturnValue();
 
     render(<RegisterForm />);
@@ -124,16 +116,12 @@ describe("RegisterForm", () => {
     fireEvent.click(screen.getByRole("button", { name: /zarejestruj się/i }));
 
     await waitFor(() => {
-      expect(mockToastError).toHaveBeenCalledWith(
-        "Email jest już zarejestrowany",
-      );
+      expect(mockToastError).toHaveBeenCalledWith("Email jest już zarejestrowany");
     });
   });
 
   it("should disable submit button during submission", async () => {
-    vi.mocked(registerUser).mockImplementation(
-      () => new Promise((resolve) => setTimeout(resolve, 100)),
-    );
+    vi.mocked(registerUser).mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)));
 
     render(<RegisterForm />);
 

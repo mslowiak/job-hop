@@ -14,11 +14,7 @@ interface ApplicationTableProps {
  * Responsive table component displaying applications using Shadcn Table
  * Shows company, position, and status columns with interactive rows
  */
-export const ApplicationTable: React.FC<ApplicationTableProps> = ({
-  applications,
-  onStatusChange,
-  onRowClick,
-}) => {
+export const ApplicationTable: React.FC<ApplicationTableProps> = ({ applications, onStatusChange, onRowClick }) => {
   return (
     <div className="overflow-x-auto" data-testid="applications-table">
       <Table role="table" aria-label="Applications list">

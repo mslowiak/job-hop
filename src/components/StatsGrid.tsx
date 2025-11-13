@@ -17,12 +17,7 @@ export const StatsGrid: React.FC<StatsGridProps> = ({ stats }) => {
       aria-label="Statistics by application status"
     >
       {stats.map((stat) => (
-        <StatusCard
-          key={stat.status}
-          status={stat.status}
-          label={stat.label}
-          count={stat.count}
-        />
+        <StatusCard key={stat.status} status={stat.status} label={stat.label} count={stat.count} />
       ))}
     </div>
   );

@@ -7,8 +7,7 @@ import { BasePage } from "./BasePage";
 export class DashboardPage extends BasePage {
   // Page elements selectors
   private readonly dashboardMain = '[data-testid="dashboard-main"]';
-  private readonly addApplicationButton =
-    '[data-testid="dashboard-main"] [data-testid="add-application-btn"]';
+  private readonly addApplicationButton = '[data-testid="dashboard-main"] [data-testid="add-application-btn"]';
   private readonly applicationsTable = '[data-testid="applications-table"]';
 
   /**
@@ -48,10 +47,7 @@ export class DashboardPage extends BasePage {
     await this.page.waitForTimeout(1000);
 
     // Wait for the add application form to appear
-    await this.page.waitForSelector(
-      '[data-testid="add-application-form-title"]',
-      { timeout: 5000 },
-    );
+    await this.page.waitForSelector('[data-testid="add-application-form-title"]', { timeout: 5000 });
   }
 
   /**
@@ -65,22 +61,15 @@ export class DashboardPage extends BasePage {
    * Get the count of applications in the table
    */
   async getApplicationsCount(): Promise<number> {
-    const rows = await this.page
-      .locator('[data-testid^="application-row-"]')
-      .count();
+    const rows = await this.page.locator('[data-testid^="application-row-"]').count();
     return rows;
   }
 
   /**
    * Check if a specific application exists by company and position
    */
-  async hasApplication(
-    companyName: string,
-    positionName: string,
-  ): Promise<boolean> {
-    const rows = await this.page
-      .locator('[data-testid^="application-row-"]')
-      .all();
+  async hasApplication(companyName: string, positionName: string): Promise<boolean> {
+    const rows = await this.page.locator('[data-testid^="application-row-"]').all();
 
     for (const row of rows) {
       const companyCell = row.locator("td").nth(0);
@@ -89,10 +78,7 @@ export class DashboardPage extends BasePage {
       const companyText = await companyCell.textContent();
       const positionText = await positionCell.textContent();
 
-      if (
-        companyText?.includes(companyName) &&
-        positionText?.includes(positionName)
-      ) {
+      if (companyText?.includes(companyName) && positionText?.includes(positionName)) {
         return true;
       }
     }
@@ -103,13 +89,8 @@ export class DashboardPage extends BasePage {
   /**
    * Get application row by company and position
    */
-  async getApplicationRow(
-    companyName: string,
-    positionName: string,
-  ): Promise<any> {
-    const rows = await this.page
-      .locator('[data-testid^="application-row-"]')
-      .all();
+  async getApplicationRow(companyName: string, positionName: string): Promise<any> {
+    const rows = await this.page.locator('[data-testid^="application-row-"]').all();
 
     for (const row of rows) {
       const companyCell = row.locator("td").nth(0);
@@ -118,10 +99,7 @@ export class DashboardPage extends BasePage {
       const companyText = await companyCell.textContent();
       const positionText = await positionCell.textContent();
 
-      if (
-        companyText?.includes(companyName) &&
-        positionText?.includes(positionName)
-      ) {
+      if (companyText?.includes(companyName) && positionText?.includes(positionName)) {
         return row;
       }
     }

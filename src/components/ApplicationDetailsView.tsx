@@ -12,16 +12,8 @@ interface ApplicationDetailsViewProps {
   id: string;
 }
 
-export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({
-  id,
-}) => {
-  const {
-    data: application,
-    viewModel,
-    loading,
-    error,
-    refetch,
-  } = useApplication(id);
+export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({ id }) => {
+  const { data: application, viewModel, loading, error, refetch } = useApplication(id);
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -54,19 +46,14 @@ export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`,
-        );
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
       toast.success("Aplikacja została pomyślnie zaktualizowana");
       setIsEditing(false);
       refetch();
     } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Wystąpił błąd podczas zapisywania";
+      const errorMessage = err instanceof Error ? err.message : "Wystąpił błąd podczas zapisywania";
       toast.error(errorMessage);
       throw err; // Re-throw to let EditApplicationForm handle the error
     } finally {
@@ -86,16 +73,13 @@ export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`,
-        );
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
       toast.success("Aplikacja została pomyślnie usunięta");
       window.location.href = "/dashboard";
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Wystąpił błąd podczas usuwania";
+      const errorMessage = err instanceof Error ? err.message : "Wystąpił błąd podczas usuwania";
       toast.error(errorMessage);
       setDeleting(false);
       setShowDeleteModal(false);
@@ -122,12 +106,8 @@ export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Błąd ładowania
-          </h2>
-          <p className="text-gray-600 mb-4">
-            {error || "Nie udało się załadować aplikacji"}
-          </p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Błąd ładowania</h2>
+          <p className="text-gray-600 mb-4">{error || "Nie udało się załadować aplikacji"}</p>
           <div className="space-x-4">
             <Button onClick={refetch} variant="outline">
               Spróbuj ponownie
@@ -158,28 +138,18 @@ export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({
                 <span className="sm:hidden">Powrót</span>
               </Button>
             </div>
-            <div
-              className="flex items-center space-x-2"
-              role="toolbar"
-              aria-label="Akcje aplikacji"
-            >
+            <div className="flex items-center space-x-2" role="toolbar" aria-label="Akcje aplikacji">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleEditToggle}
                 disabled={saving || deleting}
                 className="flex items-center hover:bg-gray-50 transition-colors"
-                aria-label={
-                  isEditing ? "Anuluj edycję aplikacji" : "Edytuj aplikację"
-                }
+                aria-label={isEditing ? "Anuluj edycję aplikacji" : "Edytuj aplikację"}
               >
                 <Edit className="h-4 w-4 mr-2" aria-hidden="true" />
-                <span className="hidden sm:inline">
-                  {isEditing ? "Anuluj" : "Edytuj"}
-                </span>
-                <span className="sm:hidden">
-                  {isEditing ? "Anuluj" : "Edytuj"}
-                </span>
+                <span className="hidden sm:inline">{isEditing ? "Anuluj" : "Edytuj"}</span>
+                <span className="sm:hidden">{isEditing ? "Anuluj" : "Edytuj"}</span>
               </Button>
               <Button
                 variant="destructive"
@@ -207,10 +177,7 @@ export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({
           aria-labelledby="application-title"
           tabIndex={-1}
         >
-          <h1
-            id="application-title"
-            className="text-2xl font-bold text-gray-900 mb-6"
-          >
+          <h1 id="application-title" className="text-2xl font-bold text-gray-900 mb-6">
             Szczegóły aplikacji
           </h1>
 

@@ -56,12 +56,7 @@ export const ApplicationList: React.FC<ApplicationListProps> = ({
 
   // Show empty state if no applications
   if (applications.length === 0) {
-    return (
-      <EmptyState
-        isFiltered={currentFilter !== "all"}
-        onAddClick={onAddClick}
-      />
-    );
+    return <EmptyState isFiltered={currentFilter !== "all"} onAddClick={onAddClick} />;
   }
 
   // Show application table

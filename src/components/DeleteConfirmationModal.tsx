@@ -10,9 +10,7 @@ interface DeleteConfirmationModalProps {
   isDeleting?: boolean;
 }
 
-export const DeleteConfirmationModal: React.FC<
-  DeleteConfirmationModalProps
-> = ({
+export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   isOpen,
   onOpenChange,
   onConfirm,
@@ -90,10 +88,7 @@ export const DeleteConfirmationModal: React.FC<
             <div className="flex-shrink-0">
               <AlertTriangle className="h-6 w-6 text-red-600" />
             </div>
-            <h3
-              id="delete-modal-title"
-              className="text-lg font-semibold text-gray-900"
-            >
+            <h3 id="delete-modal-title" className="text-lg font-semibold text-gray-900">
               Potwierdź usunięcie
             </h3>
           </div>
@@ -113,33 +108,18 @@ export const DeleteConfirmationModal: React.FC<
           <div id="delete-modal-description" className="text-sm text-gray-600">
             <p className="mb-4">
               Czy na pewno chcesz usunąć aplikację{" "}
-              <span className="font-semibold text-gray-900">
-                {applicationName}
-              </span>
-              ?
+              <span className="font-semibold text-gray-900">{applicationName}</span>?
             </p>
-            <p className="text-red-600 font-medium">
-              Tej akcji nie można cofnąć.
-            </p>
+            <p className="text-red-600 font-medium">Tej akcji nie można cofnąć.</p>
           </div>
         </div>
 
         {/* Actions */}
         <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-          <Button
-            variant="outline"
-            onClick={handleCancel}
-            disabled={isDeleting}
-            className="min-w-[80px]"
-          >
+          <Button variant="outline" onClick={handleCancel} disabled={isDeleting} className="min-w-[80px]">
             Anuluj
           </Button>
-          <Button
-            variant="destructive"
-            onClick={handleConfirm}
-            disabled={isDeleting}
-            className="min-w-[100px]"
-          >
+          <Button variant="destructive" onClick={handleConfirm} disabled={isDeleting} className="min-w-[100px]">
             {isDeleting ? "Usuwanie..." : "Usuń aplikację"}
           </Button>
         </div>

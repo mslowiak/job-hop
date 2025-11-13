@@ -1,10 +1,4 @@
-import {
-  test,
-  expect,
-  TEST_USER,
-  TEST_APPLICATION,
-  cleanupTestData,
-} from "../test-setup";
+import { test, expect, TEST_USER, TEST_APPLICATION, cleanupTestData } from "../test-setup";
 
 /**
  * E2E test for adding a new job application

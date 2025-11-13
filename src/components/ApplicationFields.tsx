@@ -5,9 +5,7 @@ interface ApplicationFieldsProps {
   application: ApplicationViewModel;
 }
 
-export const ApplicationFields: React.FC<ApplicationFieldsProps> = ({
-  application,
-}) => {
+export const ApplicationFields: React.FC<ApplicationFieldsProps> = ({ application }) => {
   return (
     <dl className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Company Name */}
@@ -20,9 +18,7 @@ export const ApplicationFields: React.FC<ApplicationFieldsProps> = ({
 
       {/* Position Name */}
       <div className="md:col-span-2">
-        <dt className="block text-sm font-medium text-gray-700 mb-1">
-          Stanowisko
-        </dt>
+        <dt className="block text-sm font-medium text-gray-700 mb-1">Stanowisko</dt>
         <dd>
           <p className="text-gray-900 py-2 px-1">{application.position_name}</p>
         </dd>
@@ -30,9 +26,7 @@ export const ApplicationFields: React.FC<ApplicationFieldsProps> = ({
 
       {/* Application Date */}
       <div>
-        <dt className="block text-sm font-medium text-gray-700 mb-1">
-          Data aplikacji
-        </dt>
+        <dt className="block text-sm font-medium text-gray-700 mb-1">Data aplikacji</dt>
         <dd>
           <p className="text-gray-900 py-2 px-1">{application.formattedDate}</p>
         </dd>
@@ -83,37 +77,25 @@ export const ApplicationFields: React.FC<ApplicationFieldsProps> = ({
 
       {/* Notes */}
       <div className="md:col-span-2">
-        <dt className="block text-sm font-medium text-gray-700 mb-1">
-          Notatki
-        </dt>
+        <dt className="block text-sm font-medium text-gray-700 mb-1">Notatki</dt>
         <dd className="py-2 px-1">
-          <p className="text-gray-900 whitespace-pre-wrap leading-relaxed">
-            {application.notes || "Brak notatek"}
-          </p>
+          <p className="text-gray-900 whitespace-pre-wrap leading-relaxed">{application.notes || "Brak notatek"}</p>
         </dd>
       </div>
 
       {/* Created At */}
       <div>
-        <dt className="block text-sm font-medium text-gray-700 mb-1">
-          Utworzone
-        </dt>
+        <dt className="block text-sm font-medium text-gray-700 mb-1">Utworzone</dt>
         <dd className="py-2 px-1">
-          <p className="text-gray-600 text-sm">
-            {new Date(application.created_at).toLocaleDateString("pl-PL")}
-          </p>
+          <p className="text-gray-600 text-sm">{new Date(application.created_at).toLocaleDateString("pl-PL")}</p>
         </dd>
       </div>
 
       {/* Updated At */}
       <div>
-        <dt className="block text-sm font-medium text-gray-700 mb-1">
-          Zaktualizowane
-        </dt>
+        <dt className="block text-sm font-medium text-gray-700 mb-1">Zaktualizowane</dt>
         <dd className="py-2 px-1">
-          <p className="text-gray-600 text-sm">
-            {new Date(application.updated_at).toLocaleDateString("pl-PL")}
-          </p>
+          <p className="text-gray-600 text-sm">{new Date(application.updated_at).toLocaleDateString("pl-PL")}</p>
         </dd>
       </div>
     </dl>

@@ -10,10 +10,7 @@ interface RefreshButtonProps {
 /**
  * Button component to manually refresh statistics data
  */
-export const RefreshButton: React.FC<RefreshButtonProps> = ({
-  onRefresh,
-  disabled = false,
-}) => {
+export const RefreshButton: React.FC<RefreshButtonProps> = ({ onRefresh, disabled = false }) => {
   return (
     <Button
       onClick={onRefresh}

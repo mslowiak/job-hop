@@ -88,10 +88,7 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Company Name */}
       <div>
-        <label
-          htmlFor="edit_company_name"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="edit_company_name" className="block text-sm font-medium text-gray-700 mb-1">
           Firma *
         </label>
         <input
@@ -101,23 +98,16 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
           onChange={(e) => handleInputChange("company_name", e.target.value)}
           disabled={disabled || isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.company_name
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.company_name ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           required
         />
-        {errors.company_name && (
-          <p className="mt-1 text-sm text-red-600">{errors.company_name}</p>
-        )}
+        {errors.company_name && <p className="mt-1 text-sm text-red-600">{errors.company_name}</p>}
       </div>
 
       {/* Position Name */}
       <div>
-        <label
-          htmlFor="edit_position_name"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="edit_position_name" className="block text-sm font-medium text-gray-700 mb-1">
           Stanowisko *
         </label>
         <input
@@ -127,55 +117,35 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
           onChange={(e) => handleInputChange("position_name", e.target.value)}
           disabled={disabled || isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.position_name
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.position_name ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           required
         />
-        {errors.position_name && (
-          <p className="mt-1 text-sm text-red-600">{errors.position_name}</p>
-        )}
+        {errors.position_name && <p className="mt-1 text-sm text-red-600">{errors.position_name}</p>}
       </div>
 
       {/* Application Date */}
       <div>
-        <label
-          htmlFor="edit_application_date"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="edit_application_date" className="block text-sm font-medium text-gray-700 mb-1">
           Data aplikacji *
         </label>
         <input
           id="edit_application_date"
           type="date"
-          value={
-            formData.application_date
-              ? new Date(formData.application_date).toISOString().split("T")[0]
-              : ""
-          }
-          onChange={(e) =>
-            handleInputChange("application_date", e.target.value)
-          }
+          value={formData.application_date ? new Date(formData.application_date).toISOString().split("T")[0] : ""}
+          onChange={(e) => handleInputChange("application_date", e.target.value)}
           disabled={disabled || isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.application_date
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.application_date ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           required
         />
-        {errors.application_date && (
-          <p className="mt-1 text-sm text-red-600">{errors.application_date}</p>
-        )}
+        {errors.application_date && <p className="mt-1 text-sm text-red-600">{errors.application_date}</p>}
       </div>
 
       {/* Status */}
       <div>
-        <label
-          htmlFor="edit_status"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="edit_status" className="block text-sm font-medium text-gray-700 mb-1">
           Status
         </label>
         <select
@@ -184,9 +154,7 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
           onChange={(e) => handleInputChange("status", e.target.value)}
           disabled={disabled || isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.status
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.status ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
         >
           <option value="planned">Zaplanowane do wysłania</option>
@@ -196,17 +164,12 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
           <option value="rejected">Odrzucone</option>
           <option value="offer">Oferta pracy</option>
         </select>
-        {errors.status && (
-          <p className="mt-1 text-sm text-red-600">{errors.status}</p>
-        )}
+        {errors.status && <p className="mt-1 text-sm text-red-600">{errors.status}</p>}
       </div>
 
       {/* Link */}
       <div>
-        <label
-          htmlFor="edit_link"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="edit_link" className="block text-sm font-medium text-gray-700 mb-1">
           Link
         </label>
         <input
@@ -217,22 +180,15 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
           disabled={disabled || isSubmitting}
           placeholder="https://example.com"
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.link
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.link ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
         />
-        {errors.link && (
-          <p className="mt-1 text-sm text-red-600">{errors.link}</p>
-        )}
+        {errors.link && <p className="mt-1 text-sm text-red-600">{errors.link}</p>}
       </div>
 
       {/* Notes */}
       <div>
-        <label
-          htmlFor="edit_notes"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="edit_notes" className="block text-sm font-medium text-gray-700 mb-1">
           Notatki
         </label>
         <textarea
@@ -242,25 +198,16 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
           disabled={disabled || isSubmitting}
           rows={4}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.notes
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.notes ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           placeholder="Dodaj notatki..."
         />
-        {errors.notes && (
-          <p className="mt-1 text-sm text-red-600">{errors.notes}</p>
-        )}
+        {errors.notes && <p className="mt-1 text-sm text-red-600">{errors.notes}</p>}
       </div>
 
       {/* Form Actions */}
       <div className="flex justify-end space-x-4 pt-4">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleCancel}
-          disabled={disabled || isSubmitting}
-        >
+        <Button type="button" variant="outline" onClick={handleCancel} disabled={disabled || isSubmitting}>
           Anuluj
         </Button>
         <Button type="submit" disabled={disabled || isSubmitting}>

@@ -31,9 +31,7 @@ export class ApplicationService {
    * @param filters - Filter criteria including user ID, optional status, page number, and limit
    * @returns Promise containing applications array and pagination metadata
    */
-  async getApplications(
-    filters: GetApplicationsFilters,
-  ): Promise<ApplicationListResponseDto> {
+  async getApplications(filters: GetApplicationsFilters): Promise<ApplicationListResponseDto> {
     // Build the base query with user filtering
     let query = this.supabase
       .from("applications")
@@ -55,9 +53,7 @@ export class ApplicationService {
     const { data: applications, error: applicationsError } = await query;
 
     if (applicationsError) {
-      throw new Error(
-        `Failed to fetch applications: ${applicationsError.message}`,
-      );
+      throw new Error(`Failed to fetch applications: ${applicationsError.message}`);
     }
 
     // Get total count for pagination
@@ -73,25 +69,21 @@ export class ApplicationService {
     const { count, error: countError } = await countQuery;
 
     if (countError) {
-      throw new Error(
-        `Failed to get applications count: ${countError.message}`,
-      );
+      throw new Error(`Failed to get applications count: ${countError.message}`);
     }
 
     // Map database entities to DTOs (excluding user_id for security)
-    const applicationsDto: ApplicationDto[] = (applications || []).map(
-      (app) => ({
-        id: app.id,
-        company_name: app.company_name,
-        position_name: app.position_name,
-        application_date: app.application_date,
-        link: app.link,
-        notes: app.notes,
-        status: app.status,
-        created_at: app.created_at,
-        updated_at: app.updated_at,
-      }),
-    );
+    const applicationsDto: ApplicationDto[] = (applications || []).map((app) => ({
+      id: app.id,
+      company_name: app.company_name,
+      position_name: app.position_name,
+      application_date: app.application_date,
+      link: app.link,
+      notes: app.notes,
+      status: app.status,
+      created_at: app.created_at,
+      updated_at: app.updated_at,
+    }));
 
     return {
       applications: applicationsDto,
@@ -108,9 +100,7 @@ export class ApplicationService {
    * @param command - The create application command with user_id
    * @returns Promise containing the created application response
    */
-  async createApplication(
-    command: CreateApplicationCommand,
-  ): Promise<ApplicationResponse> {
+  async createApplication(command: CreateApplicationCommand): Promise<ApplicationResponse> {
     // Prepare data for insertion
     const insertData = {
       user_id: command.user_id,
@@ -123,11 +113,7 @@ export class ApplicationService {
     };
 
     // Insert into applications table and return the created record
-    const { data, error } = await this.supabase
-      .from("applications")
-      .insert(insertData)
-      .select()
-      .single();
+    const { data, error } = await this.supabase.from("applications").insert(insertData).select().single();
 
     if (error) {
       throw new Error(`Failed to create application: ${error.message}`);
@@ -158,10 +144,7 @@ export class ApplicationService {
    * @returns Promise containing the application response
    * @throws NotFoundError if application doesn't exist or doesn't belong to the user
    */
-  async getApplicationById(
-    id: string,
-    userId: string,
-  ): Promise<ApplicationResponse> {
+  async getApplicationById(id: string, userId: string): Promise<ApplicationResponse> {
     try {
       // Fetch application with ownership verification
       const { data, error } = await this.supabase
@@ -211,20 +194,13 @@ export class ApplicationService {
    * @returns Promise containing the updated application response
    * @throws NotFoundError if application doesn't exist or doesn't belong to the user
    */
-  async updateApplication(
-    id: string,
-    userId: string,
-    updates: UpdateApplicationCommand,
-  ): Promise<ApplicationResponse> {
+  async updateApplication(id: string, userId: string, updates: UpdateApplicationCommand): Promise<ApplicationResponse> {
     try {
       // Build update data - only include non-undefined fields
       const updateData: Record<string, string | null | undefined> = {};
-      if (updates.company_name !== undefined)
-        updateData.company_name = updates.company_name;
-      if (updates.position_name !== undefined)
-        updateData.position_name = updates.position_name;
-      if (updates.application_date !== undefined)
-        updateData.application_date = updates.application_date;
+      if (updates.company_name !== undefined) updateData.company_name = updates.company_name;
+      if (updates.position_name !== undefined) updateData.position_name = updates.position_name;
+      if (updates.application_date !== undefined) updateData.application_date = updates.application_date;
       if (updates.link !== undefined) updateData.link = updates.link;
       if (updates.notes !== undefined) updateData.notes = updates.notes;
       if (updates.status !== undefined) updateData.status = updates.status;
@@ -320,9 +296,7 @@ export class ApplicationService {
       .eq("user_id", userId);
 
     if (statusError) {
-      throw new Error(
-        `Failed to fetch application statistics: ${statusError.message}`,
-      );
+      throw new Error(`Failed to fetch application statistics: ${statusError.message}`);
     }
 
     // Count applications by status

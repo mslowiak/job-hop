@@ -112,12 +112,7 @@ export const ResetPasswordForm: React.FC = () => {
     return (
       <div className="text-center">
         <div className="mb-4">
-          <svg
-            className="mx-auto h-12 w-12 text-red-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+          <svg className="mx-auto h-12 w-12 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -126,16 +121,9 @@ export const ResetPasswordForm: React.FC = () => {
             />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
-          Nieprawidłowy link
-        </h3>
-        <p className="text-sm text-gray-600 mb-6">
-          Link do resetowania hasła jest nieprawidłowy lub wygasł.
-        </p>
-        <a
-          href="/auth/forgot-password"
-          className="text-blue-600 hover:text-blue-500 font-medium"
-        >
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Nieprawidłowy link</h3>
+        <p className="text-sm text-gray-600 mb-6">Link do resetowania hasła jest nieprawidłowy lub wygasł.</p>
+        <a href="/auth/forgot-password" className="text-blue-600 hover:text-blue-500 font-medium">
           ← Poproś o nowy link
         </a>
       </div>
@@ -146,12 +134,7 @@ export const ResetPasswordForm: React.FC = () => {
     return (
       <div className="text-center">
         <div className="mb-4">
-          <svg
-            className="mx-auto h-12 w-12 text-green-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+          <svg className="mx-auto h-12 w-12 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -160,16 +143,9 @@ export const ResetPasswordForm: React.FC = () => {
             />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
-          Hasło zostało zmienione!
-        </h3>
-        <p className="text-sm text-gray-600 mb-6">
-          Możesz teraz zalogować się używając nowego hasła.
-        </p>
-        <a
-          href="/auth/login"
-          className="text-blue-600 hover:text-blue-500 font-medium"
-        >
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Hasło zostało zmienione!</h3>
+        <p className="text-sm text-gray-600 mb-6">Możesz teraz zalogować się używając nowego hasła.</p>
+        <a href="/auth/login" className="text-blue-600 hover:text-blue-500 font-medium">
           ← Przejdź do logowania
         </a>
       </div>
@@ -180,10 +156,7 @@ export const ResetPasswordForm: React.FC = () => {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Password Field */}
       <div>
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
           Nowe hasło *
         </label>
         <input
@@ -193,24 +166,17 @@ export const ResetPasswordForm: React.FC = () => {
           onChange={(e) => handleInputChange("password", e.target.value)}
           disabled={isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.password
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.password ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           placeholder="Minimum 8 znaków"
           required
         />
-        {errors.password && (
-          <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-        )}
+        {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
       </div>
 
       {/* Confirm Password Field */}
       <div>
-        <label
-          htmlFor="confirmPassword"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
           Potwierdź nowe hasło *
         </label>
         <input
@@ -220,16 +186,12 @@ export const ResetPasswordForm: React.FC = () => {
           onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
           disabled={isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.confirmPassword
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.confirmPassword ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           placeholder="Powtórz hasło"
           required
         />
-        {errors.confirmPassword && (
-          <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-        )}
+        {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
       </div>
 
       {/* Submit Button */}
@@ -241,10 +203,7 @@ export const ResetPasswordForm: React.FC = () => {
 
       {/* Links */}
       <div className="text-center">
-        <a
-          href="/auth/login"
-          className="text-sm text-blue-600 hover:text-blue-500 font-medium"
-        >
+        <a href="/auth/login" className="text-sm text-blue-600 hover:text-blue-500 font-medium">
           ← Powrót do logowania
         </a>
       </div>

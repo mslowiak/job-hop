@@ -1,10 +1,7 @@
 import type { AuthFormData } from "../../types";
 
 const parseAuthError = (error: string): string => {
-  if (
-    error.includes("Invalid login") ||
-    error.includes("Invalid credentials")
-  ) {
+  if (error.includes("Invalid login") || error.includes("Invalid credentials")) {
     return "Nieprawidłowy email lub hasło";
   }
   if (error.includes("User already registered")) {
