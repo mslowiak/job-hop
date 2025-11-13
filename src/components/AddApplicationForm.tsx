@@ -71,7 +71,6 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
     try {
       await onSubmit(formData as CreateApplicationRequest);
     } catch (error) {
-      console.error("Form submission failed:", error);
       // Error handling is done by the parent component
     } finally {
       setIsSubmitting(false);

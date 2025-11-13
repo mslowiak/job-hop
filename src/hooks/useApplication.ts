@@ -70,7 +70,6 @@ export const useApplication = (id: string) => {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to load application";
       setError(errorMessage);
-      console.error("useApplication fetch error:", err);
     } finally {
       setLoading(false);
     }

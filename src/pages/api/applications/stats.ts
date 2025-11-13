@@ -33,14 +33,6 @@ export const GET: APIRoute = async (context) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    // Log unexpected errors with context
-    console.error("API /api/applications/stats GET error:", {
-      method: "GET",
-      endpoint: "/api/applications/stats",
-      error: error instanceof Error ? error.message : String(error),
-      timestamp: new Date(),
-    });
-
     return createErrorResponse(500, "Internal server error");
   }
 };

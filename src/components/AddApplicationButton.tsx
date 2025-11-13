@@ -16,13 +16,8 @@ export const AddApplicationButton: React.FC<AddApplicationButtonProps> = ({
   const handleClick = () => {
     if (onClick) {
       onClick();
-    } else {
-      // Default navigation - for now, just log (will implement proper routing later)
-      console.log("Navigate to /applications/new");
-      // In a real implementation, this would use:
-      // window.location.href = '/applications/new';
-      // or React Router's navigate('/applications/new');
     }
+    // Default navigation handled by parent component
   };
 
   return (

@@ -15,10 +15,7 @@ interface UserMenuProps {
 
 export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error("Logout error:", error);
-    }
+    await supabase.auth.signOut();
     window.location.href = "/auth/login";
   };
 

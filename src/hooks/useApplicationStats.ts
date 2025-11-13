@@ -69,7 +69,6 @@ export const useApplicationStats = (userId: string) => {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to load statistics";
       setError(errorMessage);
-      console.error("useApplicationStats fetch error:", err);
     } finally {
       setLoading(false);
     }

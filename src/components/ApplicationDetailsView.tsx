@@ -63,7 +63,6 @@ export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({
       setIsEditing(false);
       refetch();
     } catch (err) {
-      console.error("Save failed:", err);
       const errorMessage =
         err instanceof Error
           ? err.message
@@ -95,7 +94,6 @@ export const ApplicationDetailsView: React.FC<ApplicationDetailsViewProps> = ({
       toast.success("Aplikacja została pomyślnie usunięta");
       window.location.href = "/dashboard";
     } catch (err) {
-      console.error("Delete failed:", err);
       const errorMessage =
         err instanceof Error ? err.message : "Wystąpił błąd podczas usuwania";
       toast.error(errorMessage);

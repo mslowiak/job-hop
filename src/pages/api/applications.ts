@@ -83,15 +83,6 @@ export const GET: APIRoute = async ({ request, cookies }) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    const requestUrl = new URL(request.url);
-    console.error("API /applications GET error:", {
-      method: "GET",
-      endpoint: "/api/applications",
-      error: error instanceof Error ? error.message : String(error),
-      queryParams: Object.fromEntries(requestUrl.searchParams),
-      timestamp: new Date(),
-    });
-
     return createErrorResponse(500, "Internal server error.");
   }
 };
@@ -104,20 +95,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const validationResult = CreateApplicationRequestSchema.safeParse(body);
 
     if (!validationResult.success) {
-      // Extract validation errors and format for safe response
-      const errors = validationResult.error.errors.map((err) => ({
-        field: err.path.join("."),
-        message: err.message,
-        code: err.code,
-      }));
-
-      console.error("POST /api/applications validation errors:", {
-        method: "POST",
-        endpoint: "/api/applications",
-        errors,
-        timestamp: new Date(),
-      });
-
       return createErrorResponse(
         400,
         "Validation failed. Please check your input data.",
@@ -175,14 +152,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("API /applications POST error:", {
-      method: "POST",
-      endpoint: "/api/applications",
-      error: error instanceof Error ? error.message : String(error),
-      user_id: "[REDACTED]",
-      timestamp: new Date(),
-    });
-
     return createErrorResponse(500, "Internal server error.");
   }
 };

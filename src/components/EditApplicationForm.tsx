@@ -74,7 +74,6 @@ export const EditApplicationForm: React.FC<EditApplicationFormProps> = ({
       await onSubmit(formData);
     } catch (error) {
       // Error handling is done by the parent component
-      console.error("Form submission failed:", error);
     } finally {
       setIsSubmitting(false);
     }

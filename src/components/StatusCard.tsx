@@ -18,17 +18,14 @@ export const StatusCard: React.FC<StatusCardProps> = ({
 }) => {
   // Validate inputs
   if (!isValidApplicationStatus(status)) {
-    console.warn("StatusCard: Invalid status:", status);
     return null;
   }
 
   if (typeof count !== "number" || count < 0) {
-    console.warn("StatusCard: Invalid count:", count);
     return null;
   }
 
   if (!label || typeof label !== "string") {
-    console.warn("StatusCard: Invalid label:", label);
     return null;
   }
 

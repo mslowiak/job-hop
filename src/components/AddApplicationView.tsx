@@ -31,7 +31,6 @@ export const AddApplicationView: React.FC = () => {
       // Navigate back to dashboard after successful creation
       window.location.href = "/dashboard";
     } catch (err) {
-      console.error("Application creation failed:", err);
       const errorMessage =
         err instanceof Error
           ? err.message
