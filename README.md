@@ -74,8 +74,8 @@ The app addresses the chaos of tracking multiple applications, providing a singl
    - Create a `.env` file in the root directory.
    - Add your Supabase credentials (obtained from your Supabase project dashboard):
      ```
-     SUPABASE_URL=your_supabase_project_url
-     SUPABASE_ANON_KEY=your_supabase_anon_key
+     PUBLIC_SUPABASE_URL=your_supabase_project_url
+     PUBLIC_SUPABASE_KEY=your_supabase_anon_key
      ```
    - For production, add `SUPABASE_SERVICE_ROLE_KEY` if needed for admin operations.
 4. Create necessary database tables in Supabase:
