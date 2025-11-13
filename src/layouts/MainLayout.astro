@@ -22,7 +22,7 @@ const { user } = Astro.locals;
   </head>
   <body>
     <!-- Navigation Header -->
-    <header class="bg-white border-b border-gray-200 px-4 py-3">
+    <header class="bg-white border-b border-gray-200 px-4 py-3 relative z-10">
       <nav class="flex items-center justify-between max-w-7xl mx-auto">
         <div class="flex items-center space-x-4">
           <h1 class="text-xl font-semibold text-gray-900">JobHop</h1>
@@ -52,7 +52,9 @@ const { user } = Astro.locals;
                 >
                   Statystyki
                 </a>
-                <UserMenu user={user} client:load />
+                <div class="relative z-20">
+                  <UserMenu user={user} client:load />
+                </div>
               </>
             ) : (
               <>
