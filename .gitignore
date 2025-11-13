@@ -8,3 +8,7 @@ dist
 .env
 .env.test
 .env.production
+
+# playwright
+test-results
+playwright-report
