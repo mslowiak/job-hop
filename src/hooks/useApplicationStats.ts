@@ -5,7 +5,7 @@ import type { ApplicationStatsDto, ApplicationStatus } from "../types";
  * Hook for managing application statistics data fetching and state
  * Provides refetch capability and proper error handling
  */
-export const useApplicationStats = (userId: string) => {
+export const useApplicationStats = () => {
   const [data, setData] = useState<ApplicationStatsDto | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

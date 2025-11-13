@@ -13,13 +13,7 @@ const ResetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-interface ResetPasswordFormProps {
-  loading?: boolean;
-}
-
-export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
-  loading = false,
-}) => {
+export const ResetPasswordForm: React.FC = () => {
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -107,7 +101,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
 
       setIsSuccess(true);
       toast.success("Hasło zostało pomyślnie zmienione!");
-    } catch (error) {
+    } catch {
       toast.error("Błąd połączenia. Spróbuj ponownie.");
     } finally {
       setIsSubmitting(false);

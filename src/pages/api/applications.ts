@@ -82,7 +82,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error) {
+  } catch {
     return createErrorResponse(500, "Internal server error.");
   }
 };
@@ -151,7 +151,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error) {
+  } catch {
     return createErrorResponse(500, "Internal server error.");
   }
 };

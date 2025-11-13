@@ -7,13 +7,7 @@ const ForgotPasswordSchema = z.object({
   email: z.string().email("Wprowadź prawidłowy adres email"),
 });
 
-interface ForgotPasswordFormProps {
-  loading?: boolean;
-}
-
-export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
-  loading = false,
-}) => {
+export const ForgotPasswordForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,7 +54,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
 
       setIsSuccess(true);
       toast.success("Link do resetowania hasła został wysłany na Twój email");
-    } catch (error) {
+    } catch {
       toast.error("Błąd połączenia. Spróbuj ponownie.");
     } finally {
       setIsSubmitting(false);
