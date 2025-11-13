@@ -1,3 +1,4 @@
+import { Locator } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 /**
@@ -89,7 +90,7 @@ export class DashboardPage extends BasePage {
   /**
    * Get application row by company and position
    */
-  async getApplicationRow(companyName: string, positionName: string): Promise<any> {
+  async getApplicationRow(companyName: string, positionName: string): Promise<Locator | null> {
     const rows = await this.page.locator('[data-testid^="application-row-"]').all();
 
     for (const row of rows) {

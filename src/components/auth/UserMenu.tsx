@@ -4,8 +4,13 @@ import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
 import { supabase } from "../../db/supabase.client";
 
+interface User {
+  email: string;
+  id: string;
+}
+
 interface UserMenuProps {
-  user: any;
+  user: User;
 }
 
 export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
