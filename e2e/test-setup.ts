@@ -201,16 +201,13 @@ export async function cleanupTestData() {
     }
 
     // Get all applications for the test user
-    const getApplicationsResponse = await fetch(
-      "http://localhost:3000/api/applications",
-      {
-        method: "GET",
-        headers: {
-          Cookie: cookies,
-          "Content-Type": "application/json",
-        },
+    const getApplicationsResponse = await fetch("http://localhost:3000/api/applications", {
+      method: "GET",
+      headers: {
+        Cookie: cookies,
+        "Content-Type": "application/json",
       },
-    );
+    });
 
     if (!getApplicationsResponse.ok) {
       return;
@@ -221,16 +218,13 @@ export async function cleanupTestData() {
     // Delete each application
     for (const application of applications.applications || []) {
       try {
-        await fetch(
-          `http://localhost:3000/api/applications/${application.id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Cookie: cookies,
-              "Content-Type": "application/json",
-            },
+        await fetch(`http://localhost:3000/api/applications/${application.id}`, {
+          method: "DELETE",
+          headers: {
+            Cookie: cookies,
+            "Content-Type": "application/json",
           },
-        );
+        });
       } catch {
         // Failed to delete application
       }

@@ -38,10 +38,7 @@ export const GET: APIRoute = async (context) => {
 
     // Call service layer to get application by ID
     const applicationService = new ApplicationService(context.locals.supabase);
-    const application = await applicationService.getApplicationById(
-      id,
-      user.id,
-    );
+    const application = await applicationService.getApplicationById(id, user.id);
 
     // Return the application data
     return new Response(JSON.stringify(application), {
@@ -76,8 +73,7 @@ export const PATCH: APIRoute = async (context) => {
     }
 
     // Validate request body using Zod schema
-    const validationResult =
-      UpdateApplicationRequestSchema.safeParse(requestBody);
+    const validationResult = UpdateApplicationRequestSchema.safeParse(requestBody);
 
     if (!validationResult.success) {
       return createErrorResponse(400, "Invalid request data");
@@ -93,11 +89,7 @@ export const PATCH: APIRoute = async (context) => {
 
     // Call service layer to update application
     const applicationService = new ApplicationService(context.locals.supabase);
-    const updatedApplication = await applicationService.updateApplication(
-      id,
-      user.id,
-      validatedData,
-    );
+    const updatedApplication = await applicationService.updateApplication(id, user.id, validatedData);
 
     // Return the updated application data
     return new Response(JSON.stringify(updatedApplication), {

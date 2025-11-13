@@ -111,7 +111,7 @@ describe("ApplicationService", () => {
 
       // Act & Assert
       await expect(service.getApplicationStats(userId)).rejects.toThrow(
-        `Failed to fetch application statistics: ${errorMessage}`,
+        `Failed to fetch application statistics: ${errorMessage}`
       );
     });
 

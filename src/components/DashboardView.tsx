@@ -34,12 +34,7 @@ export const DashboardView: React.FC = () => {
   };
 
   return (
-    <main
-      role="main"
-      aria-label="Dashboard"
-      className="space-y-6"
-      data-testid="dashboard-main"
-    >
+    <main role="main" aria-label="Dashboard" className="space-y-6" data-testid="dashboard-main">
       {/* Header with Add Button and Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -50,11 +45,7 @@ export const DashboardView: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <StatusFilter
-            filter={filter}
-            onFilterChange={handleFilterChange}
-            options={statusOptions}
-          />
+          <StatusFilter filter={filter} onFilterChange={handleFilterChange} options={statusOptions} />
           <AddApplicationButton onClick={handleAddButtonClick} />
         </div>
       </div>

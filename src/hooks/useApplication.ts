@@ -1,9 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import type {
-  ApplicationResponse,
-  ApiErrorResponse,
-  ApplicationViewModel,
-} from "../types";
+import type { ApplicationResponse, ApiErrorResponse, ApplicationViewModel } from "../types";
 import { statusLabels } from "../types";
 
 /**
@@ -11,9 +7,7 @@ import { statusLabels } from "../types";
  * Provides loading states, error handling, and data transformation
  */
 export const useApplication = (id: string) => {
-  const [application, setApplication] = useState<ApplicationResponse | null>(
-    null,
-  );
+  const [application, setApplication] = useState<ApplicationResponse | null>(null);
   const [viewModel, setViewModel] = useState<ApplicationViewModel | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,23 +15,20 @@ export const useApplication = (id: string) => {
   /**
    * Transforms ApplicationResponse to ApplicationViewModel with formatted display fields
    */
-  const transformToViewModel = useCallback(
-    (data: ApplicationResponse): ApplicationViewModel => {
-      const date = new Date(data.application_date);
-      const formattedDate = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
+  const transformToViewModel = useCallback((data: ApplicationResponse): ApplicationViewModel => {
+    const date = new Date(data.application_date);
+    const formattedDate = date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
 
-      return {
-        ...data,
-        formattedDate,
-        statusLabel: statusLabels[data.status],
-      };
-    },
-    [],
-  );
+    return {
+      ...data,
+      formattedDate,
+      statusLabel: statusLabels[data.status],
+    };
+  }, []);
 
   /**
    * Fetches application data from the API
@@ -58,17 +49,14 @@ export const useApplication = (id: string) => {
 
       if (!response.ok) {
         const errorData: ApiErrorResponse = await response.json();
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`,
-        );
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
       const data: ApplicationResponse = await response.json();
       setApplication(data);
       setViewModel(transformToViewModel(data));
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to load application";
+      const errorMessage = err instanceof Error ? err.message : "Failed to load application";
       setError(errorMessage);
     } finally {
       setLoading(false);

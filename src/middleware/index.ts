@@ -17,40 +17,36 @@ const PUBLIC_PATHS = [
   "/api/auth/reset-password",
 ];
 
-export const onRequest = defineMiddleware(
-  async ({ locals, cookies, url, request, redirect }, next) => {
-    // Create Supabase server instance
-    const supabase = createSupabaseServerInstance({
-      cookies,
-      headers: request.headers,
-    });
-    locals.supabase = supabase;
+export const onRequest = defineMiddleware(async ({ locals, cookies, url, request, redirect }, next) => {
+  // Create Supabase server instance
+  const supabase = createSupabaseServerInstance({
+    cookies,
+    headers: request.headers,
+  });
+  locals.supabase = supabase;
 
-    // Skip auth check for public paths
-    if (PUBLIC_PATHS.includes(url.pathname)) {
-      return next();
-    }
-
-    // IMPORTANT: Always get user session first before any other operations
-    // Use getSession() instead of getUser() to avoid race conditions with cookie setting
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    if (session?.user) {
-      locals.user = {
-        email: session.user.email,
-        id: session.user.id,
-      };
-    } else {
-      // Redirect to login for protected routes
-      const redirectUrl =
-        url.pathname === "/"
-          ? "/auth/login"
-          : `/auth/login?redirect=${encodeURIComponent(url.pathname)}`;
-      return redirect(redirectUrl);
-    }
-
+  // Skip auth check for public paths
+  if (PUBLIC_PATHS.includes(url.pathname)) {
     return next();
-  },
-);
+  }
+
+  // IMPORTANT: Always get user session first before any other operations
+  // Use getSession() instead of getUser() to avoid race conditions with cookie setting
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session?.user) {
+    locals.user = {
+      email: session.user.email,
+      id: session.user.id,
+    };
+  } else {
+    // Redirect to login for protected routes
+    const redirectUrl =
+      url.pathname === "/" ? "/auth/login" : `/auth/login?redirect=${encodeURIComponent(url.pathname)}`;
+    return redirect(redirectUrl);
+  }
+
+  return next();
+});

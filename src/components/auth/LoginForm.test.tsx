@@ -35,9 +35,7 @@ describe("LoginForm", () => {
 
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/hasło/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /zaloguj się/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /zaloguj się/i })).toBeInTheDocument();
   });
 
   it("should show validation errors for empty fields on submit", async () => {
@@ -59,16 +57,12 @@ describe("LoginForm", () => {
     fireEvent.click(screen.getByRole("button", { name: /zaloguj się/i }));
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/nieprawidłowy format email/i),
-      ).toBeInTheDocument(); // Adjust based on Zod schema
+      expect(screen.getByText(/nieprawidłowy format email/i)).toBeInTheDocument(); // Adjust based on Zod schema
     });
   });
 
   it("should call loginUser on successful submit and show success toast", async () => {
-    const mockLogin = vi
-      .mocked(loginUser)
-      .mockResolvedValue({ user: { id: 1 } });
+    const mockLogin = vi.mocked(loginUser).mockResolvedValue({ user: { id: 1 } });
     mockToastSuccess.mockReturnValue();
 
     render(<LoginForm />);
@@ -92,9 +86,7 @@ describe("LoginForm", () => {
   });
 
   it("should show error toast on login failure", async () => {
-    vi.mocked(loginUser).mockRejectedValue(
-      new Error("Nieprawidłowy email lub hasło"),
-    );
+    vi.mocked(loginUser).mockRejectedValue(new Error("Nieprawidłowy email lub hasło"));
     mockToastError.mockReturnValue();
 
     render(<LoginForm />);
@@ -109,16 +101,12 @@ describe("LoginForm", () => {
     fireEvent.click(screen.getByRole("button", { name: /zaloguj się/i }));
 
     await waitFor(() => {
-      expect(mockToastError).toHaveBeenCalledWith(
-        "Nieprawidłowy email lub hasło",
-      );
+      expect(mockToastError).toHaveBeenCalledWith("Nieprawidłowy email lub hasło");
     });
   });
 
   it("should disable submit button during submission", async () => {
-    vi.mocked(loginUser).mockImplementation(
-      () => new Promise((resolve) => setTimeout(resolve, 100)),
-    );
+    vi.mocked(loginUser).mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)));
 
     render(<LoginForm />);
 

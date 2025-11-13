@@ -84,10 +84,7 @@ export class AddApplicationPage extends BasePage {
    */
   async submitApplication(): Promise<void> {
     // Wait for navigation after form submission
-    await Promise.all([
-      this.page.waitForURL("**/dashboard", { timeout: 10000 }),
-      this.page.click(this.submitButton),
-    ]);
+    await Promise.all([this.page.waitForURL("**/dashboard", { timeout: 10000 }), this.page.click(this.submitButton)]);
   }
 
   /**
@@ -109,9 +106,7 @@ export class AddApplicationPage extends BasePage {
    * Get form validation errors
    */
   async getFormErrors(): Promise<string[]> {
-    const errorElements = await this.page
-      .locator(".text-red-600")
-      .allTextContents();
+    const errorElements = await this.page.locator(".text-red-600").allTextContents();
     return errorElements;
   }
 
@@ -119,9 +114,7 @@ export class AddApplicationPage extends BasePage {
    * Check if submit button is enabled
    */
   async isSubmitButtonEnabled(): Promise<boolean> {
-    const isDisabled = await this.page
-      .locator(this.submitButton)
-      .getAttribute("disabled");
+    const isDisabled = await this.page.locator(this.submitButton).getAttribute("disabled");
     return isDisabled === null;
   }
 

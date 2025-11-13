@@ -46,10 +46,7 @@ export const RegisterForm: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Email Field */}
       <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
           Email *
         </label>
         <input
@@ -61,17 +58,12 @@ export const RegisterForm: React.FC = () => {
           placeholder="twoj.email@example.com"
           data-testid="register-email-input"
         />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-        )}
+        {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
       </div>
 
       {/* Password Field */}
       <div>
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
           Hasło *
         </label>
         <input
@@ -83,17 +75,12 @@ export const RegisterForm: React.FC = () => {
           placeholder="Minimum 8 znaków"
           data-testid="register-password-input"
         />
-        {errors.password && (
-          <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-        )}
+        {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
       </div>
 
       {/* Confirm Password Field */}
       <div>
-        <label
-          htmlFor="confirmPassword"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
           Potwierdź hasło *
         </label>
         <input
@@ -105,21 +92,12 @@ export const RegisterForm: React.FC = () => {
           placeholder="Powtórz hasło"
           data-testid="register-confirm-password-input"
         />
-        {errors.confirmPassword && (
-          <p className="mt-1 text-sm text-red-600">
-            {errors.confirmPassword.message}
-          </p>
-        )}
+        {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>}
       </div>
 
       {/* Submit Button */}
       <div className="pt-4">
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full"
-          data-testid="register-submit-btn"
-        >
+        <Button type="submit" disabled={isSubmitting} className="w-full" data-testid="register-submit-btn">
           {isSubmitting ? "Rejestrowanie..." : "Zarejestruj się"}
         </Button>
       </div>
@@ -128,10 +106,7 @@ export const RegisterForm: React.FC = () => {
       <div className="text-center">
         <p className="text-sm text-gray-600">
           Masz już konto?{" "}
-          <a
-            href="/auth/login"
-            className="text-blue-600 hover:text-blue-500 font-medium"
-          >
+          <a href="/auth/login" className="text-blue-600 hover:text-blue-500 font-medium">
             Zaloguj się
           </a>
         </p>

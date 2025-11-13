@@ -1,13 +1,13 @@
 ---
 // Landing page with auth CTAs for unauthenticated users
 // Future: Add auth check and redirect authenticated users to /dashboard
- 
+
 import MainLayout from "../layouts/MainLayout.astro";
 import Welcome from "../components/Welcome.astro";
 
 const { user } = Astro.locals;
 const url = new URL(Astro.request.url);
-const code = url.searchParams.get('code');
+const code = url.searchParams.get("code");
 
 // Handle password reset redirect from Supabase
 if (code) {

@@ -10,9 +10,7 @@ interface AddApplicationButtonProps {
  * Prominent button component for adding new applications
  * Uses Shadcn Button with icon and navigation to creation form
  */
-export const AddApplicationButton: React.FC<AddApplicationButtonProps> = ({
-  onClick,
-}) => {
+export const AddApplicationButton: React.FC<AddApplicationButtonProps> = ({ onClick }) => {
   const handleClick = () => {
     if (onClick) {
       onClick();

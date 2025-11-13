@@ -17,11 +17,7 @@ interface ApplicationRowProps {
  * Clickable row for navigation to details, with status dropdown for quick updates
  * Memoized to prevent unnecessary re-renders
  */
-const ApplicationRow: React.FC<ApplicationRowProps> = ({
-  application,
-  onClick,
-  onStatusChange,
-}) => {
+const ApplicationRow: React.FC<ApplicationRowProps> = ({ application, onClick, onStatusChange }) => {
   return (
     <TableRow
       className="cursor-pointer hover:bg-muted/50"

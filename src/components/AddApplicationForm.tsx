@@ -9,11 +9,7 @@ interface AddApplicationFormProps {
   disabled?: boolean;
 }
 
-export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
-  onSubmit,
-  onCancel,
-  disabled = false,
-}) => {
+export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({ onSubmit, onCancel, disabled = false }) => {
   const [formData, setFormData] = useState<Partial<CreateApplicationRequest>>({
     company_name: "",
     position_name: "",
@@ -86,10 +82,7 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Company Name */}
       <div>
-        <label
-          htmlFor="company_name"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="company_name" className="block text-sm font-medium text-gray-700 mb-1">
           Firma *
         </label>
         <input
@@ -99,25 +92,18 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
           onChange={(e) => handleInputChange("company_name", e.target.value)}
           disabled={disabled || isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.company_name
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.company_name ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           placeholder="np. Google, Microsoft, Apple"
           required
           data-testid="application-company-input"
         />
-        {errors.company_name && (
-          <p className="mt-1 text-sm text-red-600">{errors.company_name}</p>
-        )}
+        {errors.company_name && <p className="mt-1 text-sm text-red-600">{errors.company_name}</p>}
       </div>
 
       {/* Position Name */}
       <div>
-        <label
-          htmlFor="position_name"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="position_name" className="block text-sm font-medium text-gray-700 mb-1">
           Stanowisko *
         </label>
         <input
@@ -127,58 +113,38 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
           onChange={(e) => handleInputChange("position_name", e.target.value)}
           disabled={disabled || isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.position_name
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.position_name ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           placeholder="np. Frontend Developer, Product Manager"
           required
           data-testid="application-position-input"
         />
-        {errors.position_name && (
-          <p className="mt-1 text-sm text-red-600">{errors.position_name}</p>
-        )}
+        {errors.position_name && <p className="mt-1 text-sm text-red-600">{errors.position_name}</p>}
       </div>
 
       {/* Application Date */}
       <div>
-        <label
-          htmlFor="application_date"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="application_date" className="block text-sm font-medium text-gray-700 mb-1">
           Data aplikacji *
         </label>
         <input
           id="application_date"
           type="date"
-          value={
-            formData.application_date
-              ? new Date(formData.application_date).toISOString().split("T")[0]
-              : ""
-          }
-          onChange={(e) =>
-            handleInputChange("application_date", e.target.value)
-          }
+          value={formData.application_date ? new Date(formData.application_date).toISOString().split("T")[0] : ""}
+          onChange={(e) => handleInputChange("application_date", e.target.value)}
           disabled={disabled || isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.application_date
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.application_date ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           required
           data-testid="application-date-input"
         />
-        {errors.application_date && (
-          <p className="mt-1 text-sm text-red-600">{errors.application_date}</p>
-        )}
+        {errors.application_date && <p className="mt-1 text-sm text-red-600">{errors.application_date}</p>}
       </div>
 
       {/* Status */}
       <div>
-        <label
-          htmlFor="status"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
           Status aplikacji
         </label>
         <select
@@ -187,9 +153,7 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
           onChange={(e) => handleInputChange("status", e.target.value)}
           disabled={disabled || isSubmitting}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.status
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.status ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           data-testid="application-status-select"
         >
@@ -200,17 +164,12 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
           <option value="rejected">Odrzucone</option>
           <option value="offer">Oferta pracy</option>
         </select>
-        {errors.status && (
-          <p className="mt-1 text-sm text-red-600">{errors.status}</p>
-        )}
+        {errors.status && <p className="mt-1 text-sm text-red-600">{errors.status}</p>}
       </div>
 
       {/* Link */}
       <div>
-        <label
-          htmlFor="link"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="link" className="block text-sm font-medium text-gray-700 mb-1">
           Link do oferty
         </label>
         <input
@@ -221,23 +180,16 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
           disabled={disabled || isSubmitting}
           placeholder="https://example.com/job-offer"
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.link
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.link ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           data-testid="application-link-input"
         />
-        {errors.link && (
-          <p className="mt-1 text-sm text-red-600">{errors.link}</p>
-        )}
+        {errors.link && <p className="mt-1 text-sm text-red-600">{errors.link}</p>}
       </div>
 
       {/* Notes */}
       <div>
-        <label
-          htmlFor="notes"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
           Notatki
         </label>
         <textarea
@@ -247,16 +199,12 @@ export const AddApplicationForm: React.FC<AddApplicationFormProps> = ({
           disabled={disabled || isSubmitting}
           rows={4}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
-            errors.notes
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300"
+            errors.notes ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           }`}
           placeholder="Dodaj dodatkowe informacje, wymagania, uwagi..."
           data-testid="application-notes-textarea"
         />
-        {errors.notes && (
-          <p className="mt-1 text-sm text-red-600">{errors.notes}</p>
-        )}
+        {errors.notes && <p className="mt-1 text-sm text-red-600">{errors.notes}</p>}
       </div>
 
       {/* Form Actions */}

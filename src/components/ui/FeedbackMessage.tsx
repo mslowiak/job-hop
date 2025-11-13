@@ -6,10 +6,7 @@ interface FeedbackMessageProps {
   type: "success" | "error";
 }
 
-export const FeedbackMessage: React.FC<FeedbackMessageProps> = ({
-  message,
-  type,
-}) => {
+export const FeedbackMessage: React.FC<FeedbackMessageProps> = ({ message, type }) => {
   React.useEffect(() => {
     if (type === "success") {
       toast.success(message);

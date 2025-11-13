@@ -21,9 +21,7 @@ export const AddApplicationView: React.FC = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`,
-        );
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
       await response.json(); // We don't need the result data
@@ -31,10 +29,7 @@ export const AddApplicationView: React.FC = () => {
       // Navigate back to dashboard after successful creation
       window.location.href = "/dashboard";
     } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Wystąpił błąd podczas dodawania aplikacji";
+      const errorMessage = err instanceof Error ? err.message : "Wystąpił błąd podczas dodawania aplikacji";
       toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -69,23 +64,13 @@ export const AddApplicationView: React.FC = () => {
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           <div className="mb-8">
-            <h1
-              className="text-3xl font-bold text-gray-900 mb-2"
-              data-testid="add-application-form-title"
-            >
+            <h1 className="text-3xl font-bold text-gray-900 mb-2" data-testid="add-application-form-title">
               Dodaj nową aplikację
             </h1>
-            <p className="text-gray-600">
-              Wypełnij formularz, aby dodać nową aplikację o pracę do swojego
-              dashboard.
-            </p>
+            <p className="text-gray-600">Wypełnij formularz, aby dodać nową aplikację o pracę do swojego dashboard.</p>
           </div>
 
-          <AddApplicationForm
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            disabled={isSubmitting}
-          />
+          <AddApplicationForm onSubmit={handleSubmit} onCancel={handleCancel} disabled={isSubmitting} />
         </div>
       </div>
     </div>
