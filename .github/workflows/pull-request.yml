@@ -69,16 +69,18 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests with coverage
-        run: npm run test:e2e -- --coverage
+        run: npm run test:e2e
         env:
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
       - name: Upload E2E test coverage
         uses: actions/upload-artifact@v5
         with:
-          name: e2e-coverage
-          path: coverage/
+          name: playwright-report
+          path: playwright-report/
 
   status-comment:
     runs-on: ubuntu-latest
