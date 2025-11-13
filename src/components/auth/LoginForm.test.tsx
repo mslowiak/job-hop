@@ -14,7 +14,8 @@ vi.mock("sonner", () => ({
   },
 }));
 
-const mockToast = vi.mocked(require("sonner").toast);
+const mockToastSuccess = vi.mocked(require("sonner").toast.success);
+const mockToastError = vi.mocked(require("sonner").toast.error);
 
 describe("LoginForm", () => {
   beforeEach(() => {
@@ -67,7 +68,7 @@ describe("LoginForm", () => {
     const mockLogin = vi
       .mocked(loginUser)
       .mockResolvedValue({ user: { id: 1 } });
-    mockToast.success.mockReturnValue();
+    mockToastSuccess.mockReturnValue();
 
     render(<LoginForm />);
 
@@ -85,7 +86,7 @@ describe("LoginForm", () => {
         email: "test@example.com",
         password: "password123",
       });
-      expect(mockToast.success).toHaveBeenCalledWith("Zalogowano pomyślnie!");
+      expect(mockToastSuccess).toHaveBeenCalledWith("Zalogowano pomyślnie!");
     });
   });
 
@@ -93,7 +94,7 @@ describe("LoginForm", () => {
     vi.mocked(loginUser).mockRejectedValue(
       new Error("Nieprawidłowy email lub hasło"),
     );
-    mockToast.error.mockReturnValue();
+    mockToastError.mockReturnValue();
 
     render(<LoginForm />);
 
@@ -107,7 +108,7 @@ describe("LoginForm", () => {
     fireEvent.click(screen.getByRole("button", { name: /zaloguj się/i }));
 
     await waitFor(() => {
-      expect(mockToast.error).toHaveBeenCalledWith(
+      expect(mockToastError).toHaveBeenCalledWith(
         "Nieprawidłowy email lub hasło",
       );
     });

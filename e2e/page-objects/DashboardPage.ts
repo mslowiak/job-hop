@@ -12,10 +12,6 @@ export class DashboardPage extends BasePage {
     '[data-testid="dashboard-main"] [data-testid="add-application-btn"]';
   private readonly applicationsTable = '[data-testid="applications-table"]';
 
-  constructor(page: Page) {
-    super(page);
-  }
-
   /**
    * Navigate to the dashboard page
    */

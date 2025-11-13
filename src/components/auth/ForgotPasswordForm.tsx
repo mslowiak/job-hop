@@ -7,7 +7,13 @@ const ForgotPasswordSchema = z.object({
   email: z.string().email("Wprowadź prawidłowy adres email"),
 });
 
-export default function ForgotPasswordForm() {
+interface ForgotPasswordFormProps {
+  loading?: boolean;
+}
+
+export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
+  loading = false,
+}) => {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -142,4 +148,4 @@ export default function ForgotPasswordForm() {
       </div>
     </form>
   );
-}
+};

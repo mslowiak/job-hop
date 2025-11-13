@@ -1,16 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import type {
-  ApplicationStatsDto,
-  ApplicationStatus,
-  StatsItem,
-} from "../types";
-import { statusLabels } from "../types";
+import type { ApplicationStatsDto, ApplicationStatus } from "../types";
 
 /**
  * Hook for managing application statistics data fetching and state
  * Provides refetch capability and proper error handling
  */
-export const useApplicationStats = () => {
+export const useApplicationStats = (userId: string) => {
   const [data, setData] = useState<ApplicationStatsDto | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

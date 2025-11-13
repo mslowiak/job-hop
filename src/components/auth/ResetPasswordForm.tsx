@@ -13,7 +13,13 @@ const ResetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-export default function ResetPasswordForm() {
+interface ResetPasswordFormProps {
+  loading?: boolean;
+}
+
+export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
+  loading = false,
+}) => {
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -250,4 +256,4 @@ export default function ResetPasswordForm() {
       </div>
     </form>
   );
-}
+};

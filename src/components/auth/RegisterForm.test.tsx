@@ -14,7 +14,8 @@ vi.mock("sonner", () => ({
   },
 }));
 
-const mockToast = vi.mocked(require("sonner").toast);
+const mockToastSuccess = vi.mocked(require("sonner").toast.success);
+const mockToastError = vi.mocked(require("sonner").toast.error);
 
 describe("RegisterForm", () => {
   beforeEach(() => {
@@ -73,7 +74,7 @@ describe("RegisterForm", () => {
     const mockRegister = vi
       .mocked(registerUser)
       .mockResolvedValue({ user: { id: 1 } });
-    mockToast.success.mockReturnValue();
+    mockToastSuccess.mockReturnValue();
 
     render(<RegisterForm />);
 
@@ -95,7 +96,7 @@ describe("RegisterForm", () => {
         password: "password123",
         confirmPassword: "password123",
       });
-      expect(mockToast.success).toHaveBeenCalledWith(
+      expect(mockToastSuccess).toHaveBeenCalledWith(
         "Konto utworzone pomyślnie!",
       );
     });
@@ -105,7 +106,7 @@ describe("RegisterForm", () => {
     vi.mocked(registerUser).mockRejectedValue(
       new Error("Email jest już zarejestrowany"),
     );
-    mockToast.error.mockReturnValue();
+    mockToastError.mockReturnValue();
 
     render(<RegisterForm />);
 
@@ -122,7 +123,7 @@ describe("RegisterForm", () => {
     fireEvent.click(screen.getByRole("button", { name: /zarejestruj się/i }));
 
     await waitFor(() => {
-      expect(mockToast.error).toHaveBeenCalledWith(
+      expect(mockToastError).toHaveBeenCalledWith(
         "Email jest już zarejestrowany",
       );
     });

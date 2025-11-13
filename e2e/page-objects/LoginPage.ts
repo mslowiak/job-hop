@@ -11,10 +11,6 @@ export class LoginPage extends BasePage {
   private readonly passwordInput = '[data-testid="login-password-input"]';
   private readonly submitButton = '[data-testid="login-submit-btn"]';
 
-  constructor(page: Page) {
-    super(page);
-  }
-
   /**
    * Navigate to the login page
    */

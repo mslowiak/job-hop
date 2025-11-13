@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,7 @@ import { loginUser } from "../../lib/services/auth.service";
 type LoginFormInputs = Pick<AuthFormData, "email" | "password">;
 
 export const LoginForm: React.FC = () => {
+  const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -20,14 +21,20 @@ export const LoginForm: React.FC = () => {
     defaultValues: { email: "", password: "" },
   });
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirect = urlParams.get("redirect") || "/dashboard";
+    setRedirectUrl(redirect);
+  }, []);
+
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
       await loginUser(data);
       toast.success("Zalogowano pomyślnie!");
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const redirect = urlParams.get("redirect") || "/dashboard";
-      window.location.href = redirect;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      }
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

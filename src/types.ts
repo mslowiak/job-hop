@@ -253,7 +253,7 @@ export const ForgotPasswordSchema = z.object({
 
 // Auth provider context type
 export interface AuthContextType {
-  user: any; // Supabase user type
-  session: any; // Supabase session type
+  user: unknown; // Supabase user type
+  session: unknown; // Supabase session type
   loading: boolean;
 }
