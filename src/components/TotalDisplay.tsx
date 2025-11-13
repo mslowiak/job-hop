@@ -13,11 +13,13 @@ export const TotalDisplay: React.FC<TotalDisplayProps> = ({ total }) => {
 
   return (
     <div className="text-center">
-      <div className="text-4xl font-bold text-gray-900 mb-2">
-        {validTotal}
-      </div>
+      <div className="text-4xl font-bold text-gray-900 mb-2">{validTotal}</div>
       <div className="text-lg text-gray-600">
-        {validTotal === 1 ? "aplikacja" : validTotal < 5 ? "aplikacje" : "aplikacji"}
+        {validTotal === 1
+          ? "aplikacja"
+          : validTotal < 5
+            ? "aplikacje"
+            : "aplikacji"}
       </div>
     </div>
   );

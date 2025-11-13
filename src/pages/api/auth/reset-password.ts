@@ -13,27 +13,37 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const validation = ResetPasswordSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response(JSON.stringify({
-        error: "Nieprawidłowe dane",
-        details: validation.error.errors
-      }), {
-        status: 400,
-      });
+      return new Response(
+        JSON.stringify({
+          error: "Nieprawidłowe dane",
+          details: validation.error.errors,
+        }),
+        {
+          status: 400,
+        },
+      );
     }
 
     const { password, code } = validation.data;
 
-    const supabase = createSupabaseServerInstance({ cookies, headers: request.headers });
+    const supabase = createSupabaseServerInstance({
+      cookies,
+      headers: request.headers,
+    });
 
     // Exchange the code for a session
-    const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.exchangeCodeForSession(code);
 
     if (sessionError || !sessionData.session) {
-      return new Response(JSON.stringify({
-        error: "Nieprawidłowy lub wygasły kod resetowania hasła"
-      }), {
-        status: 400,
-      });
+      return new Response(
+        JSON.stringify({
+          error: "Nieprawidłowy lub wygasły kod resetowania hasła",
+        }),
+        {
+          status: 400,
+        },
+      );
     }
 
     // Update the user's password
@@ -47,11 +57,14 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       });
     }
 
-    return new Response(JSON.stringify({
-      message: "Hasło zostało pomyślnie zaktualizowane"
-    }), {
-      status: 200,
-    });
+    return new Response(
+      JSON.stringify({
+        message: "Hasło zostało pomyślnie zaktualizowane",
+      }),
+      {
+        status: 200,
+      },
+    );
   } catch (error) {
     console.error("Reset password error:", error);
     return new Response(JSON.stringify({ error: "Wystąpił błąd serwera" }), {

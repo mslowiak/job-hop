@@ -44,7 +44,10 @@ export const onRequest = defineMiddleware(
       };
     } else {
       // Redirect to login for protected routes
-      const redirectUrl = url.pathname === "/" ? "/auth/login" : `/auth/login?redirect=${encodeURIComponent(url.pathname)}`;
+      const redirectUrl =
+        url.pathname === "/"
+          ? "/auth/login"
+          : `/auth/login?redirect=${encodeURIComponent(url.pathname)}`;
       return redirect(redirectUrl);
     }
 

@@ -12,7 +12,10 @@ interface StatsGridProps {
 export const StatsGrid: React.FC<StatsGridProps> = ({ stats }) => {
   // Validate that we have exactly 6 status items
   if (!Array.isArray(stats) || stats.length !== 6) {
-    console.warn("StatsGrid: Expected exactly 6 status items, received:", stats.length);
+    console.warn(
+      "StatsGrid: Expected exactly 6 status items, received:",
+      stats.length,
+    );
   }
 
   return (

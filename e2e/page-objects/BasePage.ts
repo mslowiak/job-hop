@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page } from "@playwright/test";
 
 /**
  * Base page class providing common functionality for all page objects
@@ -22,7 +22,7 @@ export class BasePage {
    * Wait for the page to load completely
    */
   async waitForLoad(): Promise<void> {
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState("networkidle");
   }
 
   /**

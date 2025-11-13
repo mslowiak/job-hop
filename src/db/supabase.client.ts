@@ -21,7 +21,9 @@ export const cookieOptions: CookieOptionsWithName = {
   sameSite: "lax",
 };
 
-function parseCookieHeader(cookieHeader: string): { name: string; value: string }[] {
+function parseCookieHeader(
+  cookieHeader: string,
+): { name: string; value: string }[] {
   return cookieHeader.split(";").map((cookie) => {
     const [name, ...rest] = cookie.trim().split("=");
     return { name, value: rest.join("=") };

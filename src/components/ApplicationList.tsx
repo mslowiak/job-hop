@@ -60,7 +60,7 @@ export const ApplicationList: React.FC<ApplicationListProps> = ({
   if (applications.length === 0) {
     return (
       <EmptyState
-        isFiltered={currentFilter !== 'all'}
+        isFiltered={currentFilter !== "all"}
         onAddClick={onAddClick}
       />
     );

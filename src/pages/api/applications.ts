@@ -97,7 +97,6 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-
   try {
     // Parse and validate request body using Zod schema
     const body = await request.json();

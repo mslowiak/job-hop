@@ -70,7 +70,10 @@ export const AddApplicationView: React.FC = () => {
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2" data-testid="add-application-form-title">
+            <h1
+              className="text-3xl font-bold text-gray-900 mb-2"
+              data-testid="add-application-form-title"
+            >
               Dodaj nową aplikację
             </h1>
             <p className="text-gray-600">

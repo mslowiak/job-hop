@@ -11,7 +11,10 @@ interface EmptyStateProps {
  * Shows different messages based on whether the list is filtered or completely empty
  * Includes SVG illustration and CTA button
  */
-export const EmptyState: React.FC<EmptyStateProps> = ({ onAddClick, isFiltered = false }) => {
+export const EmptyState: React.FC<EmptyStateProps> = ({
+  onAddClick,
+  isFiltered = false,
+}) => {
   const title = isFiltered ? "Brak wyników filtru" : "Brak aplikacji";
   const message = isFiltered
     ? "Żadne aplikacje nie pasują do wybranego filtru. Spróbuj zmienić ustawienia filtra."
@@ -41,13 +44,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAddClick, isFiltered =
         </svg>
       </div>
 
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">
-        {title}
-      </h3>
+      <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
 
-      <p className="text-gray-600 mb-8 max-w-md">
-        {message}
-      </p>
+      <p className="text-gray-600 mb-8 max-w-md">{message}</p>
 
       <AddApplicationButton onClick={onAddClick} />
     </div>

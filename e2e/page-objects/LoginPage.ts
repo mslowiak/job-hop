@@ -1,5 +1,5 @@
-import { Page } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { Page } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Login page object model class
@@ -19,7 +19,7 @@ export class LoginPage extends BasePage {
    * Navigate to the login page
    */
   async navigateToLogin(): Promise<void> {
-    await this.navigateTo('/auth/login');
+    await this.navigateTo("/auth/login");
     await this.waitForLoad();
   }
 
@@ -46,21 +46,23 @@ export class LoginPage extends BasePage {
     await this.fillLoginForm(email, password);
     await this.submitLogin();
     // Wait for navigation to dashboard
-    await this.page.waitForURL('**/dashboard');
+    await this.page.waitForURL("**/dashboard");
   }
 
   /**
    * Check if login form is displayed
    */
   async isLoginFormVisible(): Promise<boolean> {
-    return await this.isElementVisible('login-email-input');
+    return await this.isElementVisible("login-email-input");
   }
 
   /**
    * Get login form validation errors if any
    */
   async getFormErrors(): Promise<string[]> {
-    const errorElements = await this.page.locator('.text-red-600').allTextContents();
+    const errorElements = await this.page
+      .locator(".text-red-600")
+      .allTextContents();
     return errorElements;
   }
 }

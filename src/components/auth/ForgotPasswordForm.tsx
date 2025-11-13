@@ -63,31 +63,31 @@ export default function ForgotPasswordForm() {
 
   if (isSuccess) {
     return (
-      <div class="text-center">
-        <div class="mb-4">
+      <div className="text-center">
+        <div className="mb-4">
           <svg
-            class="mx-auto h-12 w-12 text-green-400"
+            className="mx-auto h-12 w-12 text-green-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
         </div>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">
+        <h3 className="text-lg font-medium text-gray-900 mb-2">
           Email został wysłany!
         </h3>
-        <p class="text-sm text-gray-600 mb-6">
+        <p className="text-sm text-gray-600 mb-6">
           Sprawdź swoją skrzynkę email i kliknij w link, aby zresetować hasło.
         </p>
         <a
           href="/auth/login"
-          class="text-blue-600 hover:text-blue-500 font-medium"
+          className="text-blue-600 hover:text-blue-500 font-medium"
         >
           ← Powrót do logowania
         </a>
@@ -96,12 +96,12 @@ export default function ForgotPasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} class="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       {/* Email Field */}
       <div>
         <label
           htmlFor="email"
-          class="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-gray-700 mb-1"
         >
           Email *
         </label>
@@ -111,7 +111,7 @@ export default function ForgotPasswordForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={isSubmitting}
-          class={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed ${
             errors.email
               ? "border-red-500 focus:ring-red-500"
               : "border-gray-300"
@@ -120,26 +120,22 @@ export default function ForgotPasswordForm() {
           required
         />
         {errors.email && (
-          <p class="mt-1 text-sm text-red-600">{errors.email}</p>
+          <p className="mt-1 text-sm text-red-600">{errors.email}</p>
         )}
       </div>
 
       {/* Submit Button */}
-      <div class="pt-4">
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          class="w-full"
-        >
+      <div className="pt-4">
+        <Button type="submit" disabled={isSubmitting} class="w-full">
           {isSubmitting ? "Wysyłanie..." : "Wyślij link resetujący"}
         </Button>
       </div>
 
       {/* Links */}
-      <div class="text-center">
+      <div className="text-center">
         <a
           href="/auth/login"
-          class="text-sm text-blue-600 hover:text-blue-500 font-medium"
+          className="text-sm text-blue-600 hover:text-blue-500 font-medium"
         >
           ← Powrót do logowania
         </a>

@@ -18,7 +18,11 @@ export const useApplications = (filter: ApplicationStatus | "all" = "all") => {
   const [currentFilter, setCurrentFilter] = useState<ApplicationStatus | "all">(
     filter,
   );
-  const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 20 });
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    limit: 20,
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -109,18 +113,18 @@ export const useApplications = (filter: ApplicationStatus | "all" = "all") => {
       try {
         // Call PATCH API to update status
         const response = await fetch(`/api/applications/${id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ status: newStatus }),
         });
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to update status');
+          throw new Error(errorData.error || "Failed to update status");
         }
 
         // Show success toast
-        toast.success('Status zaktualizowany pomyślnie');
+        toast.success("Status zaktualizowany pomyślnie");
       } catch (err) {
         // Revert optimistic update on error
         setApplications((prev) =>
@@ -147,16 +151,19 @@ export const useApplications = (filter: ApplicationStatus | "all" = "all") => {
   }, [fetchApplications, filter]);
 
   // Transform ApplicationDto[] to ApplicationViewModel[]
-  const applicationsViewModel: ApplicationViewModel[] = useMemo(() =>
-    applications.map(app => ({
-      ...app,
-      formattedDate: new Intl.DateTimeFormat('pl-PL', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric'
-      }).format(new Date(app.application_date)),
-      statusLabel: statusLabels[app.status],
-    })), [applications]);
+  const applicationsViewModel: ApplicationViewModel[] = useMemo(
+    () =>
+      applications.map((app) => ({
+        ...app,
+        formattedDate: new Intl.DateTimeFormat("pl-PL", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }).format(new Date(app.application_date)),
+        statusLabel: statusLabels[app.status],
+      })),
+    [applications],
+  );
 
   // Prepare view model data
   const data: FilteredApplicationsViewModel = {

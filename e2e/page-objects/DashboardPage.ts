@@ -1,5 +1,5 @@
-import { Page } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { Page } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Dashboard page object model class
@@ -8,7 +8,8 @@ import { BasePage } from './BasePage';
 export class DashboardPage extends BasePage {
   // Page elements selectors
   private readonly dashboardMain = '[data-testid="dashboard-main"]';
-  private readonly addApplicationButton = '[data-testid="dashboard-main"] [data-testid="add-application-btn"]';
+  private readonly addApplicationButton =
+    '[data-testid="dashboard-main"] [data-testid="add-application-btn"]';
   private readonly applicationsTable = '[data-testid="applications-table"]';
 
   constructor(page: Page) {
@@ -19,7 +20,7 @@ export class DashboardPage extends BasePage {
    * Navigate to the dashboard page
    */
   async navigateToDashboard(): Promise<void> {
-    await this.navigateTo('/dashboard');
+    await this.navigateTo("/dashboard");
     await this.waitForLoad();
   }
 
@@ -27,18 +28,18 @@ export class DashboardPage extends BasePage {
    * Check if dashboard is loaded (main element exists)
    */
   async isDashboardLoaded(): Promise<boolean> {
-    return await this.isElementVisible('dashboard-main');
+    return await this.isElementVisible("dashboard-main");
   }
 
   /**
    * Check if dashboard is fully loaded (applications area is visible)
    */
   async isDashboardFullyLoaded(): Promise<boolean> {
-    return await this.isElementVisible('applications-table')
+    return await this.isElementVisible("applications-table");
   }
 
   async isDashboardEmpty(): Promise<boolean> {
-    return await this.isElementVisible('applications-empty-state');
+    return await this.isElementVisible("applications-empty-state");
   }
 
   /**
@@ -53,41 +54,54 @@ export class DashboardPage extends BasePage {
 
     // Check current URL to see if navigation happened
     const currentUrl = this.page.url();
-    console.log('Current URL after button click:', currentUrl);
+    console.log("Current URL after button click:", currentUrl);
 
     // Wait for the add application form to appear
-    await this.page.waitForSelector('[data-testid="add-application-form-title"]', { timeout: 5000 });
+    await this.page.waitForSelector(
+      '[data-testid="add-application-form-title"]',
+      { timeout: 5000 },
+    );
   }
 
   /**
    * Check if applications table is visible
    */
   async isApplicationsTableVisible(): Promise<boolean> {
-    return await this.isElementVisible('applications-table');
+    return await this.isElementVisible("applications-table");
   }
 
   /**
    * Get the count of applications in the table
    */
   async getApplicationsCount(): Promise<number> {
-    const rows = await this.page.locator('[data-testid^="application-row-"]').count();
+    const rows = await this.page
+      .locator('[data-testid^="application-row-"]')
+      .count();
     return rows;
   }
 
   /**
    * Check if a specific application exists by company and position
    */
-  async hasApplication(companyName: string, positionName: string): Promise<boolean> {
-    const rows = await this.page.locator('[data-testid^="application-row-"]').all();
+  async hasApplication(
+    companyName: string,
+    positionName: string,
+  ): Promise<boolean> {
+    const rows = await this.page
+      .locator('[data-testid^="application-row-"]')
+      .all();
 
     for (const row of rows) {
-      const companyCell = row.locator('td').nth(0);
-      const positionCell = row.locator('td').nth(1);
+      const companyCell = row.locator("td").nth(0);
+      const positionCell = row.locator("td").nth(1);
 
       const companyText = await companyCell.textContent();
       const positionText = await positionCell.textContent();
 
-      if (companyText?.includes(companyName) && positionText?.includes(positionName)) {
+      if (
+        companyText?.includes(companyName) &&
+        positionText?.includes(positionName)
+      ) {
         return true;
       }
     }
@@ -98,17 +112,25 @@ export class DashboardPage extends BasePage {
   /**
    * Get application row by company and position
    */
-  async getApplicationRow(companyName: string, positionName: string): Promise<any> {
-    const rows = await this.page.locator('[data-testid^="application-row-"]').all();
+  async getApplicationRow(
+    companyName: string,
+    positionName: string,
+  ): Promise<any> {
+    const rows = await this.page
+      .locator('[data-testid^="application-row-"]')
+      .all();
 
     for (const row of rows) {
-      const companyCell = row.locator('td').nth(0);
-      const positionCell = row.locator('td').nth(1);
+      const companyCell = row.locator("td").nth(0);
+      const positionCell = row.locator("td").nth(1);
 
       const companyText = await companyCell.textContent();
       const positionText = await positionCell.textContent();
 
-      if (companyText?.includes(companyName) && positionText?.includes(positionName)) {
+      if (
+        companyText?.includes(companyName) &&
+        positionText?.includes(positionName)
+      ) {
         return row;
       }
     }

@@ -180,10 +180,10 @@ export const test = base.extend<TestFixtures>({
 export async function cleanupTestData() {
   try {
     // Sign in with test user to get authentication
-    const signInResponse = await fetch('http://localhost:3000/api/auth/login', {
-      method: 'POST',
+    const signInResponse = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: TEST_USER.email,
@@ -192,27 +192,30 @@ export async function cleanupTestData() {
     });
 
     if (!signInResponse.ok) {
-      console.warn('Failed to sign in for cleanup, skipping database cleanup');
+      console.warn("Failed to sign in for cleanup, skipping database cleanup");
       return;
     }
 
-    const cookies = signInResponse.headers.get('set-cookie');
+    const cookies = signInResponse.headers.get("set-cookie");
     if (!cookies) {
-      console.warn('No cookies received, skipping database cleanup');
+      console.warn("No cookies received, skipping database cleanup");
       return;
     }
 
     // Get all applications for the test user
-    const getApplicationsResponse = await fetch('http://localhost:3000/api/applications', {
-      method: 'GET',
-      headers: {
-        'Cookie': cookies,
-        'Content-Type': 'application/json',
+    const getApplicationsResponse = await fetch(
+      "http://localhost:3000/api/applications",
+      {
+        method: "GET",
+        headers: {
+          Cookie: cookies,
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
 
     if (!getApplicationsResponse.ok) {
-      console.warn('Failed to get applications for cleanup');
+      console.warn("Failed to get applications for cleanup");
       return;
     }
 
@@ -221,22 +224,30 @@ export async function cleanupTestData() {
     // Delete each application
     for (const application of applications.applications || []) {
       try {
-        await fetch(`http://localhost:3000/api/applications/${application.id}`, {
-          method: 'DELETE',
-          headers: {
-            'Cookie': cookies,
-            'Content-Type': 'application/json',
+        await fetch(
+          `http://localhost:3000/api/applications/${application.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Cookie: cookies,
+              "Content-Type": "application/json",
+            },
           },
-        });
+        );
         console.log(`Cleaned up application: ${application.id}`);
       } catch (deleteError) {
-        console.warn(`Failed to delete application ${application.id}:`, deleteError);
+        console.warn(
+          `Failed to delete application ${application.id}:`,
+          deleteError,
+        );
       }
     }
 
-    console.log(`Database cleanup completed. Removed ${applications.applications?.length || 0} applications.`);
+    console.log(
+      `Database cleanup completed. Removed ${applications.applications?.length || 0} applications.`,
+    );
   } catch (error) {
-    console.warn('Database cleanup failed:', error);
+    console.warn("Database cleanup failed:", error);
     // Don't throw error to avoid failing tests due to cleanup issues
   }
 }

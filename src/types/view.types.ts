@@ -37,6 +37,3 @@ export interface ApplicationRowViewModel {
   onStatusChange: (newStatus: ApplicationStatus) => Promise<void>;
   onRowClick: (id: string) => void;
 }
-
-
-

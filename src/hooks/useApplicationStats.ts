@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import type { ApplicationStatsDto, ApplicationStatus, StatsItem } from "../types";
+import type {
+  ApplicationStatsDto,
+  ApplicationStatus,
+  StatsItem,
+} from "../types";
 import { statusLabels } from "../types";
 
 /**
@@ -55,8 +59,13 @@ export const useApplicationStats = () => {
       ];
 
       for (const status of requiredStatuses) {
-        if (!(status in statsData.stats) || typeof statsData.stats[status] !== "number") {
-          throw new Error(`Invalid stats format: missing or invalid count for ${status}`);
+        if (
+          !(status in statsData.stats) ||
+          typeof statsData.stats[status] !== "number"
+        ) {
+          throw new Error(
+            `Invalid stats format: missing or invalid count for ${status}`,
+          );
         }
       }
 

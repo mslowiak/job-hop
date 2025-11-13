@@ -34,11 +34,18 @@ export const DashboardView: React.FC = () => {
   };
 
   return (
-    <main role="main" aria-label="Dashboard" className="space-y-6" data-testid="dashboard-main">
+    <main
+      role="main"
+      aria-label="Dashboard"
+      className="space-y-6"
+      data-testid="dashboard-main"
+    >
       {/* Header with Add Button and Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 id="dashboard-title" className="text-2xl font-bold text-gray-900">Moje aplikacje</h1>
+          <h1 id="dashboard-title" className="text-2xl font-bold text-gray-900">
+            Moje aplikacje
+          </h1>
           <p className="text-gray-600">Zarządzaj swoimi aplikacjami o pracę</p>
         </div>
 

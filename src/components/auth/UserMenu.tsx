@@ -34,7 +34,9 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex items-center space-x-2">
-          <span className="truncate max-w-[120px] hidden sm:inline">{user.email}</span>
+          <span className="truncate max-w-[120px] hidden sm:inline">
+            {user.email}
+          </span>
           {/* Add avatar or icon here if needed */}
         </Button>
       </DropdownMenuTrigger>

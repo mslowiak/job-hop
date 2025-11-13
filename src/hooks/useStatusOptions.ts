@@ -37,5 +37,3 @@ export const getStatusLabel = (status: ApplicationStatus | "all"): string => {
   const option = options.find((opt) => opt.value === status);
   return option?.label || status;
 };
-
-

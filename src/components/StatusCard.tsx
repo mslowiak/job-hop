@@ -11,7 +11,11 @@ interface StatusCardProps {
 /**
  * Card component displaying a single status count
  */
-export const StatusCard: React.FC<StatusCardProps> = ({ status, label, count }) => {
+export const StatusCard: React.FC<StatusCardProps> = ({
+  status,
+  label,
+  count,
+}) => {
   // Validate inputs
   if (!isValidApplicationStatus(status)) {
     console.warn("StatusCard: Invalid status:", status);
