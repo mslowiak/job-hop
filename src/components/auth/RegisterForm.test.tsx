@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { RegisterForm } from "./RegisterForm";
 import { registerUser } from "../../lib/services/auth.service";
+import { toast } from "sonner";
 
 // Mock the auth service
 vi.mock("../../lib/services/auth.service");
@@ -14,8 +15,8 @@ vi.mock("sonner", () => ({
   },
 }));
 
-const mockToastSuccess = vi.mocked(require("sonner").toast.success);
-const mockToastError = vi.mocked(require("sonner").toast.error);
+const mockToastSuccess = vi.mocked(toast.success);
+const mockToastError = vi.mocked(toast.error);
 
 describe("RegisterForm", () => {
   beforeEach(() => {
