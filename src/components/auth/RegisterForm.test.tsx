@@ -34,8 +34,8 @@ describe("RegisterForm", () => {
     render(<RegisterForm />);
 
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/hasło/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/potwierdź hasło/i)).toBeInTheDocument();
+    expect(screen.getByTestId("register-password-input")).toBeInTheDocument();
+    expect(screen.getByTestId("register-confirm-password-input")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /zarejestruj się/i })).toBeInTheDocument();
   });
 
@@ -45,7 +45,8 @@ describe("RegisterForm", () => {
     fireEvent.click(screen.getByRole("button", { name: /zarejestruj się/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/wymagane/i)).toBeInTheDocument(); // Zod required error
+      expect(screen.getByText(/wprowadź prawidłowy adres email/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/hasło musi mieć co najmniej 8 znaków/i)).toHaveLength(2);
     });
   });
 
@@ -55,17 +56,17 @@ describe("RegisterForm", () => {
     fireEvent.change(screen.getByLabelText(/email/i), {
       target: { value: "test@example.com" },
     });
-    fireEvent.change(screen.getByLabelText(/hasło/i), {
+    fireEvent.change(screen.getByTestId("register-password-input"), {
       target: { value: "password123" },
     });
-    fireEvent.change(screen.getByLabelText(/potwierdź hasło/i), {
-      target: { value: "different" },
+    fireEvent.change(screen.getByTestId("register-confirm-password-input"), {
+      target: { value: "different123" },
     });
 
     fireEvent.click(screen.getByRole("button", { name: /zarejestruj się/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/hasła nie pasują/i)).toBeInTheDocument(); // Assuming Zod error for confirmPassword
+      expect(screen.getByText(/hasła nie są identyczne/i)).toBeInTheDocument();
     });
   });
 
@@ -78,10 +79,10 @@ describe("RegisterForm", () => {
     fireEvent.change(screen.getByLabelText(/email/i), {
       target: { value: "new@example.com" },
     });
-    fireEvent.change(screen.getByLabelText(/hasło/i), {
+    fireEvent.change(screen.getByTestId("register-password-input"), {
       target: { value: "password123" },
     });
-    fireEvent.change(screen.getByLabelText(/potwierdź hasło/i), {
+    fireEvent.change(screen.getByTestId("register-confirm-password-input"), {
       target: { value: "password123" },
     });
 
@@ -106,10 +107,10 @@ describe("RegisterForm", () => {
     fireEvent.change(screen.getByLabelText(/email/i), {
       target: { value: "existing@example.com" },
     });
-    fireEvent.change(screen.getByLabelText(/hasło/i), {
+    fireEvent.change(screen.getByTestId("register-password-input"), {
       target: { value: "password123" },
     });
-    fireEvent.change(screen.getByLabelText(/potwierdź hasło/i), {
+    fireEvent.change(screen.getByTestId("register-confirm-password-input"), {
       target: { value: "password123" },
     });
 
@@ -128,10 +129,10 @@ describe("RegisterForm", () => {
     fireEvent.change(screen.getByLabelText(/email/i), {
       target: { value: "new@example.com" },
     });
-    fireEvent.change(screen.getByLabelText(/hasło/i), {
+    fireEvent.change(screen.getByTestId("register-password-input"), {
       target: { value: "password123" },
     });
-    fireEvent.change(screen.getByLabelText(/potwierdź hasło/i), {
+    fireEvent.change(screen.getByTestId("register-confirm-password-input"), {
       target: { value: "password123" },
     });
 
@@ -150,10 +151,10 @@ describe("RegisterForm", () => {
     fireEvent.change(screen.getByLabelText(/email/i), {
       target: { value: "new@example.com" },
     });
-    fireEvent.change(screen.getByLabelText(/hasło/i), {
+    fireEvent.change(screen.getByTestId("register-password-input"), {
       target: { value: "password123" },
     });
-    fireEvent.change(screen.getByLabelText(/potwierdź hasło/i), {
+    fireEvent.change(screen.getByTestId("register-confirm-password-input"), {
       target: { value: "password123" },
     });
 
