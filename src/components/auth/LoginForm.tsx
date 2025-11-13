@@ -12,6 +12,7 @@ type LoginFormInputs = Pick<AuthFormData, "email" | "password">;
 
 export const LoginForm: React.FC = () => {
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
+  const [navigateTo, setNavigateTo] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -27,13 +28,19 @@ export const LoginForm: React.FC = () => {
     setRedirectUrl(redirect);
   }, []);
 
+  useEffect(() => {
+    if (navigateTo) {
+      window.location.href = navigateTo;
+    }
+  }, [navigateTo]);
+
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
       await loginUser(data);
       toast.success("Zalogowano pomyślnie!");
 
       if (redirectUrl) {
-        window.location.href = redirectUrl;
+        setNavigateTo(redirectUrl);
       }
     } catch (error) {
       if (error instanceof Error) {

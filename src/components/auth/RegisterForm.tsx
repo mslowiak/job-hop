@@ -11,6 +11,7 @@ import { registerUser } from "../../lib/services/auth.service";
 type RegisterFormInputs = AuthFormData;
 
 export const RegisterForm: React.FC = () => {
+  const [navigateTo, setNavigateTo] = React.useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -20,12 +21,18 @@ export const RegisterForm: React.FC = () => {
     defaultValues: { email: "", password: "", confirmPassword: "" },
   });
 
+  React.useEffect(() => {
+    if (navigateTo) {
+      window.location.href = navigateTo;
+    }
+  }, [navigateTo]);
+
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     try {
       await registerUser(data);
       toast.success("Konto utworzone pomyślnie!");
 
-      window.location.href = "/dashboard";
+      setNavigateTo("/dashboard");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
