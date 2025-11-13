@@ -227,7 +227,7 @@ export type AuthMode = "login" | "register";
 export interface AuthFormData {
   email: string;
   password: string;
-  confirmPassword?: string;
+  confirmPassword: string;
 }
 
 // Zod schemas for auth validation
@@ -236,14 +236,16 @@ export const LoginSchema = z.object({
   password: z.string().min(8, "Hasło musi mieć co najmniej 8 znaków"),
 });
 
-export const RegisterSchema = z.object({
-  email: z.string().email("Wprowadź prawidłowy adres email"),
-  password: z.string().min(8, "Hasło musi mieć co najmniej 8 znaków"),
-  confirmPassword: z.string().min(8, "Hasło musi mieć co najmniej 8 znaków"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Hasła nie są identyczne",
-  path: ["confirmPassword"],
-});
+export const RegisterSchema = z
+  .object({
+    email: z.string().email("Wprowadź prawidłowy adres email"),
+    password: z.string().min(8, "Hasło musi mieć co najmniej 8 znaków"),
+    confirmPassword: z.string().min(8, "Hasło musi mieć co najmniej 8 znaków"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Hasła nie są identyczne",
+    path: ["confirmPassword"],
+  });
 
 export const ForgotPasswordSchema = z.object({
   email: z.string().email("Wprowadź prawidłowy adres email"),
