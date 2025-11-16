@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import type { DailyMotivationResponse } from '../types';
+import React, { useState, useEffect } from "react";
+import type { DailyMotivationResponse } from "../types";
 
 const MotivationalMessageComponent: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
@@ -11,7 +11,7 @@ const MotivationalMessageComponent: React.FC = () => {
       try {
         setLoading(true);
         setError(false);
-        const response = await fetch('/api/messages/daily-motivation');
+        const response = await fetch("/api/messages/daily-motivation");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -21,8 +21,8 @@ const MotivationalMessageComponent: React.FC = () => {
         } else {
           setError(true);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
-        console.error('Error fetching motivational message:', err);
         setError(true);
       } finally {
         setLoading(false);
@@ -45,19 +45,13 @@ const MotivationalMessageComponent: React.FC = () => {
   }
 
   return (
-    <blockquote 
-      role="status"
-      aria-live="polite"
-      className="p-6 bg-gray-50 border border-gray-200 rounded-lg my-6"
-    >
-      <p className="text-gray-600 italic text-center text-lg leading-relaxed">
-        {message}
-      </p>
+    <blockquote role="status" aria-live="polite" className="p-6 bg-gray-50 border border-gray-200 rounded-lg my-6">
+      <p className="text-gray-600 italic text-center text-lg leading-relaxed">{message}</p>
     </blockquote>
   );
 };
 
 const MotivationalMessage = React.memo(MotivationalMessageComponent);
-MotivationalMessage.displayName = 'MotivationalMessage';
+MotivationalMessage.displayName = "MotivationalMessage";
 
 export { MotivationalMessage };

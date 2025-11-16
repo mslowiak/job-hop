@@ -17,10 +17,15 @@ export const GET: APIRoute = async ({ locals }) => {
   try {
     // Step 1: Authentication check - Ensure user is authenticated via middleware
     if (!locals.user) {
-      return new Response(JSON.stringify({ error: "Authentication required." } as { error: string }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: "Authentication required." } as {
+          error: string;
+        }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
 
     const supabase = locals.supabase; // Supabase client from middleware
@@ -73,12 +78,18 @@ export const GET: APIRoute = async ({ locals }) => {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     // Catch all unexpected errors (DB, auth, etc.) and return generic 500
-    // Log for debugging; do not expose details to client
-    return new Response(JSON.stringify({ error: "An unexpected error occurred." } as { error: string }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    // No logging implemented to avoid console output
+    return new Response(
+      JSON.stringify({ error: "An unexpected error occurred." } as {
+        error: string;
+      }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 };

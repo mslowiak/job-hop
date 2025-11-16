@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, screen, waitFor, within } from '@testing-library/react';
-import { vi } from 'vitest';
-import { MotivationalMessage } from '../MotivationalMessage';
+import React from "react";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import { vi } from "vitest";
+import { MotivationalMessage } from "../MotivationalMessage";
 
-describe('MotivationalMessage', () => {
+describe("MotivationalMessage", () => {
   // Mock fetch globally
   global.fetch = vi.fn();
 
@@ -11,7 +11,7 @@ describe('MotivationalMessage', () => {
     vi.clearAllMocks();
   });
 
-  it('renders loading skeleton initially', async () => {
+  it("renders loading skeleton initially", async () => {
     // Mock to resolve immediately but empty to trigger error after
     fetch.mockResolvedValue({
       ok: true,
@@ -21,23 +21,23 @@ describe('MotivationalMessage', () => {
     render(<MotivationalMessage />);
 
     // Assert initial loading state synchronously
-    const blockquote = screen.getByRole('blockquote');
+    const blockquote = screen.getByRole("blockquote");
     expect(blockquote).toBeInTheDocument();
 
     const { getByRole } = within(blockquote);
-    const skeleton = getByRole('paragraph');
-    expect(skeleton).toHaveClass('animate-pulse');
-    expect(skeleton).toHaveClass('bg-gray-200');
-    expect(skeleton).toHaveClass('h-12');
+    const skeleton = getByRole("paragraph");
+    expect(skeleton).toHaveClass("animate-pulse");
+    expect(skeleton).toHaveClass("bg-gray-200");
+    expect(skeleton).toHaveClass("h-12");
 
     // Wait for fetch to confirm it was called
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith('/api/messages/daily-motivation');
+      expect(fetch).toHaveBeenCalledWith("/api/messages/daily-motivation");
     });
   });
 
-  it('renders success state with message and accessibility attributes', async () => {
-    const mockMessage = 'Test motivational message';
+  it("renders success state with message and accessibility attributes", async () => {
+    const mockMessage = "Test motivational message";
     fetch.mockResolvedValue({
       ok: true,
       json: async () => ({ message: mockMessage }),
@@ -50,53 +50,45 @@ describe('MotivationalMessage', () => {
       expect(screen.getByText(mockMessage)).toBeInTheDocument();
     });
 
-    const statusBlockquote = screen.getByRole('status');
-    expect(statusBlockquote).toHaveAttribute('aria-live', 'polite');
-    expect(statusBlockquote).toHaveClass('bg-gray-50');
-    expect(statusBlockquote).toHaveClass('border');
-    expect(statusBlockquote).toHaveClass('rounded-lg');
+    const statusBlockquote = screen.getByRole("status");
+    expect(statusBlockquote).toHaveAttribute("aria-live", "polite");
+    expect(statusBlockquote).toHaveClass("bg-gray-50");
+    expect(statusBlockquote).toHaveClass("border");
+    expect(statusBlockquote).toHaveClass("rounded-lg");
   });
 
-  it('renders nothing on error', async () => {
-    const mockError = new Error('Network error');
+  it("renders nothing on error", async () => {
+    const mockError = new Error("Network error");
     fetch.mockRejectedValue(mockError);
-
-    // Spy on console.error specifically for this test
-    const mockConsoleError = vi.fn();
-    const originalConsoleError = console.error;
-    console.error = mockConsoleError;
 
     render(<MotivationalMessage />);
 
-    await waitFor(() => {
-      expect(screen.queryByRole('blockquote')).not.toBeInTheDocument();
-    }, { timeout: 1000 });
-
-    expect(fetch).toHaveBeenCalledWith('/api/messages/daily-motivation');
-    expect(mockConsoleError).toHaveBeenCalledWith(
-      'Error fetching motivational message:',
-      mockError
+    await waitFor(
+      () => {
+        expect(screen.queryByRole("blockquote")).not.toBeInTheDocument();
+      },
+      { timeout: 1000 }
     );
 
-    // Restore console.error
-    console.error = originalConsoleError;
+    expect(fetch).toHaveBeenCalledWith("/api/messages/daily-motivation");
+    // Removed console.error assertion as logging is no longer present
   });
 
-  it('renders nothing when message is empty', async () => {
+  it("renders nothing when message is empty", async () => {
     fetch.mockResolvedValue({
       ok: true,
-      json: async () => ({ message: '' }),
+      json: async () => ({ message: "" }),
     } as Response);
 
     render(<MotivationalMessage />);
 
     await waitFor(() => {
-      expect(screen.queryByRole('blockquote')).not.toBeInTheDocument();
+      expect(screen.queryByRole("blockquote")).not.toBeInTheDocument();
     });
   });
 
-  it('does not re-fetch on re-render due to memoization', async () => {
-    const mockMessage = 'Test message';
+  it("does not re-fetch on re-render due to memoization", async () => {
+    const mockMessage = "Test message";
     fetch.mockResolvedValue({
       ok: true,
       json: async () => ({ message: mockMessage }),
