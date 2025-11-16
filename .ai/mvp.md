@@ -24,6 +24,8 @@ Prowadzi to do chaosu informacyjnego, pomyłek (np. zapomnienie o terminie rozmo
 
 5. Strona ze statystykami - jak wygląda aktualny przebieg poszukiwań pracy - ile aplikacji w jakich stanach
 
+6. Codzienne wiadomości motywacyjne - wyświetlanie losowej wiadomości motywacyjnej na górze pulpitu, przypisanej użytkownikowi na cały dzień (w strefie UTC). Wybranej z predefiniowanej listy, z przygotowaniem do przyszłej generacji przez AI (OpenRouter).
+
 ## Co NIE wchodzi w zakres MVP
 
 1. Automatyczne importowanie stanu aplikacji (z email czy tez stron typu LinkedIn, Pracuj.pl)
@@ -31,8 +33,7 @@ Prowadzi to do chaosu informacyjnego, pomyłek (np. zapomnienie o terminie rozmo
 3. System przypomnień i powiadomień (np. "czas na follow-up", "zbliża się rozmowa").
 4. Przechowywanie i wersjonowanie dokumentów (np. wysłane CV, listy motywacyjne).
 5. Dedykowane aplikacje mobilne (iOS/Android)
-6. Funkcje AI (np. sugestie dopasowania CV do oferty, generowanie treści maili).
-
+6. Funkcje AI (np. sugestie dopasowania CV do oferty, generowanie treści maili). (Wyjątek: przygotowanie do generowania wiadomości motywacyjnych)
 
 ## Kryteria sukcesu
 

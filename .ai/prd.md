@@ -34,6 +34,7 @@ Osoby aktywnie poszukujące pracy mają problem z efektywnym zarządzaniem i śl
 - Lista na pulpicie zawiera kolumny: Nazwa Firmy, Nazwa Stanowiska oraz menu do szybkiej zmiany statusu.
 - Użytkownicy mogą filtrować listę aplikacji na podstawie ich statusu.
 - Dla nowych użytkowników, którzy nie dodali jeszcze żadnej aplikacji, wyświetlany jest "empty state" z wezwaniem do działania (CTA) zachęcającym do dodania pierwszej aplikacji.
+- Na górze pulpitu, powyżej listy aplikacji, wyświetlany jest codzienny cytat motywacyjny, wybrany losowo z predefiniowanej listy i przypisany użytkownikowi na cały dzień (w strefie UTC). Przygotowany do przyszłej generacji przez AI.
 
 ### 3.4. Strona Statystyk
 - Dedykowana strona "Statystyki" jest dostępna dla zalogowanych użytkowników.
@@ -48,6 +49,13 @@ Osoby aktywnie poszukujące pracy mają problem z efektywnym zarządzaniem i śl
 ### 3.6. Zbieranie Opinii
 - W aplikacji, w widocznym miejscu (np. na pulpicie), znajduje się stały link do zewnętrznego formularza Google w celu zbierania opinii od użytkowników.
 
+### 3.7. Wiadomości motywacyjne
+- Użytkownicy otrzymują codzienny cytat motywacyjny wyświetlany na górze pulpitu.
+- Cytat jest wybierany losowo z listy 20 predefiniowanych wiadomości w języku polskim.
+- Ten sam cytat jest wyświetlany przez cały dzień; następnego dnia nowy jest przypisywany.
+- Dane są przechowywane w bazie danych z RLS dla prywatności.
+- Funkcjonalność jest przygotowana do integracji z AI (OpenRouter) dla generowania spersonalizowanych wiadomości w przyszłości.
+
 ## 4. Granice produktu
 
 Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
@@ -57,7 +65,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
 - Przechowywanie i wersjonowanie dokumentów aplikacyjnych (np. CV, listy motywacyjne).
 - Dedykowane aplikacje mobilne na platformy iOS/Android.
 - Funkcjonalność "Zapomniałem hasła" z opcją resetu przez e-mail.
-- Funkcje oparte na AI (np. sugestie dopasowania CV do oferty, generowanie treści maili).
+- Funkcje oparte na AI (np. sugestie dopasowania CV do oferty, generowanie treści maili). (Wyjątek: przygotowanie do generowania wiadomości motywacyjnych za pomocą OpenRouter).
 
 ## 5. Historyjki użytkowników
 
@@ -172,6 +180,15 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
   - 2. Pasek zawiera linki do "Pulpitu" i "Statystyk".
   - 3. Pasek zawiera menu użytkownika z opcjami "Ustawienia Konta" i "Wyloguj".
   - 4. Nawigacja jest w pełni responsywna i użyteczna na urządzeniach mobilnych.
+
+- ID: US-016
+- Tytuł: Wyświetlanie codziennych wiadomości motywacyjnych
+- Opis: Jako użytkownik, chcę zobaczyć codzienny cytat motywacyjny na pulpicie, aby utrzymać motywację podczas poszukiwań pracy.
+- Kryteria akceptacji:
+  - 1. Na górze pulpitu wyświetlany jest cytat motywacyjny w bloku z subtelnym stylem.
+  - 2. Cytat jest ładowany asynchronicznie z API i pokazuje skeleton loader podczas ładowania.
+  - 3. Ten sam cytat jest wyświetlany przez cały dzień; błędy są obsługiwane cicho (bez wyświetlania).
+  - 4. Komponent jest dostępny i responsywny, z odpowiednimi atrybutami ARIA.
 
 ## 6. Metryki sukcesu
 
