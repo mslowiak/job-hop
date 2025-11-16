@@ -2,6 +2,9 @@
 import MainLayout from "../../layouts/MainLayout.astro";
 import { LoginForm } from "../../components/auth/LoginForm";
 import { FeedbackToaster } from "../../components/ui/FeedbackMessage";
+
+const url = new URL(Astro.request.url);
+const confirmed = url.searchParams.get("confirmed");
 ---
 
 <MainLayout title="JobHop | Logowanie">
@@ -21,6 +24,28 @@ import { FeedbackToaster } from "../../components/ui/FeedbackMessage";
         </div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Zaloguj się</h2>
         <p class="mt-2 text-center text-sm text-gray-600">Użyj swojego konta, aby się zalogować</p>
+        {
+          confirmed && (
+            <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded-md">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-green-800">
+                    Email został potwierdzony! Możesz się teraz zalogować.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )
+        }
       </div>
       <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
         <LoginForm client:load />
