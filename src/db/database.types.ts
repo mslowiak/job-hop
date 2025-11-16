@@ -59,6 +59,30 @@ export interface Database {
         };
         Relationships: [];
       };
+      daily_user_messages: {
+        Row: {
+          created_at: string;
+          display_date: string;
+          id: string;
+          message_text: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          display_date: string;
+          id?: string;
+          message_text: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          display_date?: string;
+          id?: string;
+          message_text?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<never, never>;
     Functions: Record<never, never>;
