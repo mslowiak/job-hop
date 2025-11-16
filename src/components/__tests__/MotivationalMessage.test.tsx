@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
 import { MotivationalMessage } from "../MotivationalMessage";
 
@@ -11,7 +11,7 @@ describe("MotivationalMessage", () => {
     vi.clearAllMocks();
   });
 
-  it("renders loading skeleton initially", async () => {
+  it("renders loading spinner initially", async () => {
     // Mock to resolve immediately but empty to trigger error after
     fetch.mockResolvedValue({
       ok: true,
@@ -24,11 +24,27 @@ describe("MotivationalMessage", () => {
     const blockquote = screen.getByRole("blockquote");
     expect(blockquote).toBeInTheDocument();
 
-    const { getByRole } = within(blockquote);
-    const skeleton = getByRole("paragraph");
-    expect(skeleton).toHaveClass("animate-pulse");
-    expect(skeleton).toHaveClass("bg-gray-200");
-    expect(skeleton).toHaveClass("h-12");
+    // Check for spinner container
+    const spinnerContainer = screen.getByText("Generating your daily motivation...").parentElement;
+    expect(spinnerContainer).toHaveClass("flex");
+    expect(spinnerContainer).toHaveClass("items-center");
+    expect(spinnerContainer).toHaveClass("justify-center");
+    expect(spinnerContainer).toHaveClass("space-x-2");
+
+    // Check for spinner element
+    const spinner = screen.getByText("Generating your daily motivation...").previousElementSibling;
+    expect(spinner).toHaveClass("animate-spin");
+    expect(spinner).toHaveClass("rounded-full");
+    expect(spinner).toHaveClass("h-4");
+    expect(spinner).toHaveClass("w-4");
+    expect(spinner).toHaveClass("border-b-2");
+    expect(spinner).toHaveClass("border-gray-900");
+
+    // Check for loading text
+    const loadingText = screen.getByText("Generating your daily motivation...");
+    expect(loadingText).toHaveClass("text-gray-500");
+    expect(loadingText).toHaveClass("italic");
+    expect(loadingText).toHaveClass("text-sm");
 
     // Wait for fetch to confirm it was called
     await waitFor(() => {

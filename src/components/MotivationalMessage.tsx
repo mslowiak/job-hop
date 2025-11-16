@@ -35,7 +35,10 @@ const MotivationalMessageComponent: React.FC = () => {
   if (loading) {
     return (
       <blockquote className="p-6 bg-gray-50 border border-gray-200 rounded-lg my-6">
-        <p className="text-gray-500 italic text-center h-12 bg-gray-200 rounded animate-pulse" />
+        <div className="flex items-center justify-center space-x-2">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900"></div>
+          <p className="text-gray-500 italic text-sm">Generating your daily motivation...</p>
+        </div>
       </blockquote>
     );
   }
