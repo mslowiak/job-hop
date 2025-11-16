@@ -25,12 +25,7 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
   });
   locals.supabase = supabase;
 
-  // Skip auth check for public paths
-  if (PUBLIC_PATHS.includes(url.pathname)) {
-    return next();
-  }
-
-  // IMPORTANT: Always get user session first before any other operations
+  // Always get user session first before any other operations
   // Use getSession() instead of getUser() to avoid race conditions with cookie setting
   const {
     data: { session },
@@ -38,11 +33,18 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
 
   if (session?.user) {
     locals.user = {
-      email: session.user.email,
+      email: session.user.email ?? "",
       id: session.user.id,
     };
-  } else {
-    // Redirect to login for protected routes
+  }
+
+  // Skip auth redirect for public paths
+  if (PUBLIC_PATHS.includes(url.pathname)) {
+    return next();
+  }
+
+  // Redirect to login for protected routes if no session
+  if (!session?.user) {
     const redirectUrl =
       url.pathname === "/" ? "/auth/login" : `/auth/login?redirect=${encodeURIComponent(url.pathname)}`;
     return redirect(redirectUrl);
