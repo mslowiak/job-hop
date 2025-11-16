@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StatusFilter } from "./StatusFilter";
 import { ApplicationList } from "./ApplicationList";
 import { AddApplicationButton } from "./AddApplicationButton";
+import { MotivationalMessage } from "./MotivationalMessage";
 import { useApplications } from "../hooks/useApplications";
 import { useStatusOptions } from "../hooks/useStatusOptions";
 import type { ApplicationStatus } from "../types";
@@ -35,6 +36,8 @@ export const DashboardView: React.FC = () => {
 
   return (
     <main role="main" aria-label="Dashboard" className="space-y-6" data-testid="dashboard-main">
+      <MotivationalMessage />
+      
       {/* Header with Add Button and Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
