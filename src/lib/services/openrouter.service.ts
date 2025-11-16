@@ -32,6 +32,8 @@ interface ResponseFormat {
   };
 }
 
+type JsonSchema = Record<string, unknown>;
+
 interface ModelInfo {
   id: string;
   name: string;
@@ -118,7 +120,13 @@ export class OpenRouterService {
 
     this.apiKey = options.apiKey;
     this.baseUrl = options.baseUrl || "https://openrouter.ai/api/v1";
-    this.defaultModel = options.defaultModel || "tngtech/deepseek-r1t2-chimera:free";
+
+    this.defaultModel =
+      options.defaultModel ||
+      (import.meta.env.OPENROUTER_AI_MODEL?.trim()
+        ? import.meta.env.OPENROUTER_AI_MODEL
+        : "tngtech/deepseek-r1t2-chimera:free");
+
     this.defaultParameters = {
       temperature: options.temperature || 0.7,
       maxTokens: options.maxTokens || 1000,
@@ -193,10 +201,11 @@ export class OpenRouterService {
 
       return await response.json();
     } catch (error: unknown) {
-      if ((error as DOMException).name === "AbortError") {
+      clearTimeout(timeoutId);
+      if (error instanceof DOMException && error.name === "AbortError") {
         throw new TimeoutError();
       }
-      if (error instanceof TypeError && (error as Error).message.includes("fetch")) {
+      if (error instanceof TypeError && error.message.includes("fetch")) {
         throw new NetworkError("Network request failed");
       }
       throw error;
@@ -268,13 +277,13 @@ export class OpenRouterService {
     const choices = (response as Record<string, unknown>).choices as {
       message: { content: string };
     }[];
-    const content = choices[0].message.content as string;
+    const content = choices[0]?.message?.content;
     if (typeof content !== "string") {
       throw new ParseError("Response content is not a string");
     }
 
     try {
-      const parsed = JSON.parse(content);
+      const parsed = JSON.parse(content) as Record<string, unknown>;
       // Basic schema validation (expand with zod if added later)
       // For now, assume parsed matches schema structure; throw if not object for
       // json_schema
@@ -283,8 +292,10 @@ export class OpenRouterService {
       }
       // TODO: Implement full schema validation using zod or similar
       return parsed;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new ParseError(`Failed to parse JSON from response content: ${error.message}`);
+      }
       throw new ParseError("Failed to parse JSON from response content");
     }
   }
@@ -311,27 +322,26 @@ export class OpenRouterService {
     const body = {
       model,
       messages: formattedMessages,
-      ...(parameters && Object.keys(parameters).length > 0 ? { ...parameters } : {}),
+      ...(Object.keys(parameters).length > 0 ? { ...parameters } : {}),
       ...(responseFormat ? { response_format: responseFormat } : {}),
     };
 
     try {
       // Call private request
-      const response = await this._makeRequest("/chat/completions", body);
+      const responseData = (await this._makeRequest("/chat/completions", body)) as ChatResponse;
 
       // Basic response validation
       if (
-        !response ||
-        typeof response !== "object" ||
-        response === null ||
-        !("choices" in response) ||
-        !Array.isArray((response as Record<string, unknown>).choices) ||
-        (response as Record<string, unknown>).choices.length === 0
+        !responseData ||
+        typeof responseData !== "object" ||
+        !responseData.choices ||
+        !Array.isArray(responseData.choices) ||
+        responseData.choices.length === 0
       ) {
         throw new ParseError("Invalid chat response structure");
       }
 
-      return response as ChatResponse;
+      return responseData;
     } catch (error: unknown) {
       // Propagate custom errors
       if (error instanceof OpenRouterError) {
@@ -347,20 +357,18 @@ export class OpenRouterService {
         // Exponential backoff: wait 1s for first retry
         await new Promise((resolve) => setTimeout(resolve, 1000));
         try {
-          const retryResponse = await this._makeRequest("/chat/completions", body);
+          const retryResponseData = (await this._makeRequest("/chat/completions", body)) as ChatResponse;
           if (
-            !retryResponse ||
-            typeof retryResponse !== "object" ||
-            retryResponse === null ||
-            !("choices" in retryResponse) ||
-            !Array.isArray((retryResponse as Record<string, unknown>).choices) ||
-            (retryResponse as Record<string, unknown>).choices.length === 0
+            !retryResponseData ||
+            typeof retryResponseData !== "object" ||
+            !retryResponseData.choices ||
+            !Array.isArray(retryResponseData.choices) ||
+            retryResponseData.choices.length === 0
           ) {
             throw new ParseError("Invalid chat response structure on retry");
           }
-          return retryResponse as ChatResponse;
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (retryError: unknown) {
+          return retryResponseData;
+        } catch (_: unknown) {
           throw error; // Throw original
         }
       }
@@ -421,8 +429,7 @@ export class OpenRouterService {
         try {
           const rawResponse = await this.chat(messages, chatOptions);
           return this._parseStructuredResponse(rawResponse, schema);
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (retryError: unknown) {
+        } catch (_: unknown) {
           throw error;
         }
       }
@@ -436,26 +443,25 @@ export class OpenRouterService {
 
   async getModels(): Promise<ModelInfo[]> {
     try {
-      const response = await this._makeRequest("/models", undefined, "GET");
+      const responseData = (await this._makeRequest("/models", undefined, "GET")) as {
+        data: { id: string; name?: string }[];
+      };
 
       // Validate response
       if (
-        !response ||
-        typeof response !== "object" ||
-        response === null ||
-        !("data" in response) ||
-        !Array.isArray((response as Record<string, unknown>).data)
+        !responseData ||
+        typeof responseData !== "object" ||
+        !responseData.data ||
+        !Array.isArray(responseData.data)
       ) {
         throw new ParseError("Invalid models response structure");
       }
 
       // Map to ModelInfo (assuming API returns { data: [{ id, ... }] })
-      return ((response as Record<string, unknown>).data as Record<string, unknown>[]).map(
-        (item: Record<string, unknown>) => ({
-          id: item.id as string,
-          name: (item.name as string) || (item.id as string),
-        })
-      ) as ModelInfo[];
+      return responseData.data.map((item) => ({
+        id: item.id,
+        name: item.name || item.id,
+      })) as ModelInfo[];
     } catch (error: unknown) {
       if (error instanceof OpenRouterError) {
         throw error;
@@ -463,24 +469,22 @@ export class OpenRouterService {
       if (error instanceof NetworkError || error instanceof TimeoutError) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         try {
-          const response = await this._makeRequest("/models", undefined, "GET");
+          const responseData = (await this._makeRequest("/models", undefined, "GET")) as {
+            data: { id: string; name?: string }[];
+          };
           if (
-            !response ||
-            typeof response !== "object" ||
-            response === null ||
-            !("data" in response) ||
-            !Array.isArray((response as Record<string, unknown>).data)
+            !responseData ||
+            typeof responseData !== "object" ||
+            !responseData.data ||
+            !Array.isArray(responseData.data)
           ) {
             throw new ParseError("Invalid models response structure");
           }
-          return ((response as Record<string, unknown>).data as Record<string, unknown>[]).map(
-            (item: Record<string, unknown>) => ({
-              id: item.id as string,
-              name: (item.name as string) || (item.id as string),
-            })
-          ) as ModelInfo[];
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (retryError: unknown) {
+          return responseData.data.map((item) => ({
+            id: item.id,
+            name: item.name || item.id,
+          })) as ModelInfo[];
+        } catch (_: unknown) {
           throw error;
         }
       }

@@ -21,7 +21,6 @@ JobHop is a web application designed to help active job seekers centralize, mana
 - **Authentication & Account Management**: Email/password signup and login with JWT tokens, account settings (change password, delete account), and secure logout.
 - **Job Applications Management (CRUD)**: Add, view, edit, and delete applications with fields like Company Name, Position, Application Date (required), Job Link, Notes, and Status (predefined options: Planned to Send, Sent, In Progress, Interview, Rejected, Offer; default: Sent).
 - **Dashboard**: Main view showing a sortable list of applications (newest first) with quick status updates via dropdown, filtering by status, and an empty state for new users with a call-to-action to add the first application.
-- **Daily Motivational Messages**: A daily motivational quote displayed at the top of the dashboard to encourage users during their job search. Selected randomly from a predefined list and consistent for the entire day (UTC). Prepared for future AI generation using OpenRouter.
 - **Statistics Page**: Simple textual counts of applications per status.
 - **Navigation & UI**: Responsive header with links to Dashboard and Stats, user profile menu (Settings, Logout), and a persistent feedback link to a Google Form.
 - Fully responsive design for mobile and desktop.
@@ -44,7 +43,7 @@ The app addresses the chaos of tracking multiple applications, providing a singl
 
 ### AI Integration
 
-- **Openrouter.ai**: Gateway to various AI models (e.g., OpenAI, Anthropic, Google) with API key management and cost limits. Integrated for generating personalized motivational messages when `MOTIVATIONAL_MESSAGES_AI_INTEGRATION` is set to "true". Full integration planned for future enhancements like job advice or content generation.
+- **Openrouter.ai**: Gateway to various AI models (e.g., OpenAI, Anthropic, Google) with API key management and cost limits. (Used for future enhancements beyond MVP.)
 
 ### CI/CD & Hosting
 
@@ -72,25 +71,26 @@ The app addresses the chaos of tracking multiple applications, providing a singl
    npm install
    ```
 3. Set up environment variables:
-   - Create a `.env` file in the root directory.
-   - Add your Supabase credentials (obtained from your Supabase project dashboard):
-     ```
-     PUBLIC_SUPABASE_URL=your_supabase_project_url
-     PUBLIC_SUPABASE_KEY=your_supabase_anon_key
-     ```
-   - For production, add `SUPABASE_SERVICE_ROLE_KEY` if needed for admin operations.
-   - For AI integration in motivational messages (optional but required for AI-generated content):
-     ```
-     MOTIVATIONAL_MESSAGES_AI_INTEGRATION=true
-     OPENROUTER_API_KEY=your_openrouter_api_key
-     ```
-     - `MOTIVATIONAL_MESSAGES_AI_INTEGRATION`: Set to "true" to enable AI-generated motivational messages via OpenRouter (falls back to predefined messages if "false" or unset).
-     - `OPENROUTER_API_KEY`: **Required** when AI integration is enabled. Obtain your free API key from the [OpenRouter.ai dashboard](https://openrouter.ai/keys) after signing up. This key allows access to various AI models for generating personalized content.
+    - Copy `.env.example` to `.env` in the root directory and fill in the placeholders with your actual values.
+    - Required for Supabase:
+      ```
+      PUBLIC_SUPABASE_URL=your_supabase_project_url
+      PUBLIC_SUPABASE_KEY=your_supabase_anon_key
+      ```
+    - For production, add `SUPABASE_SERVICE_ROLE_KEY` if needed for admin operations.
+    - For AI integration in motivational messages (optional but required for AI-generated content):
+      ```
+      MOTIVATIONAL_MESSAGES_AI_INTEGRATION=true
+      OPENROUTER_API_KEY=your_openrouter_api_key
+      OPENROUTER_AI_MODEL=your_preferred_model_id  # Optional: defaults to 'tngtech/deepseek-r1t2-chimera:free'
+      ```
+        - `MOTIVATIONAL_MESSAGES_AI_INTEGRATION`: Set to "true" to enable AI-generated motivational messages via OpenRouter (falls back to predefined messages if "false" or unset).
+        - `OPENROUTER_API_KEY`: **Required** when AI integration is enabled. Obtain your free API key from the [OpenRouter.ai dashboard](https://openrouter.ai/keys) after signing up. This key allows access to various AI models for generating personalized content.
+        - `OPENROUTER_AI_MODEL`: Optional model ID to override the default (e.g., "anthropic/claude-3.5-sonnet"). See [OpenRouter models](https://openrouter.ai/models) for available options.
 4. Create necessary database tables in Supabase:
    - Users (handled by Supabase Auth).
    - Applications table with columns: id (UUID), user_id (UUID, foreign key to auth.users), company_name (text, required), position (text, required), application_date (date, required), job_link (text, optional), notes (text, optional), status (text, enum: ['planned', 'sent', 'in_progress', 'interview', 'rejected', 'offer'], default 'sent'), created_at (timestamp).
    - Enable Row Level Security (RLS) policies to restrict access to user-owned data.
-   - Daily user messages table for motivational messages: id (UUID), user_id (UUID, foreign key), message_text (text), display_date (date), created_at (timestamp).
 5. Run the development server:
    ```
    npm run dev
