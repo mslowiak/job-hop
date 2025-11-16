@@ -1,0 +1,4 @@
+There should be a place above the dashboard that will display motivational sentence to user.
+The sentences should be generated in a long term solution. For now we want to focus on short term solution - which means that we need to create some list of predefined sentences (20 can be good for starting point). The logic should pick one of those sentences. The same sentence should be displayed to user for day. The next day, once the user will load the page, there should be new sentence selected.
+This is why we need to store the affiliation between user and message.
+We would need an API to return this information.
