@@ -226,3 +226,20 @@ export interface AuthContextType {
   session: unknown; // Supabase session type
   loading: boolean;
 }
+
+// =============================================================================
+// Daily Motivational Messages Types - Derived from daily_user_messages table
+// =============================================================================
+
+// DTO for the GET /api/messages/daily-motivation response
+// Directly references the 'message_text' field from the database Row type
+export interface DailyMotivationResponse {
+  message: Tables<"daily_user_messages">["message_text"];
+}
+
+// Command Model for internal creation of a daily user message record
+// Narrowed from the database Insert type to required fields for the idempotent logic
+export type CreateDailyUserMessageCommand = Pick<
+  TablesInsert<"daily_user_messages">,
+  "user_id" | "message_text" | "display_date"
+>;
